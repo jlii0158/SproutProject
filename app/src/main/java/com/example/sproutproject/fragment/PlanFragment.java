@@ -16,7 +16,7 @@ import com.example.sproutproject.StartActivity;
 
 public class PlanFragment extends Fragment {
 
-    private Button bt_test;
+    private Button bt_addPlan;
 
     public PlanFragment() {
         // Required empty public constructor
@@ -28,9 +28,9 @@ public class PlanFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_plan, container, false);
 
-        bt_test = view.findViewById(R.id.button2);
+        bt_addPlan = view.findViewById(R.id.button2);
 
-        bt_test.setOnClickListener(new View.OnClickListener() {
+        bt_addPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), StartActivity.class);
