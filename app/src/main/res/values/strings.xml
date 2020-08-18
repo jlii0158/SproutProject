@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SproutProject</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_hint">Please enter garden stuff</string>
+    <string name="search">Search</string>
+    <string name="recom">Recommendation</string>
+    <string name="your_record">Your record</string>
+</resources>
