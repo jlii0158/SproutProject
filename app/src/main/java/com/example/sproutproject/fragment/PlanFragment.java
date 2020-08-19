@@ -33,8 +33,6 @@ public class PlanFragment extends Fragment {
         bt_addPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), StartActivity.class);
-                startActivity(intent);
 
             }
         });
