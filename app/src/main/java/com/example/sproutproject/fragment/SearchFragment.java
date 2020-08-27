@@ -1,11 +1,23 @@
 package com.example.sproutproject.fragment;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -24,7 +36,9 @@ import android.widget.Toast;
 import com.example.sproutproject.CreateActivity;
 import com.example.sproutproject.ListAdapter;
 import com.example.sproutproject.R;
+import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
+import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.utils.WaterUtils;
 import com.squareup.picasso.Picasso;
 
@@ -32,13 +46,23 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+
+import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 
 public class SearchFragment extends Fragment {
 
-    private Button bt_back,bt_collect, bt_generate;
+    private Button bt_back,bt_collect, bt_generate, bt_camera, bt_album;
     private View top_view, bottom_view;
     String plant_name;
     private EditText et_plant;
@@ -59,16 +83,33 @@ public class SearchFragment extends Fragment {
     private LinearLayout ll_water;
     private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_desc;
 
+    private final String TAG = getClass().getSimpleName();
+    private static final String PERMISSION_WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private static final int REQUEST_PERMISSION_CODE = 267;
+    private static final int TAKE_PHOTO = 189;
+    private static final int CHOOSE_PHOTO = 385;
+    private static final String FILE_PROVIDER_AUTHORITY = "cn.fonxnickel.officialcamerademo.fileprovider";
+    private Uri mImageUri, mImageUriFromFile;
+    private File imageFile;
+
     public SearchFragment() {
         // Required empty public constructor
     }
 
 
+    @SuppressLint("WrongConstant")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        /*申请读取存储的权限*/
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Objects.requireNonNull(getContext()),PERMISSION_WRITE_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{PERMISSION_WRITE_STORAGE}, REQUEST_PERMISSION_CODE);
+            }
+        }
 
         bt_back = view.findViewById(R.id.button4);
         bt_generate = view.findViewById(R.id.button6);
@@ -85,6 +126,8 @@ public class SearchFragment extends Fragment {
         tv_sow = view.findViewById(R.id.tv_sow);
         tv_comp = view.findViewById(R.id.tv_comp);
         tv_desc = view.findViewById(R.id.tv_desc);
+        bt_camera = view.findViewById(R.id.bt_camera);
+        bt_album = view.findViewById(R.id.bt_album);
 
         new SearchFromDatabase().execute();
 
@@ -126,6 +169,20 @@ public class SearchFragment extends Fragment {
                 tv_sow.setText(plantSow[i]);
                 tv_comp.setText(compPlants[i]);
                 tv_desc.setText(plantDesc[i]);
+            }
+        });
+
+        bt_camera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                takePhoto();
+            }
+        });
+
+        bt_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openAlbum();
             }
         });
 
@@ -172,7 +229,8 @@ public class SearchFragment extends Fragment {
                 plantImg.clear();
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
-                    if (plantName2.get(i).contains(data) || waterNeed2.get(i).contains(data) || harvestIns2.get(i).contains(data)) {
+                    if (plantName2.get(i).contains(data) || waterNeed2.get(i).contains(data) || harvestIns2.get(i).contains(data)
+                        || plantName2.get(i).toLowerCase().contains(data)) {
                         plantName.add(plantName2.get(i));
                         harvestIns.add(harvestIns2.get(i));
                         waterNeed.add(waterNeed2.get(i));
@@ -231,6 +289,114 @@ public class SearchFragment extends Fragment {
     }
 
 
+    /**
+     * Open album
+     */
+    private void openAlbum() {
+        Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        openAlbumIntent.setType("image/*");
+        startActivityForResult(openAlbumIntent, CHOOSE_PHOTO);//打开相册
+    }
+
+    /**
+     * Take Picture
+     */
+    private void takePhoto() {
+        Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
+        if (takePhotoIntent.resolveActivity(getActivity().getPackageManager()) != null) {//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
+            startActivityForResult(takePhotoIntent, TAKE_PHOTO);//打开相机
+        }
+    }
+
+    /*申请权限的回调*/
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            Log.i(TAG, "onRequestPermissionsResult: permission granted");
+        } else {
+            Log.i(TAG, "onRequestPermissionsResult: permission denied");
+            Toast.makeText(getActivity(), "You Denied Permission", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /*相机或者相册返回来的数据*/
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case TAKE_PHOTO:
+                if (resultCode == Activity.RESULT_OK) {
+
+                    Bitmap  bitmap = data.getParcelableExtra("data");
+                    //先将bitmap转为byte[]
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.PNG,100,baos);
+                    final byte[] bytes = baos.toByteArray();
+
+                    //将拍照得到的照片转成bytes传给百度API的方法
+                    ThreadUtils.runInThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String a = Ingredient.ingredient(bytes);
+                            try {
+                                JSONObject jsonObject = new JSONObject(a);
+                                JSONArray jsonArray = jsonObject.getJSONArray("result");
+                                String resultText = jsonArray.getJSONObject(0).getString("name");
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                }
+                break;
+            case CHOOSE_PHOTO:
+                if (data == null) {//如果没有选取照片，则直接返回
+                    return;
+                }
+                Log.i(TAG, "onActivityResult: ImageUriFromAlbum: " + data.getData());
+                if (resultCode == Activity.RESULT_OK) {
+                    try {
+                        Uri imageUri = data.getData();
+                        InputStream iStream = getActivity().getContentResolver().openInputStream(imageUri);
+                        final byte[] inputData = getBytes(iStream);
+                        Log.e("TAG", imageUri.toString());
+
+                        ThreadUtils.runInThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                String a = Ingredient.ingredient(inputData);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(a);
+                                    JSONArray jsonArray = jsonObject.getJSONArray("result");
+                                    String resultText = jsonArray.getJSONObject(0).getString("name");
+                                    String xxx = "";
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
 
 
 
