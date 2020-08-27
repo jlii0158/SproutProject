@@ -23,44 +23,32 @@
 
             <EditText
                 android:id="@+id/editText2"
-                android:layout_width="260dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/input_rectangle_shape"
                 android:ems="10"
                 android:hint="@string/search_hint"
                 android:inputType="textPersonName"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:background="@drawable/edit_rectangle_shape"
-                android:text="@string/search"
-                app:layout_constraintBottom_toBottomOf="@+id/editText2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editText2"
-                app:layout_constraintTop_toTopOf="@+id/editText2"
-                style="?android:attr/borderlessButtonStyle"/>
 
             <ListView
                 android:id="@+id/lv_adminProvide"
                 android:layout_width="match_parent"
-                android:layout_height="265dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
+                android:layout_height="570dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
                 android:background="@drawable/list_rectangle_shape"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -73,39 +61,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="@string/recom"
+                android:text="Plants"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/editText2"
                 app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/your_record"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/lv_adminProvide"
-                app:layout_constraintTop_toBottomOf="@+id/lv_adminProvide" />
-
-            <ListView
-                android:id="@+id/lv_userProvide"
-                android:layout_width="match_parent"
-                android:layout_height="265dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                android:background="@drawable/list_rectangle_shape"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView4">
-
-            </ListView>
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -121,109 +81,266 @@
 
         <ImageView
             android:id="@+id/large_image"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"/>
+            android:layout_width="200dp"
+            android:layout_height="200dp"/>
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
             android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/large_image" />
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/large_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/waterNeed_bar"
+            android:layout_width="150dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="@+id/textView5"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="200dp"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/textView5"
             app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="wrap_content"
+            android:layout_width="165dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:text="Back"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/edit_rectangle_shape"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/large_image" />
+            android:text="Back"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView7" />
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView8"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-        <RatingBar
-            android:id="@+id/ratingBar70"
-            style="?android:attr/ratingBarStyleIndicator"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/textView9"
-            app:layout_constraintTop_toBottomOf="@+id/textView9"/>
-
-        <TextView
-            android:id="@+id/textView10"
-            android:layout_width="345dp"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="@+id/ratingBar70"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar70" />
 
         <Button
             android:id="@+id/button5"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="32dp"
-            android:text="Collect"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:background="@drawable/edit_rectangle_shape"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView10" />
+            android:text="Collect"
+            app:layout_constraintBottom_toBottomOf="@+id/large_image"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <Button
             android:id="@+id/button6"
             android:layout_width="165dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:layout_marginBottom="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/edit_rectangle_shape"
             android:text="Generate Plan"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toStartOf="parent" />
 
+        <ScrollView
+            android:id="@+id/detail_view"
+            android:layout_width="match_parent"
+            android:layout_height="390dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/input_rectangle_shape"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toTopOf="@+id/button6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/large_image">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="430dp">
+
+                <ImageView
+                    android:id="@+id/plant_space"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_leaf" />
+
+                <TextView
+                    android:id="@+id/tv_space_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Plant Space"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/plant_space"
+                    app:layout_constraintTop_toTopOf="@+id/plant_space" />
+
+                <TextView
+                    android:id="@+id/tv_space"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plant_space"
+                    app:layout_constraintTop_toBottomOf="@+id/plant_space" />
+
+                <ImageView
+                    android:id="@+id/plant_cycle"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ic_sun"
+                    app:layout_constraintStart_toStartOf="@+id/tv_space"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_space" />
+
+                <TextView
+                    android:id="@+id/tv_cycle_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Plant Cycle"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/plant_cycle"
+                    app:layout_constraintTop_toTopOf="@+id/plant_cycle" />
+
+                <TextView
+                    android:id="@+id/tv_cycle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plant_space"
+                    app:layout_constraintTop_toBottomOf="@+id/plant_cycle" />
+
+                <ImageView
+                    android:id="@+id/plant_sow"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ic_sow"
+                    app:layout_constraintStart_toStartOf="@+id/tv_space"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_cycle" />
+
+                <TextView
+                    android:id="@+id/tv_sow_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Plant Sow"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/plant_sow"
+                    app:layout_constraintTop_toTopOf="@+id/plant_sow" />
+
+                <TextView
+                    android:id="@+id/tv_sow"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plant_space"
+                    app:layout_constraintTop_toBottomOf="@+id/plant_sow" />
+
+                <ImageView
+                    android:id="@+id/plant_comp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ic_comp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_sow" />
+
+                <TextView
+                    android:id="@+id/tv_comp_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Compatible Plants"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/plant_comp"
+                    app:layout_constraintTop_toTopOf="@+id/plant_comp" />
+
+                <TextView
+                    android:id="@+id/tv_comp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plant_space"
+                    app:layout_constraintTop_toBottomOf="@+id/plant_comp" />
+
+                <ImageView
+                    android:id="@+id/plant_desc"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/ic_desc"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_comp" />
+
+                <TextView
+                    android:id="@+id/tv_desc_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Description"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/plant_desc"
+                    app:layout_constraintTop_toTopOf="@+id/plant_desc" />
+
+                <TextView
+                    android:id="@+id/tv_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="TextView"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/plant_space"
+                    app:layout_constraintTop_toBottomOf="@+id/plant_desc" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

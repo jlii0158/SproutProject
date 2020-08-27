@@ -9,4 +9,5 @@
     <string name="your_record">Your record</string>
     <string name="plant_name">Name:</string>
     <string name="overview">Overview:</string>
+    <string name="alias">Alias:</string>
 </resources>
