@@ -8,359 +8,371 @@
     android:layout_height="match_parent"
     tools:context=".fragment.SearchFragment">
 
-    <ScrollView
+    <RelativeLayout
         android:id="@+id/search_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal"
-        android:scrollbars="none"
-        android:orientation="vertical"
         android:visibility="visible">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <EditText
+            android:id="@+id/editText2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/editText2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/input_rectangle_shape"
-                android:ems="10"
-                android:hint="@string/search_hint"
-                android:inputType="textPersonName"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-                android:id="@+id/bt_camera"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/ic_camera"
-                app:layout_constraintEnd_toStartOf="@+id/bt_album"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-            <Button
-                android:id="@+id/bt_album"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:background="@drawable/ic_album"
-                app:layout_constraintEnd_toEndOf="@+id/editText2"
-                app:layout_constraintTop_toTopOf="@+id/bt_camera" />
-
-            <ListView
-                android:id="@+id/lv_adminProvide"
-                android:layout_width="match_parent"
-                android:layout_height="570dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/list_rectangle_shape"
-                android:padding="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3">
-
-            </ListView>
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Plants"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/editText2"
-                app:layout_constraintTop_toBottomOf="@+id/editText2" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </ScrollView>
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/plant_detail_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        tools:ignore="MissingConstraints">
-
-        <ImageView
-            android:id="@+id/large_image"
-            android:layout_width="230dp"
-            android:layout_height="200dp"/>
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/input_rectangle_shape"
+            android:ems="10"
+            android:hint="@string/search_hint"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/bt_camera"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_camera"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_below="@id/editText2"
+            android:layout_toLeftOf="@id/bt_album"
+            android:layout_toStartOf="@id/bt_album" />
+
+        <Button
+            android:id="@+id/bt_album"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/ic_album"
+            android:layout_marginTop="8dp"
+            android:layout_below="@id/editText2"
+            android:layout_alignRight="@id/editText2"
+            android:layout_alignEnd="@id/editText2" />
+
+        <ListView
+            android:id="@+id/lv_adminProvide"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/list_rectangle_shape"
+            android:padding="5dp"
+            android:layout_below="@id/textView3">
+
+        </ListView>
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Plants"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:layout_below="@id/editText2"
+            android:layout_alignLeft="@id/editText2"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/plant_detail_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible">
+        <ImageView
+            android:id="@+id/large_image"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_marginLeft="16dp"/>
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginRight="16dp"
             android:text="TextView"
             android:textSize="20sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@+id/large_image"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/waterNeed_bar"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView6">
-
-        </LinearLayout>
+            android:layout_toRightOf="@id/large_image"/>
 
         <TextView
             android:id="@+id/textView6"
-            android:layout_width="150dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:text="TextView"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView5"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            android:layout_toRightOf="@id/large_image"
+            android:layout_below="@id/textView5"
+            android:layout_toEndOf="@id/large_image" />
 
-
-        <Button
-            android:id="@+id/button4"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/edit_rectangle_shape"
-            android:text="Back"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
 
         <Button
             android:id="@+id/button5"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@drawable/edit_rectangle_shape"
-            android:text="Collect"
-            app:layout_constraintBottom_toBottomOf="@+id/large_image"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_heart_click"
+            android:layout_alignBottom="@id/large_image"
+            android:layout_toRightOf="@id/large_image"
+            android:layout_toEndOf="@id/large_image" />
+
+
 
         <Button
-            android:id="@+id/button6"
-            android:layout_width="165dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/edit_rectangle_shape"
-            android:text="Generate Plan"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <ScrollView
-            android:id="@+id/detail_view"
+            android:id="@+id/button4"
             android:layout_width="match_parent"
-            android:layout_height="390dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="wrap_content"
             android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/input_rectangle_shape"
-            android:gravity="center_horizontal"
+            android:layout_marginLeft="8dp"
+            android:background="@drawable/edit_rectangle_shape"
+            android:text="Back"
+            android:layout_toRightOf="@id/button5"
+            android:layout_alignBottom="@id/large_image"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_below="@id/large_image"
+            android:layout_marginTop="16dp">
 
-            app:layout_constraintBottom_toTopOf="@+id/button6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/large_image">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <ScrollView
+                android:id="@+id/detail_view"
                 android:layout_width="match_parent"
-                android:layout_height="430dp">
+                android:layout_height="match_parent"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:background="@drawable/input_rectangle_shape"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_weight="1">
 
-                <ImageView
-                    android:id="@+id/plant_space"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_leaf" />
-
-                <TextView
-                    android:id="@+id/tv_space_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Plant Space"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/plant_space"
-                    app:layout_constraintTop_toTopOf="@+id/plant_space" />
-
-                <TextView
-                    android:id="@+id/tv_space"
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/plant_space"
-                    app:layout_constraintTop_toBottomOf="@+id/plant_space" />
+                    android:layout_height="430dp">
 
-                <ImageView
-                    android:id="@+id/plant_cycle"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_sun"
-                    app:layout_constraintStart_toStartOf="@+id/tv_space"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_space" />
+                    <LinearLayout
+                        android:id="@+id/waterNeed_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/tv_cycle_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Plant Cycle"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/plant_cycle"
-                    app:layout_constraintTop_toTopOf="@+id/plant_cycle" />
+                    <TextView
+                        android:id="@+id/tv_water_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Water Need"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/waterNeed_bar"
+                        app:layout_constraintTop_toTopOf="@+id/waterNeed_bar" />
 
-                <TextView
-                    android:id="@+id/tv_cycle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/plant_space"
-                    app:layout_constraintTop_toBottomOf="@+id/plant_cycle" />
+                    <TextView
+                        android:id="@+id/tv_water"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Plant Water Need"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/waterNeed_bar"
+                        app:layout_constraintTop_toBottomOf="@+id/waterNeed_bar" />
 
-                <ImageView
-                    android:id="@+id/plant_sow"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_sow"
-                    app:layout_constraintStart_toStartOf="@+id/tv_space"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_cycle" />
+                    <ImageView
+                        android:id="@+id/plant_space"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/ic_leaf"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_water" />
 
-                <TextView
-                    android:id="@+id/tv_sow_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Plant Sow"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/plant_sow"
-                    app:layout_constraintTop_toTopOf="@+id/plant_sow" />
+                    <TextView
+                        android:id="@+id/tv_space_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Space"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/plant_space"
+                        app:layout_constraintTop_toTopOf="@+id/plant_space" />
 
-                <TextView
-                    android:id="@+id/tv_sow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/plant_space"
-                    app:layout_constraintTop_toBottomOf="@+id/plant_sow" />
+                    <TextView
+                        android:id="@+id/tv_space"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Space"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plant_space"
+                        app:layout_constraintTop_toBottomOf="@+id/plant_space" />
 
-                <ImageView
-                    android:id="@+id/plant_comp"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_comp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_sow" />
+                    <ImageView
+                        android:id="@+id/plant_cycle"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/ic_sun"
+                        app:layout_constraintStart_toStartOf="@+id/tv_space"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_space" />
 
-                <TextView
-                    android:id="@+id/tv_comp_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Compatible Plants"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/plant_comp"
-                    app:layout_constraintTop_toTopOf="@+id/plant_comp" />
+                    <TextView
+                        android:id="@+id/tv_cycle_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Cycle"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/plant_cycle"
+                        app:layout_constraintTop_toTopOf="@+id/plant_cycle" />
 
-                <TextView
-                    android:id="@+id/tv_comp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/plant_space"
-                    app:layout_constraintTop_toBottomOf="@+id/plant_comp" />
+                    <TextView
+                        android:id="@+id/tv_cycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Cycle"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plant_space"
+                        app:layout_constraintTop_toBottomOf="@+id/plant_cycle" />
 
-                <ImageView
-                    android:id="@+id/plant_desc"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/ic_desc"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_comp" />
+                    <ImageView
+                        android:id="@+id/plant_sow"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/ic_sow"
+                        app:layout_constraintStart_toStartOf="@+id/tv_space"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_cycle" />
 
-                <TextView
-                    android:id="@+id/tv_desc_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Description"
-                    android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toEndOf="@+id/plant_desc"
-                    app:layout_constraintTop_toTopOf="@+id/plant_desc" />
+                    <TextView
+                        android:id="@+id/tv_sow_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Sow"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/plant_sow"
+                        app:layout_constraintTop_toTopOf="@+id/plant_sow" />
 
-                <TextView
-                    android:id="@+id/tv_desc"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="TextView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/plant_space"
-                    app:layout_constraintTop_toBottomOf="@+id/plant_desc" />
+                    <TextView
+                        android:id="@+id/tv_sow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Plant Sow"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plant_space"
+                        app:layout_constraintTop_toBottomOf="@+id/plant_sow" />
+
+                    <ImageView
+                        android:id="@+id/plant_comp"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/ic_comp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_sow" />
+
+                    <TextView
+                        android:id="@+id/tv_comp_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Compatible Plants"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/plant_comp"
+                        app:layout_constraintTop_toTopOf="@+id/plant_comp" />
+
+                    <TextView
+                        android:id="@+id/tv_comp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Compatible Plants"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plant_space"
+                        app:layout_constraintTop_toBottomOf="@+id/plant_comp" />
+
+                    <ImageView
+                        android:id="@+id/plant_desc"
+                        android:layout_width="35dp"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/ic_desc"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_comp" />
+
+                    <TextView
+                        android:id="@+id/tv_desc_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Description"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toEndOf="@+id/plant_desc"
+                        app:layout_constraintTop_toTopOf="@+id/plant_desc" />
+
+                    <TextView
+                        android:id="@+id/tv_desc"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Description"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/plant_space"
+                        app:layout_constraintTop_toBottomOf="@+id/plant_desc" />
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </ScrollView>
+            <Button
+                android:id="@+id/button6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_rectangle_shape"
+                android:text="Generate Plan"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"/>
+        </LinearLayout>
 
 
-        </ScrollView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -81,7 +81,7 @@ public class SearchFragment extends Fragment {
     ImageView iv_detailImage;
     private WaterUtils waterUtils;
     private LinearLayout ll_water;
-    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_desc;
+    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_desc, tv_water;
 
     private final String TAG = getClass().getSimpleName();
     private static final String PERMISSION_WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -126,6 +126,7 @@ public class SearchFragment extends Fragment {
         tv_sow = view.findViewById(R.id.tv_sow);
         tv_comp = view.findViewById(R.id.tv_comp);
         tv_desc = view.findViewById(R.id.tv_desc);
+        tv_water = view.findViewById(R.id.tv_water);
         bt_camera = view.findViewById(R.id.bt_camera);
         bt_album = view.findViewById(R.id.bt_album);
 
@@ -148,6 +149,7 @@ public class SearchFragment extends Fragment {
                 String nick = "Alias: " + plantNick[i];
                 tv_plantNickName.setText(nick);
                 //set plant water need
+                tv_water.setText("Water need is " + waterNeed.get(i));
                 waterUtils = new WaterUtils();
                 int icon_array = R.drawable.ic_water;
                 int temp = 0;
