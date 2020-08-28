@@ -233,6 +233,10 @@ public class SearchFragment extends Fragment {
                     }
                 }
                 lAdapter.notifyDataSetChanged();
+                if (plantName.size() == 0) {
+                    String back= "Sorry, no findings";
+                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -344,6 +348,7 @@ public class SearchFragment extends Fragment {
                     ThreadUtils.runInThread(new Runnable() {
                         @Override
                         public void run() {
+                            //user AI API to recognize the picture
                             String a = Ingredient.ingredient(bytes);
                             try {
                                 JSONObject jsonObject = new JSONObject(a);
@@ -356,13 +361,25 @@ public class SearchFragment extends Fragment {
                                 JSONObject jsonObject1 = new JSONObject(resultArray);
                                 JSONArray jsonArray1 = jsonObject1.getJSONArray("trans_result");
                                 final String result = jsonArray1.getJSONObject(0).getString("dst");
-                                //set editText
-                                ThreadUtils.runInUIThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        et_plant.setText(result);
-                                    }
-                                });
+                                if (result.equals("Non fruit and vegetable ingredients")) {
+                                    ThreadUtils.runInUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            String back= "Sorry, the picture you took is not fruit or vegetable";
+                                            Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                                else {
+                                    //set editText
+                                    ThreadUtils.runInUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_plant.setText(result);
+                                        }
+                                    });
+                                }
+
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -398,13 +415,24 @@ public class SearchFragment extends Fragment {
                                     JSONObject jsonObject1 = new JSONObject(resultArray);
                                     JSONArray jsonArray1 = jsonObject1.getJSONArray("trans_result");
                                     final String result = jsonArray1.getJSONObject(0).getString("dst");
-                                    //set editText
-                                    ThreadUtils.runInUIThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            et_plant.setText(result);
-                                        }
-                                    });
+                                    if (result.equals("Non fruit and vegetable ingredients")) {
+                                        ThreadUtils.runInUIThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                String back= "Sorry, the picture you choose is not a fruit or a vegetable";
+                                                Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        //set editText
+                                        ThreadUtils.runInUIThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                et_plant.setText(result);
+                                            }
+                                        });
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
