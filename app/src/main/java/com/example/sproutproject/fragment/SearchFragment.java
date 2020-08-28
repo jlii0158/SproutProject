@@ -38,6 +38,7 @@ import com.example.sproutproject.ListAdapter;
 import com.example.sproutproject.R;
 import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
+import com.example.sproutproject.networkConnection.TransApi;
 import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.utils.WaterUtils;
 import com.squareup.picasso.Picasso;
@@ -68,14 +69,7 @@ public class SearchFragment extends Fragment {
     private EditText et_plant;
     private ListView lv_plantList;
     String[] plantNick, plantSow, plantSpace, growthCycle, compPlants, plantDesc;
-    private List<String> plantName = new ArrayList<String>();
-    private List<String> plantName2 = new ArrayList<String>();
-    private List<String> waterNeed = new ArrayList<String>();
-    private List<String> waterNeed2 = new ArrayList<String>();
-    private List<String> plantImg = new ArrayList<String>();
-    private List<String> plantImg2 = new ArrayList<String>();
-    private List<String> harvestIns = new ArrayList<String>();
-    private List<String> harvestIns2 = new ArrayList<String>();
+    private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2;
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
     ImageView iv_detailImage;
@@ -88,9 +82,8 @@ public class SearchFragment extends Fragment {
     private static final int REQUEST_PERMISSION_CODE = 267;
     private static final int TAKE_PHOTO = 189;
     private static final int CHOOSE_PHOTO = 385;
-    private static final String FILE_PROVIDER_AUTHORITY = "cn.fonxnickel.officialcamerademo.fileprovider";
-    private Uri mImageUri, mImageUriFromFile;
-    private File imageFile;
+    private static final String APP_ID = "20200828000553608";
+    private static final String SECURITY_KEY = "99UXraNwDwpwC1ODtTsZ";
 
     public SearchFragment() {
         // Required empty public constructor
@@ -232,7 +225,7 @@ public class SearchFragment extends Fragment {
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
                     if (plantName2.get(i).contains(data) || waterNeed2.get(i).contains(data) || harvestIns2.get(i).contains(data)
-                        || plantName2.get(i).toLowerCase().contains(data)) {
+                        || plantName2.get(i).toLowerCase().contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
                         plantName.add(plantName2.get(i));
                         harvestIns.add(harvestIns2.get(i));
                         waterNeed.add(waterNeed2.get(i));
@@ -247,46 +240,58 @@ public class SearchFragment extends Fragment {
     private class SearchFromDatabase extends  AsyncTask<Void, Void, String> {
         @Override
         protected  String doInBackground(Void... params) {
-            String result = restClient.findAllPlants();
-            try {
-                JSONArray jsonArray = new JSONArray(result);
-                if(jsonArray.length() == 0){
+            //if (plantName == null) {
+                String result = restClient.findAllPlants();
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    if (jsonArray.length() == 0) {
+                        return null;
+                    }
+
+                    plantName = new ArrayList<String>();
+                    plantName2 = new ArrayList<String>();
+                    waterNeed = new ArrayList<String>();
+                    waterNeed2 = new ArrayList<String>();
+                    plantImg = new ArrayList<String>();
+                    plantImg2 = new ArrayList<String>();
+                    harvestIns = new ArrayList<String>();
+                    harvestIns2 = new ArrayList<String>();
+
+                    plantNick = new String[jsonArray.length()];
+                    plantSow = new String[jsonArray.length()];
+                    plantSpace = new String[jsonArray.length()];
+                    growthCycle = new String[jsonArray.length()];
+                    compPlants = new String[jsonArray.length()];
+                    plantDesc = new String[jsonArray.length()];
+
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        plantName.add(jsonArray.getJSONObject(i).getString("plantName"));
+                        plantNick[i] = jsonArray.getJSONObject(i).getString("plantNick");
+                        plantSow[i] = jsonArray.getJSONObject(i).getString("plantSow");
+                        plantSpace[i] = jsonArray.getJSONObject(i).getString("plantSpace");
+                        growthCycle[i] = jsonArray.getJSONObject(i).getString("growthCycle");
+                        harvestIns.add(jsonArray.getJSONObject(i).getString("harvestIns"));
+                        compPlants[i] = jsonArray.getJSONObject(i).getString("compPlants");
+                        waterNeed.add(jsonArray.getJSONObject(i).getString("waterNeed"));
+                        plantDesc[i] = jsonArray.getJSONObject(i).getString("plantDesc");
+                        plantImg.add(jsonArray.getJSONObject(i).getString("plantImg"));
+                    }
+                    lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg);
+                    plantName2.addAll(plantName);
+                    harvestIns2.addAll(harvestIns);
+                    waterNeed2.addAll(waterNeed);
+                    plantImg2.addAll(plantImg);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                     return null;
                 }
-                plantNick = new String[jsonArray.length()];
-                plantSow = new String[jsonArray.length()];
-                plantSpace = new String[jsonArray.length()];
-                growthCycle = new String[jsonArray.length()];
-                compPlants = new String[jsonArray.length()];
-                plantDesc = new String[jsonArray.length()];
-
-                for (int i = 0; i < jsonArray.length(); i++){
-                    plantName.add(jsonArray.getJSONObject(i).getString("plantName"));
-                    plantNick[i] = jsonArray.getJSONObject(i).getString("plantNick");
-                    plantSow[i] = jsonArray.getJSONObject(i).getString("plantSow");
-                    plantSpace[i] = jsonArray.getJSONObject(i).getString("plantSpace");
-                    growthCycle[i] = jsonArray.getJSONObject(i).getString("growthCycle");
-                    harvestIns.add(jsonArray.getJSONObject(i).getString("harvestIns"));
-                    compPlants[i] = jsonArray.getJSONObject(i).getString("compPlants");
-                    waterNeed.add(jsonArray.getJSONObject(i).getString("waterNeed"));
-                    plantDesc[i] = jsonArray.getJSONObject(i).getString("plantDesc");
-                    plantImg.add(jsonArray.getJSONObject(i).getString("plantImg"));
-                }
-                lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
+            //}
             return null;
         }
         @Override
         protected void onPostExecute(String result) {
             lv_plantList.setAdapter(lAdapter);
-            plantName2.addAll(plantName);
-            harvestIns2.addAll(harvestIns);
-            waterNeed2.addAll(waterNeed);
-            plantImg2.addAll(plantImg);
+
         }
     }
 
@@ -343,7 +348,22 @@ public class SearchFragment extends Fragment {
                             try {
                                 JSONObject jsonObject = new JSONObject(a);
                                 JSONArray jsonArray = jsonObject.getJSONArray("result");
-                                String resultText = jsonArray.getJSONObject(0).getString("name");
+
+                                //Translate the match result to english
+                                String query = jsonArray.getJSONObject(0).getString("name");
+                                TransApi api = new TransApi(APP_ID, SECURITY_KEY);
+                                String resultArray = api.getTransResult(query, "auto", "en");
+                                JSONObject jsonObject1 = new JSONObject(resultArray);
+                                JSONArray jsonArray1 = jsonObject1.getJSONArray("trans_result");
+                                final String result = jsonArray1.getJSONObject(0).getString("dst");
+                                //set editText
+                                ThreadUtils.runInUIThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        et_plant.setText(result);
+                                    }
+                                });
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -370,8 +390,21 @@ public class SearchFragment extends Fragment {
                                 try {
                                     JSONObject jsonObject = new JSONObject(a);
                                     JSONArray jsonArray = jsonObject.getJSONArray("result");
-                                    String resultText = jsonArray.getJSONObject(0).getString("name");
-                                    String xxx = "";
+
+                                    //Translate the match result to english
+                                    String query = jsonArray.getJSONObject(0).getString("name");
+                                    TransApi api = new TransApi(APP_ID, SECURITY_KEY);
+                                    String resultArray = api.getTransResult(query, "auto", "en");
+                                    JSONObject jsonObject1 = new JSONObject(resultArray);
+                                    JSONArray jsonArray1 = jsonObject1.getJSONArray("trans_result");
+                                    final String result = jsonArray1.getJSONObject(0).getString("dst");
+                                    //set editText
+                                    ThreadUtils.runInUIThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            et_plant.setText(result);
+                                        }
+                                    });
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
