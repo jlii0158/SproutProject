@@ -3,6 +3,7 @@ package com.example.sproutproject.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -13,6 +14,9 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -33,6 +37,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.sproutproject.CreateActivity;
 import com.example.sproutproject.ListAdapter;
 import com.example.sproutproject.R;
@@ -65,17 +70,19 @@ public class SearchFragment extends Fragment {
 
     private Button bt_back,bt_collect, bt_generate, bt_camera, bt_album;
     private View top_view, bottom_view;
-    String plant_name;
+    String plant_name, imgUrl;
     private EditText et_plant;
     private ListView lv_plantList;
     String[] plantNick, plantSow, plantSpace, growthCycle, compPlants, plantDesc;
     private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2;
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
-    ImageView iv_detailImage;
+    ImageView iv_detailImage, iv_large;
     private WaterUtils waterUtils;
     private LinearLayout ll_water;
     private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_desc, tv_water;
+    CardView cv_detail;
+    View imgEntryView;
 
     private final String TAG = getClass().getSimpleName();
     private static final String PERMISSION_WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -92,10 +99,12 @@ public class SearchFragment extends Fragment {
 
     @SuppressLint("WrongConstant")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
 
         /*申请读取存储的权限*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -110,7 +119,8 @@ public class SearchFragment extends Fragment {
         bottom_view = view.findViewById(R.id.plant_detail_view);
         et_plant = view.findViewById(R.id.editText2);
         lv_plantList = view.findViewById(R.id.lv_adminProvide);
-        iv_detailImage = view.findViewById(R.id.large_image);
+        iv_detailImage = view.findViewById(R.id.large_img);
+        iv_large = view.findViewById(R.id.large_image_show);
         ll_water = view.findViewById(R.id.waterNeed_bar);
         tv_plantName = view.findViewById(R.id.textView5);
         tv_plantNickName = view.findViewById(R.id.textView6);
@@ -122,12 +132,15 @@ public class SearchFragment extends Fragment {
         tv_water = view.findViewById(R.id.tv_water);
         bt_camera = view.findViewById(R.id.bt_camera);
         bt_album = view.findViewById(R.id.bt_album);
+        cv_detail = view.findViewById(R.id.large_image);
+        imgEntryView = inflater.inflate(R.layout.dialog_photo, null);
 
         new SearchFromDatabase().execute();
 
         WatchEditText(et_plant);
 
         lv_plantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
                 Toast.makeText(getActivity(), plantName.get(i), Toast.LENGTH_SHORT).show();
@@ -135,7 +148,9 @@ public class SearchFragment extends Fragment {
                 top_view.setVisibility(View.GONE);
                 bottom_view.setVisibility(View.VISIBLE);
                 //load image
-                Picasso.get().load(plantImg.get(i)).into(iv_detailImage);
+                imgUrl = plantImg.get(i);
+                Picasso.get().load(imgUrl).into(iv_detailImage);
+                //Glide.with(getActivity()).load(url).into(iv_large);
                 //set plant name
                 tv_plantName.setText(plantName.get(i));
                 //set plant nickname
@@ -178,6 +193,29 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openAlbum();
+            }
+        });
+
+        cv_detail.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+
+                //dialog.show();
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                View imgEntryView = inflater.inflate(R.layout.dialog_photo, null); // 加载自定义的布局文件
+                final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
+                ImageView img = (ImageView)imgEntryView.findViewById(R.id.large_image_show);
+                Picasso.get().load(imgUrl).into(img);
+                dialog.setView(imgEntryView); // 自定义dialog
+                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.show();
+            }
+        });
+
+        imgEntryView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View paramView) {
+                dialog.cancel();
             }
         });
 

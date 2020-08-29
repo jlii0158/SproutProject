@@ -61,7 +61,7 @@ public class ListAdapter extends BaseAdapter {
 
             viewHolder = new ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(context);
-            convertView = inflater.inflate(R.layout.single_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.single_card_view_item, parent, false);
             viewHolder.plantName = (TextView) convertView.findViewById(R.id.textView7);
             viewHolder.plantImg = (ImageView) convertView.findViewById(R.id.plant_image);
             viewHolder.waterNeed = (TextView) convertView.findViewById(R.id.textView11);
