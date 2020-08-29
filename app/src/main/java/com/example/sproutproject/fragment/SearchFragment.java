@@ -150,7 +150,6 @@ public class SearchFragment extends Fragment {
                 //load image
                 imgUrl = plantImg.get(i);
                 Picasso.get().load(imgUrl).into(iv_detailImage);
-                //Glide.with(getActivity()).load(url).into(iv_large);
                 //set plant name
                 tv_plantName.setText(plantName.get(i));
                 //set plant nickname
@@ -207,7 +206,7 @@ public class SearchFragment extends Fragment {
                 final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
                 ImageView img = (ImageView)imgEntryView.findViewById(R.id.large_image_show);
                 Picasso.get().load(imgUrl).into(img);
-                dialog.setView(imgEntryView); // 自定义dialog
+                dialog.setView(imgEntryView); // custom dialog
                 Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
                 dialog.show();
             }
@@ -369,7 +368,7 @@ public class SearchFragment extends Fragment {
         }
     }
 
-    /*相机或者相册返回来的数据*/
+    /*The data return back from camera or album*/
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -386,6 +385,13 @@ public class SearchFragment extends Fragment {
                     ThreadUtils.runInThread(new Runnable() {
                         @Override
                         public void run() {
+                            ThreadUtils.runInUIThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    String search= "Searching...";
+                                    Toast.makeText(getActivity(), search, Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             //user AI API to recognize the picture
                             String a = Ingredient.ingredient(bytes);
                             try {
@@ -417,8 +423,6 @@ public class SearchFragment extends Fragment {
                                         }
                                     });
                                 }
-
-
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -441,6 +445,14 @@ public class SearchFragment extends Fragment {
                         ThreadUtils.runInThread(new Runnable() {
                             @Override
                             public void run() {
+                                ThreadUtils.runInUIThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String search= "Searching...";
+                                        Toast.makeText(getActivity(), search, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                                //user AI API to recognize the picture
                                 String a = Ingredient.ingredient(inputData);
                                 try {
                                     JSONObject jsonObject = new JSONObject(a);
