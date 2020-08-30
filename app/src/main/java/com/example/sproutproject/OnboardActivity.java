@@ -74,7 +74,7 @@ public class OnboardActivity extends AppCompatActivity {
 
         OnboardingItem itemMetalGet = new OnboardingItem();
         itemMetalGet.setTitle("Shining yourself from shining metal.");
-        itemMetalGet.setDescription("Do not worry about the experience, started your customized planting plan, your private steward of garden.");
+        itemMetalGet.setDescription("Get metals to be a little garden knight, proud yourself!");
         itemMetalGet.setImage(R.drawable.metal_get);
 
         onboardingItems.add(itemAISearch);
