@@ -73,14 +73,15 @@ public class SearchFragment extends Fragment {
     String plant_name, imgUrl;
     private EditText et_plant;
     private ListView lv_plantList;
-    String[] plantNick, plantSow, plantSpace, growthCycle, compPlants, plantDesc;
+    private int[] growthCycle;
+    private List<String> plantNick, plantNick2, plantSow, plantSow2, plantSpace, plantSpace2, compPlants, compPlants2, plantDesc, plantDesc2;
     private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2;
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
-    ImageView iv_detailImage, iv_large;
+    ImageView iv_detailImage, iv_large, iv_nice_image;
     private WaterUtils waterUtils;
     private LinearLayout ll_water;
-    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_desc, tv_water;
+    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_water;
     CardView cv_detail;
     View imgEntryView;
 
@@ -128,12 +129,12 @@ public class SearchFragment extends Fragment {
         tv_cycle = view.findViewById(R.id.tv_cycle);
         tv_sow = view.findViewById(R.id.tv_sow);
         tv_comp = view.findViewById(R.id.tv_comp);
-        tv_desc = view.findViewById(R.id.tv_desc);
         tv_water = view.findViewById(R.id.tv_water);
         bt_camera = view.findViewById(R.id.bt_camera);
         bt_album = view.findViewById(R.id.bt_album);
         cv_detail = view.findViewById(R.id.large_image);
         imgEntryView = inflater.inflate(R.layout.dialog_photo, null);
+        iv_nice_image = view.findViewById(R.id.iv_nice_image);
 
         new SearchFromDatabase().execute();
 
@@ -153,7 +154,7 @@ public class SearchFragment extends Fragment {
                 //set plant name
                 tv_plantName.setText(plantName.get(i));
                 //set plant nickname
-                String nick = "Alias: " + plantNick[i];
+                String nick = "Alias: " + plantNick.get(i);
                 tv_plantNickName.setText(nick);
                 //set plant water need
                 tv_water.setText("Water need is " + waterNeed.get(i));
@@ -173,11 +174,11 @@ public class SearchFragment extends Fragment {
                 }
                 waterUtils.createWaterNeed(ll_water,icon_array,temp);
                 //set textView
-                tv_space.setText(plantSpace[i]);
+                tv_space.setText(plantSpace.get(i));
                 tv_cycle.setText(harvestIns.get(i));
-                tv_sow.setText(plantSow[i]);
-                tv_comp.setText(compPlants[i]);
-                tv_desc.setText(plantDesc[i]);
+                tv_sow.setText(plantSow.get(i));
+                tv_comp.setText(compPlants.get(i));
+                Picasso.get().load(plantDesc.get(i)).into(iv_nice_image);
             }
         });
 
@@ -259,19 +260,29 @@ public class SearchFragment extends Fragment {
                 harvestIns.clear();
                 waterNeed.clear();
                 plantImg.clear();
+                plantNick.clear();
+                plantSow.clear();
+                plantSpace.clear();
+                compPlants.clear();
+                plantDesc.clear();
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
                     if (plantName2.get(i).contains(data) || waterNeed2.get(i).contains(data) || harvestIns2.get(i).contains(data)
-                        || plantName2.get(i).toLowerCase().contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
+                            || plantName2.get(i).toLowerCase().contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
                         plantName.add(plantName2.get(i));
                         harvestIns.add(harvestIns2.get(i));
                         waterNeed.add(waterNeed2.get(i));
                         plantImg.add(plantImg2.get(i));
+                        plantNick.add(plantNick2.get(i));
+                        plantSow.add(plantSow2.get(i));
+                        plantSpace.add(plantSpace2.get(i));
+                        compPlants.add(compPlants2.get(i));
+                        plantDesc.add(plantDesc2.get(i));
                     }
                 }
                 lAdapter.notifyDataSetChanged();
                 if (plantName.size() == 0) {
-                    String back= "Sorry, no findings";
+                    String back = "Sorry, no findings";
                     Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -289,6 +300,8 @@ public class SearchFragment extends Fragment {
                         return null;
                     }
 
+                    growthCycle = new int[jsonArray.length()];
+
                     plantName = new ArrayList<String>();
                     plantName2 = new ArrayList<String>();
                     waterNeed = new ArrayList<String>();
@@ -298,26 +311,35 @@ public class SearchFragment extends Fragment {
                     harvestIns = new ArrayList<String>();
                     harvestIns2 = new ArrayList<String>();
 
-                    plantNick = new String[jsonArray.length()];
-                    plantSow = new String[jsonArray.length()];
-                    plantSpace = new String[jsonArray.length()];
-                    growthCycle = new String[jsonArray.length()];
-                    compPlants = new String[jsonArray.length()];
-                    plantDesc = new String[jsonArray.length()];
+                    plantNick = new ArrayList<String>();
+                    plantNick2 = new ArrayList<String>();
+                    plantSow = new ArrayList<String>();
+                    plantSow2 = new ArrayList<String>();
+                    plantSpace = new ArrayList<String>();
+                    plantSpace2 = new ArrayList<String>();
+                    compPlants = new ArrayList<String>();
+                    compPlants2 = new ArrayList<String>();
+                    plantDesc = new ArrayList<String>();
+                    plantDesc2 = new ArrayList<String>();
 
                     for (int i = 0; i < jsonArray.length(); i++) {
                         plantName.add(jsonArray.getJSONObject(i).getString("plantName"));
-                        plantNick[i] = jsonArray.getJSONObject(i).getString("plantNick");
-                        plantSow[i] = jsonArray.getJSONObject(i).getString("plantSow");
-                        plantSpace[i] = jsonArray.getJSONObject(i).getString("plantSpace");
-                        growthCycle[i] = jsonArray.getJSONObject(i).getString("growthCycle");
+                        plantNick.add(jsonArray.getJSONObject(i).getString("plantNick"));
+                        plantSow.add(jsonArray.getJSONObject(i).getString("plantSow"));
+                        plantSpace.add(jsonArray.getJSONObject(i).getString("plantSpace"));
+                        growthCycle[i] = jsonArray.getJSONObject(i).getInt("growthCycle");
                         harvestIns.add(jsonArray.getJSONObject(i).getString("harvestIns"));
-                        compPlants[i] = jsonArray.getJSONObject(i).getString("compPlants");
+                        compPlants.add(jsonArray.getJSONObject(i).getString("compPlants"));
                         waterNeed.add(jsonArray.getJSONObject(i).getString("waterNeed"));
-                        plantDesc[i] = jsonArray.getJSONObject(i).getString("plantDesc");
+                        plantDesc.add(jsonArray.getJSONObject(i).getString("plantDesc"));
                         plantImg.add(jsonArray.getJSONObject(i).getString("plantImg"));
                     }
                     lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg);
+                    plantNick2.addAll(plantNick);
+                    plantSow2.addAll(plantSow);
+                    plantSpace2.addAll(plantSpace);
+                    compPlants2.addAll(compPlants);
+                    plantDesc2.addAll(plantDesc);
                     plantName2.addAll(plantName);
                     harvestIns2.addAll(harvestIns);
                     waterNeed2.addAll(waterNeed);

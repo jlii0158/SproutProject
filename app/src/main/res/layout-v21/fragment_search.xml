@@ -400,18 +400,19 @@
                                 android:layout_marginStart="8dp"
                                 android:layout_marginLeft="8dp"
                                 android:layout_marginTop="8dp"
-                                android:text="Description"
+                                android:text="Photo"
                                 android:textSize="15sp"
                                 android:textStyle="bold"
                                 android:layout_toRightOf="@id/plant_desc" />
 
-                            <TextView
-                                android:id="@+id/tv_desc"
+
+
+                            <ImageView
+                                android:id="@+id/iv_nice_image"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="8dp"
-                                android:text="Description"
-                                android:layout_below="@id/plant_desc" />
+                                android:layout_below="@id/plant_desc"/>
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 
