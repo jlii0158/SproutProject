@@ -17,15 +17,16 @@
             android:id="@+id/editText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
             android:background="@drawable/input_rectangle_shape"
+            android:drawableLeft="@drawable/ic_search"
             android:ems="10"
-            android:hint="@string/search_hint"
-            android:inputType="textPersonName" />
+            android:hint="@string/search"
+            android:inputType="textPersonName"/>
 
         <Button
             android:id="@+id/bt_camera"
@@ -53,8 +54,7 @@
             android:id="@+id/lv_adminProvide"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
             android:divider="#00000000"
             android:layout_below="@id/textView3">
 
@@ -83,18 +83,18 @@
             android:id="@+id/large_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:cardBackgroundColor="#FFFFFF"
             app:cardCornerRadius="10dp"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             app:cardElevation="8dp"
             android:foreground="?android:attr/selectableItemBackgroundBorderless">
 
             <ImageView
                 android:id="@+id/large_img"
-                android:layout_width="190dp"
-                android:layout_height="190dp"/>
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -103,9 +103,9 @@
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="32dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:text="TextView"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -116,8 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:text="TextView"
             android:textStyle="bold"
             android:layout_toRightOf="@id/large_image"
@@ -128,7 +128,7 @@
             android:id="@+id/button5"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:elevation="@dimen/cardview_default_elevation"
@@ -141,7 +141,7 @@
             android:id="@+id/button4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             android:background="@drawable/edit_rectangle_shape"
             android:text="Back"
@@ -155,13 +155,13 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="8dp"
             android:layout_below="@id/large_image">
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:layout_margin="8dp">
+                android:layout_weight="1">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -173,8 +173,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -214,8 +216,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -255,8 +259,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -297,8 +303,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -338,8 +346,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -380,8 +390,10 @@
                         android:foreground="?android:attr/selectableItemBackgroundBorderless"
                         app:cardBackgroundColor="#FFFFFF"
                         app:cardCornerRadius="10dp"
-                        app:cardElevation="5dp"
-                        android:layout_margin="8dp">
+                        app:cardElevation="3dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp">
 
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -406,8 +418,6 @@
                                 android:textStyle="bold"
                                 android:layout_toRightOf="@id/plant_desc" />
 
-
-
                             <ImageView
                                 android:id="@+id/iv_nice_image"
                                 android:layout_width="match_parent"
@@ -428,8 +438,8 @@
                 android:background="@drawable/edit_rectangle_shape"
                 android:text="Generate Plan"
                 android:textColor="#FFFFFF"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp" />
         </LinearLayout>
 

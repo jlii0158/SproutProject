@@ -13,8 +13,10 @@
         android:foreground="?android:attr/selectableItemBackgroundBorderless"
         app:cardBackgroundColor="#FFFFFF"
         app:cardCornerRadius="15dp"
-        app:cardElevation="5dp"
-        android:layout_margin="8dp">
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        app:cardElevation="3dp"
+        android:layout_marginBottom="8dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

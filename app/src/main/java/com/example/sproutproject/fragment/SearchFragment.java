@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import android.os.Environment;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +29,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -136,6 +138,7 @@ public class SearchFragment extends Fragment {
         imgEntryView = inflater.inflate(R.layout.dialog_photo, null);
         iv_nice_image = view.findViewById(R.id.iv_nice_image);
 
+
         new SearchFromDatabase().execute();
 
         WatchEditText(et_plant);
@@ -242,7 +245,7 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-    private void WatchEditText(final EditText et_plant) {
+        private void WatchEditText(final EditText et_plant) {
         et_plant.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
