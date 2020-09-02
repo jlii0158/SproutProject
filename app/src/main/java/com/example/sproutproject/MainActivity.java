@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         vp_mainPage.setAdapter(new MyPageAdapter(getSupportFragmentManager()));
 
         toolbarUtils = new ToolbarUtils();
-        title = new String[]{"Search", "Plan", "Metal", "Profile"};
+        title = new String[]{"Search", "Plan", "Medal", "Profile"};
         int[] icon_array = {R.drawable.icon_search, R.drawable.icon_plan, R.drawable.icon_metal, R.drawable.icon_profile};
         toolbarUtils.createToolBar(ll_botton,title, icon_array);
         toolbarUtils.changeColor(0);

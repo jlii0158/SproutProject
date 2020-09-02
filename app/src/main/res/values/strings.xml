@@ -9,4 +9,9 @@
     <string name="plant_name">Name:</string>
     <string name="overview">Overview:</string>
     <string name="alias">Alias:</string>
+    <string-array name="virtual_plan_days">
+    <item>3</item>
+    <item>5</item>
+    <item>7</item>
+    </string-array>
 </resources>

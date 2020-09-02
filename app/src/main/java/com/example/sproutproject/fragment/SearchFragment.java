@@ -77,9 +77,9 @@ public class SearchFragment extends Fragment {
     String plant_name, imgUrl;
     private EditText et_plant, ed_search_by_water, ed_search_by_cycle;
     private ListView lv_plantList;
-    private int[] growthCycle;
-    private List<String> plantNick, plantNick2, plantSow, plantSow2, plantSpace, plantSpace2, compPlants, compPlants2, plantDesc, plantDesc2;
-    private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2;
+
+    private List<String> plantNick, plantNick2, plantSow, plantSow2, plantSpace, plantSpace2, compPlants, compPlants2, plantDesc, plantDesc2, harvestWeek2;
+    private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2, growthCycle, growthCycle2, harvestWeek;
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
     ImageView iv_detailImage, iv_large, iv_nice_image;
@@ -96,6 +96,9 @@ public class SearchFragment extends Fragment {
     private static final int CHOOSE_PHOTO = 385;
     private static final String APP_ID = "20200828000553608";
     private static final String SECURITY_KEY = "99UXraNwDwpwC1ODtTsZ";
+    private Toast toast = null;
+
+    public static String plant_name_pass, plant_water_pass, plant_harvest_pass, plant_img_pass;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -157,6 +160,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 bt_search_name.setVisibility(View.INVISIBLE);
                 et_plant.setVisibility(View.INVISIBLE);
+                et_plant.setText("");
                 bt_search_water.setVisibility(View.VISIBLE);
                 ed_search_by_water.setVisibility(View.VISIBLE);
             }
@@ -167,6 +171,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 bt_search_water.setVisibility(View.INVISIBLE);
                 ed_search_by_water.setVisibility(View.INVISIBLE);
+                ed_search_by_water.setText("");
                 bt_search_cycle.setVisibility(View.VISIBLE);
                 ed_search_by_cycle.setVisibility(View.VISIBLE);
             }
@@ -177,6 +182,7 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 bt_search_cycle.setVisibility(View.INVISIBLE);
                 ed_search_by_cycle.setVisibility(View.INVISIBLE);
+                ed_search_by_cycle.setText("");
                 bt_search_name.setVisibility(View.VISIBLE);
                 et_plant.setVisibility(View.VISIBLE);
             }
@@ -186,6 +192,11 @@ public class SearchFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                plant_name_pass = plantName.get(i);
+                plant_water_pass = waterNeed.get(i);
+                plant_harvest_pass = growthCycle.get(i);
+                plant_img_pass = plantDesc.get(i);
+
                 Toast.makeText(getActivity(), plantName.get(i), Toast.LENGTH_SHORT).show();
                 //page switch
                 top_view.setVisibility(View.GONE);
@@ -288,7 +299,7 @@ public class SearchFragment extends Fragment {
         return view;
     }
 
-        private void WatchEditText(final EditText et_plant) {
+    private void WatchEditText(final EditText et_plant) {
         et_plant.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -311,6 +322,7 @@ public class SearchFragment extends Fragment {
                 plantSpace.clear();
                 compPlants.clear();
                 plantDesc.clear();
+                growthCycle.clear();
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
                     if (plantName2.get(i).contains(data.toLowerCase()) || plantName2.get(i).toLowerCase().contains(data)
@@ -324,12 +336,13 @@ public class SearchFragment extends Fragment {
                         plantSpace.add(plantSpace2.get(i));
                         compPlants.add(compPlants2.get(i));
                         plantDesc.add(plantDesc2.get(i));
+                        growthCycle.add(growthCycle2.get(i));
                     }
                 }
                 lAdapter.notifyDataSetChanged();
                 if (plantName.size() == 0) {
                     String back = "Sorry, no findings";
-                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                    showToast(back);
                 }
             }
         });
@@ -358,6 +371,7 @@ public class SearchFragment extends Fragment {
                 plantSpace.clear();
                 compPlants.clear();
                 plantDesc.clear();
+                growthCycle.clear();
                 String data = ed_search_by_water.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
                     if (waterNeed2.get(i).contains(data.toLowerCase())) {
@@ -370,12 +384,13 @@ public class SearchFragment extends Fragment {
                         plantSpace.add(plantSpace2.get(i));
                         compPlants.add(compPlants2.get(i));
                         plantDesc.add(plantDesc2.get(i));
+                        growthCycle.add(growthCycle2.get(i));
                     }
                 }
                 lAdapter.notifyDataSetChanged();
                 if (plantName.size() == 0) {
                     String back = "Sorry, no findings";
-                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                    showToast(back);
                 }
             }
         });
@@ -395,6 +410,7 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
+                String temp = ed_search_by_cycle.getText().toString();
                 plantName.clear();
                 harvestIns.clear();
                 waterNeed.clear();
@@ -404,27 +420,75 @@ public class SearchFragment extends Fragment {
                 plantSpace.clear();
                 compPlants.clear();
                 plantDesc.clear();
-                String data = ed_search_by_cycle.getText().toString();
-                for (int i = 0; i < plantName2.size(); ++i) {
-                    if (harvestIns2.get(i).contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
-                        plantName.add(plantName2.get(i));
-                        harvestIns.add(harvestIns2.get(i));
-                        waterNeed.add(waterNeed2.get(i));
-                        plantImg.add(plantImg2.get(i));
-                        plantNick.add(plantNick2.get(i));
-                        plantSow.add(plantSow2.get(i));
-                        plantSpace.add(plantSpace2.get(i));
-                        compPlants.add(compPlants2.get(i));
-                        plantDesc.add(plantDesc2.get(i));
+                growthCycle.clear();
+                harvestWeek.clear();
+
+                if (!temp.equals("")) {
+                    int aTempValue = 0;
+                    int data = 0;
+                    for (int i = 0; i < temp.length(); i++) {
+                        if (!Character.isDigit(temp.charAt(i))) {
+                            aTempValue = 1;
+                        }
                     }
+                    if (aTempValue == 0) {
+                        data = Integer.parseInt(temp);
+                    } else {
+                        String back = "Please enter a number";
+                        Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                    }
+                    for (int i = 0; i < plantName2.size(); ++i) {
+                        if (stringToInt(data, harvestWeek2.get(i)) == 1) {
+                            plantName.add(plantName2.get(i));
+                            harvestIns.add(harvestIns2.get(i));
+                            waterNeed.add(waterNeed2.get(i));
+                            plantImg.add(plantImg2.get(i));
+                            plantNick.add(plantNick2.get(i));
+                            plantSow.add(plantSow2.get(i));
+                            plantSpace.add(plantSpace2.get(i));
+                            compPlants.add(compPlants2.get(i));
+                            plantDesc.add(plantDesc2.get(i));
+                            growthCycle.add(growthCycle2.get(i));
+                            harvestWeek.add(harvestWeek2.get(i));
+                        }
+                    }
+                } else {
+                    plantNick.addAll(plantNick2);
+                    plantSow.addAll(plantSow2);
+                    plantSpace.addAll(plantSpace2);
+                    compPlants.addAll(compPlants2);
+                    plantDesc.addAll(plantDesc2);
+                    plantName.addAll(plantName2);
+                    harvestIns.addAll(harvestIns2);
+                    waterNeed.addAll(waterNeed2);
+                    plantImg.addAll(plantImg2);
+                    growthCycle.addAll(growthCycle2);
+                    harvestWeek.addAll(harvestWeek2);
                 }
                 lAdapter.notifyDataSetChanged();
                 if (plantName.size() == 0) {
                     String back = "Sorry, no findings";
-                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                    showToast(back);
                 }
             }
         });
+    }
+
+    public int stringToInt(int test, String value) {
+        int a = 0;
+        value = value.replace("'", "");
+        String[] valueArr = value.split(",");
+        int[] intArr = new int[valueArr.length];
+        for (int i = 0; i < valueArr.length; i++) {
+            intArr[i] = Integer.parseInt(valueArr[i]);
+            System.out.println(intArr[i]);
+        }
+        for (int i = 0; i < valueArr.length; i++) {
+            if (test == intArr[i]) {
+                a = 1;
+            }
+        }
+        return a;
     }
 
     private class SearchFromDatabase extends  AsyncTask<Void, Void, String> {
@@ -438,7 +502,10 @@ public class SearchFragment extends Fragment {
                         return null;
                     }
 
-                    growthCycle = new int[jsonArray.length()];
+                    harvestWeek = new ArrayList<String>();
+                    harvestWeek2 = new ArrayList<String>();
+                    growthCycle = new ArrayList<String>();
+                    growthCycle2 = new ArrayList<String>();
 
                     plantName = new ArrayList<String>();
                     plantName2 = new ArrayList<String>();
@@ -465,12 +532,13 @@ public class SearchFragment extends Fragment {
                         plantNick.add(jsonArray.getJSONObject(i).getString("plantNick"));
                         plantSow.add(jsonArray.getJSONObject(i).getString("plantSow"));
                         plantSpace.add(jsonArray.getJSONObject(i).getString("plantSpace"));
-                        growthCycle[i] = jsonArray.getJSONObject(i).getInt("growthCycle");
+                        growthCycle.add(jsonArray.getJSONObject(i).getString("growthCycle"));
                         harvestIns.add(jsonArray.getJSONObject(i).getString("harvestIns"));
                         compPlants.add(jsonArray.getJSONObject(i).getString("compPlants"));
                         waterNeed.add(jsonArray.getJSONObject(i).getString("waterNeed"));
                         plantDesc.add(jsonArray.getJSONObject(i).getString("plantDesc"));
                         plantImg.add(jsonArray.getJSONObject(i).getString("plantImg"));
+                        harvestWeek.add(jsonArray.getJSONObject(i).getString("harvestWeek"));
                     }
                     lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg);
                     plantNick2.addAll(plantNick);
@@ -482,6 +550,8 @@ public class SearchFragment extends Fragment {
                     harvestIns2.addAll(harvestIns);
                     waterNeed2.addAll(waterNeed);
                     plantImg2.addAll(plantImg);
+                    growthCycle2.addAll(growthCycle);
+                    harvestWeek2.addAll(harvestWeek);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     return null;
@@ -705,6 +775,16 @@ public class SearchFragment extends Fragment {
         return byteBuffer.toByteArray();
     }
 
+    private void showToast(String msg){
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
 
 }
