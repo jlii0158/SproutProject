@@ -69,12 +69,12 @@ public class OnboardActivity extends AppCompatActivity {
 
         OnboardingItem itemMakePlan = new OnboardingItem();
         itemMakePlan.setTitle("Easy touch, easy plan.");
-        itemMakePlan.setDescription("Do not worry about the experience, started your customized planting plan, your private steward of garden.");
+        itemMakePlan.setDescription("Do not worry about the process, start your customized planting plan and your private steward of garden.");
         itemMakePlan.setImage(R.drawable.make_plan);
 
         OnboardingItem itemMetalGet = new OnboardingItem();
         itemMetalGet.setTitle("Shining yourself from shining metal.");
-        itemMetalGet.setDescription("Get metals to be a little garden knight, proud yourself!");
+        itemMetalGet.setDescription("Get medals to be a little garden knight, proud yourself!");
         itemMetalGet.setImage(R.drawable.metal_get);
 
         onboardingItems.add(itemAISearch);

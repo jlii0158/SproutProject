@@ -17,6 +17,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -70,10 +72,10 @@ import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 public class SearchFragment extends Fragment {
 
-    private Button bt_back,bt_collect, bt_generate, bt_camera, bt_album;
+    private Button bt_back,bt_collect, bt_generate, bt_camera, bt_album, bt_search_name, bt_search_water, bt_search_cycle;
     private View top_view, bottom_view;
     String plant_name, imgUrl;
-    private EditText et_plant;
+    private EditText et_plant, ed_search_by_water, ed_search_by_cycle;
     private ListView lv_plantList;
     private int[] growthCycle;
     private List<String> plantNick, plantNick2, plantSow, plantSow2, plantSpace, plantSpace2, compPlants, compPlants2, plantDesc, plantDesc2;
@@ -121,6 +123,8 @@ public class SearchFragment extends Fragment {
         top_view = view.findViewById(R.id.search_view);
         bottom_view = view.findViewById(R.id.plant_detail_view);
         et_plant = view.findViewById(R.id.editText2);
+        ed_search_by_water = view.findViewById(R.id.ed_search_by_water);
+        ed_search_by_cycle = view.findViewById(R.id.ed_search_by_cycle);
         lv_plantList = view.findViewById(R.id.lv_adminProvide);
         iv_detailImage = view.findViewById(R.id.large_img);
         iv_large = view.findViewById(R.id.large_image_show);
@@ -137,11 +141,46 @@ public class SearchFragment extends Fragment {
         cv_detail = view.findViewById(R.id.large_image);
         imgEntryView = inflater.inflate(R.layout.dialog_photo, null);
         iv_nice_image = view.findViewById(R.id.iv_nice_image);
+        bt_search_name = view.findViewById(R.id.bt_search_name);
+        bt_search_water = view.findViewById(R.id.bt_search_water);
+        bt_search_cycle  = view.findViewById(R.id.bt_search_cycle);
 
 
         new SearchFromDatabase().execute();
 
         WatchEditText(et_plant);
+        WatchEditText1(ed_search_by_water);
+        WatchEditText2(ed_search_by_cycle);
+
+        bt_search_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt_search_name.setVisibility(View.INVISIBLE);
+                et_plant.setVisibility(View.INVISIBLE);
+                bt_search_water.setVisibility(View.VISIBLE);
+                ed_search_by_water.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bt_search_water.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt_search_water.setVisibility(View.INVISIBLE);
+                ed_search_by_water.setVisibility(View.INVISIBLE);
+                bt_search_cycle.setVisibility(View.VISIBLE);
+                ed_search_by_cycle.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bt_search_cycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bt_search_cycle.setVisibility(View.INVISIBLE);
+                ed_search_by_cycle.setVisibility(View.INVISIBLE);
+                bt_search_name.setVisibility(View.VISIBLE);
+                et_plant.setVisibility(View.VISIBLE);
+            }
+        });
 
         lv_plantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @SuppressLint("SetTextI18n")
@@ -157,8 +196,12 @@ public class SearchFragment extends Fragment {
                 //set plant name
                 tv_plantName.setText(plantName.get(i));
                 //set plant nickname
-                String nick = "Alias: " + plantNick.get(i);
-                tv_plantNickName.setText(nick);
+                String aaa = plantNick.get(i);
+                if (!plantNick.get(i).equals("null")) {
+                    String nick = "Alias: " + plantNick.get(i);
+                    tv_plantNickName.setText(nick);
+                }
+
                 //set plant water need
                 tv_water.setText("Water need is " + waterNeed.get(i));
                 waterUtils = new WaterUtils();
@@ -270,8 +313,100 @@ public class SearchFragment extends Fragment {
                 plantDesc.clear();
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
-                    if (plantName2.get(i).contains(data) || waterNeed2.get(i).contains(data) || harvestIns2.get(i).contains(data)
-                            || plantName2.get(i).toLowerCase().contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
+                    if (plantName2.get(i).contains(data.toLowerCase()) || plantName2.get(i).toLowerCase().contains(data)
+                            || data.contains(plantName2.get(i).toLowerCase())) {
+                        plantName.add(plantName2.get(i));
+                        harvestIns.add(harvestIns2.get(i));
+                        waterNeed.add(waterNeed2.get(i));
+                        plantImg.add(plantImg2.get(i));
+                        plantNick.add(plantNick2.get(i));
+                        plantSow.add(plantSow2.get(i));
+                        plantSpace.add(plantSpace2.get(i));
+                        compPlants.add(compPlants2.get(i));
+                        plantDesc.add(plantDesc2.get(i));
+                    }
+                }
+                lAdapter.notifyDataSetChanged();
+                if (plantName.size() == 0) {
+                    String back = "Sorry, no findings";
+                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void WatchEditText1(final EditText et_plant) {
+        ed_search_by_water.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                plantName.clear();
+                harvestIns.clear();
+                waterNeed.clear();
+                plantImg.clear();
+                plantNick.clear();
+                plantSow.clear();
+                plantSpace.clear();
+                compPlants.clear();
+                plantDesc.clear();
+                String data = ed_search_by_water.getText().toString();
+                for (int i = 0; i < plantName2.size(); ++i) {
+                    if (waterNeed2.get(i).contains(data.toLowerCase())) {
+                        plantName.add(plantName2.get(i));
+                        harvestIns.add(harvestIns2.get(i));
+                        waterNeed.add(waterNeed2.get(i));
+                        plantImg.add(plantImg2.get(i));
+                        plantNick.add(plantNick2.get(i));
+                        plantSow.add(plantSow2.get(i));
+                        plantSpace.add(plantSpace2.get(i));
+                        compPlants.add(compPlants2.get(i));
+                        plantDesc.add(plantDesc2.get(i));
+                    }
+                }
+                lAdapter.notifyDataSetChanged();
+                if (plantName.size() == 0) {
+                    String back = "Sorry, no findings";
+                    Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void WatchEditText2(final EditText et_plant) {
+        ed_search_by_cycle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                plantName.clear();
+                harvestIns.clear();
+                waterNeed.clear();
+                plantImg.clear();
+                plantNick.clear();
+                plantSow.clear();
+                plantSpace.clear();
+                compPlants.clear();
+                plantDesc.clear();
+                String data = ed_search_by_cycle.getText().toString();
+                for (int i = 0; i < plantName2.size(); ++i) {
+                    if (harvestIns2.get(i).contains(data) || harvestIns2.get(i).toLowerCase().contains(data)) {
                         plantName.add(plantName2.get(i));
                         harvestIns.add(harvestIns2.get(i));
                         waterNeed.add(waterNeed2.get(i));
@@ -365,23 +500,56 @@ public class SearchFragment extends Fragment {
     /**
      * Open album
      */
+    /*
     private void openAlbum() {
         Intent openAlbumIntent = new Intent(Intent.ACTION_GET_CONTENT);
         openAlbumIntent.setType("image/*");
         startActivityForResult(openAlbumIntent, CHOOSE_PHOTO);//打开相册
     }
+    */
+
+    private void openAlbum() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        if (Build.VERSION.SDK_INT >= 23) {
+            if(Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},222);
+                return;
+            }else{
+                startActivityForResult(intent,CHOOSE_PHOTO);
+            }
+        } else {
+            startActivityForResult(intent,CHOOSE_PHOTO);
+        }
+    }
 
     /**
      * Take Picture
      */
+    /*
     private void takePhoto() {
         Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//打开相机的Intent
         if (takePhotoIntent.resolveActivity(getActivity().getPackageManager()) != null) {//这句作用是如果没有相机则该应用不会闪退，要是不加这句则当系统没有相机应用的时候该应用会闪退
             startActivityForResult(takePhotoIntent, TAKE_PHOTO);//打开相机
         }
+    }*/
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if(Objects.requireNonNull(getActivity()).checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.CAMERA},222);
+                return;
+            }else{
+                startActivityForResult(intent,TAKE_PHOTO);
+            }
+        } else {
+            startActivityForResult(intent,TAKE_PHOTO);
+        }
     }
 
+
     /*申请权限的回调*/
+    /*
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -392,6 +560,7 @@ public class SearchFragment extends Fragment {
             Toast.makeText(getActivity(), "You Denied Permission", Toast.LENGTH_SHORT).show();
         }
     }
+    */
 
     /*The data return back from camera or album*/
     @Override

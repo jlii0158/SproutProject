@@ -29,6 +29,7 @@ public class StartActivity extends AppCompatActivity {
                 preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
                 int count = preferences.getInt("count", 0);
                 if (count == 0) {
+
                     Intent intent = new Intent(StartActivity.this,OnboardActivity.class);
                     startActivity(intent);
                     finish();

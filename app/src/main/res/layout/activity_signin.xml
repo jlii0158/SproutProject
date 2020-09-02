@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SigninActivity"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/logo"
+        android:layout_gravity="center"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:id="@+id/signin_top"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f6f6f6"
+            android:visibility="visible">
+            <EditText
+                android:id="@+id/ed_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:drawableLeft="@drawable/ic_nickname"
+                android:hint="Name"
+                android:background="@drawable/input_rectangle_shape"/>
+
+            <EditText
+                android:id="@+id/ed_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_password"
+                android:hint="Password"
+                android:background="@drawable/input_rectangle_shape"
+                android:layout_below="@id/ed_username" />
+
+            <Button
+                android:id="@+id/bt_signin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_rectangle_shape"
+                android:layout_below="@id/ed_password"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:text="Sign in"/>
+
+            <TextView
+                android:id="@+id/tv_signup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New to Sprout? Sign up."
+                android:layout_below="@id/bt_signin"
+                android:layout_alignRight="@id/bt_signin"
+                android:gravity="right"
+                android:paddingRight="16dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/signup_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#f6f6f6"
+            android:visibility="invisible">
+            <EditText
+                android:id="@+id/ed_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:drawableLeft="@drawable/ic_nickname"
+                android:hint="Name"
+                android:background="@drawable/input_rectangle_shape"/>
+
+            <EditText
+                android:id="@+id/ed_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_email"
+                android:hint="Email"
+                android:background="@drawable/input_rectangle_shape"
+                android:layout_below="@id/ed_nickname" />
+
+            <EditText
+                android:id="@+id/ed_signup_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="8dp"
+                android:drawableLeft="@drawable/ic_password"
+                android:hint="Password"
+                android:background="@drawable/input_rectangle_shape"
+                android:layout_below="@id/ed_email" />
+
+            <Button
+                android:id="@+id/bt_signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_rectangle_shape"
+                android:layout_below="@id/ed_signup_password"
+                android:layout_marginTop="16dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:text="Sign up"/>
+
+            <TextView
+                android:id="@+id/tv_signin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Own an account? Sign in."
+                android:layout_below="@id/bt_signup"
+                android:layout_alignRight="@id/bt_signup"
+                android:gravity="right"
+                android:paddingRight="16dp"
+                android:layout_marginTop="8dp"
+                android:clickable="true"/>
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</LinearLayout>
