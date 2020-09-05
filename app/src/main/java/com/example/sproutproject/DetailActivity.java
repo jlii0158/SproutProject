@@ -4,6 +4,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.databse.PlantDatabase;
 import com.example.sproutproject.entity.FavoritePlant;
 import com.example.sproutproject.utils.WaterUtils;
+import com.example.sproutproject.viewmodel.PlantViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -36,10 +38,12 @@ public class DetailActivity extends AppCompatActivity {
     ImageView iv_detailImage, iv_large, iv_nice_image, iv_back_button;
     CardView cv_detail;
     View imgEntryView;
-    private Button bt_generate, bt_collect;
+    private Button bt_generate, bt_collect, bt_garbage;
     PlantDatabase db = null;
     private Toast toast = null;
     String store_name, store_img;
+    int signState = SigninActivity.stateValue;
+    PlantViewModel plantViewModel;
 
 
     @Override
@@ -66,17 +70,31 @@ public class DetailActivity extends AppCompatActivity {
         bt_generate = findViewById(R.id.button6);
         iv_back_button = findViewById(R.id.iv_back_button);
         bt_collect = findViewById(R.id.bt_collect);
+        bt_garbage = findViewById(R.id.bt_garbage);
+
+        plantViewModel = new ViewModelProvider(this).get(PlantViewModel.class);
+        plantViewModel.initalizeVars(getApplication());
 
         Intent intent = getIntent();
         final Plant plant = (Plant) intent.getSerializableExtra("plant");
+
+        if (signState == 1) {
+            bt_generate.setVisibility(View.VISIBLE);
+        }
+        else  {
+            bt_generate.setVisibility(View.GONE);
+        }
+
 
 
         store_name = plant.getPlant_name();
         imgUrl = plant.getPlant_img();
 
         Toast.makeText(DetailActivity.this, plant.getPlant_name(), Toast.LENGTH_SHORT).show();
-        //load image
 
+        new FindPlantByName().execute();
+
+        //load image
         Picasso.get().load(imgUrl).into(iv_detailImage);
         //set plant name
         tv_plantName.setText(plant.getPlant_name());
@@ -152,12 +170,24 @@ public class DetailActivity extends AppCompatActivity {
         bt_collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new FindPlantByName().execute();
+                new InsertDatabase().execute();
+                bt_collect.setVisibility(View.INVISIBLE);
+                bt_garbage.setVisibility(View.VISIBLE);
+            }
+        });
+
+        bt_garbage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //new DeleteFromDatabase().execute();
+                plantViewModel.delete(store_name);
+                bt_garbage.setVisibility(View.INVISIBLE);
+                bt_collect.setVisibility(View.VISIBLE);
+                showToast("Remove success");
             }
         });
 
     }
-
 
     private class FindPlantByName extends AsyncTask<String, Void, String> {
         @Override
@@ -173,15 +203,13 @@ public class DetailActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String details) {
-            if (details.equals("")) {
-                new InsertDatabase().execute();
-            } else {
-                showToast("The plant has been collected");
+            if (details.equals("exist")) {
+                bt_garbage.setVisibility(View.VISIBLE);
+                bt_collect.setVisibility(View.INVISIBLE);
             }
 
         }
     }
-
 
     private class InsertDatabase extends AsyncTask<String, Void, String> {
         @Override

@@ -29,4 +29,6 @@ public interface PlantDAO {
     void updateCustomers(FavoritePlant... plants);
     @Query("DELETE FROM favoriteplant")
     void deleteAll();
+    @Query("DELETE FROM favoriteplant WHERE plant_name=:plantName")
+    void deleteByName(String plantName);
 }

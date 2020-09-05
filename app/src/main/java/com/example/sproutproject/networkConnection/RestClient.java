@@ -78,7 +78,7 @@ public class RestClient {
     }
 
 
-    public static int postCredential(String nickname, String email, String signup_password) {
+    public static int postUser(String nickname, String email, String signup_password) {
 
         UserTable userTable = new UserTable("0", nickname, "6");
 
@@ -100,16 +100,6 @@ public class RestClient {
             e.printStackTrace();
         }
         return 0;
-    }
-
-
-
-    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-
-    public static String getCurrentDate() {
-        long cur_time = System.currentTimeMillis();
-        String datetime = df.format(new Date(cur_time));
-        return datetime;
     }
 
 }

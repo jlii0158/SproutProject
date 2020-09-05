@@ -81,11 +81,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="@dimen/cardview_default_elevation"
-        android:background="@drawable/ic_garbage"
+        android:background="@drawable/ic_starcollected"
         android:layout_alignBottom="@id/large_image"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/bt_collect"
-        android:visibility="gone"/>
+        android:layout_alignRight="@id/textView6"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/bt_collect"
@@ -95,10 +95,11 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:elevation="@dimen/cardview_default_elevation"
-        android:background="@drawable/ic_heart_click"
+        android:background="@drawable/ic_star"
         android:layout_alignBottom="@id/large_image"
         android:layout_marginRight="8dp"
-        android:layout_alignRight="@id/textView6" />
+        android:layout_alignRight="@id/textView6"
+        android:visibility="visible"/>
 
 
     <LinearLayout
@@ -390,7 +391,8 @@
             android:textColor="#FFFFFF"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="8dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </RelativeLayout>

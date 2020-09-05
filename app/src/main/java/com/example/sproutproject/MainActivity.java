@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -38,11 +39,15 @@ public class MainActivity extends AppCompatActivity {
         vp_mainPage = findViewById(R.id.vp_main);
         ll_botton = findViewById(R.id.bar_main);
 
+
+
         mFragments.add(new SearchFragment());
         mFragments.add(new PlanFragment());
         mFragments.add(new MetalFragment());
         mFragments.add(new ProfileFragment());
         vp_mainPage.setAdapter(new MyPageAdapter(getSupportFragmentManager()));
+
+
 
         toolbarUtils = new ToolbarUtils();
         title = new String[]{"Search", "Plan", "Medal", "Profile"};
@@ -50,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
         toolbarUtils.createToolBar(ll_botton,title, icon_array);
         toolbarUtils.changeColor(0);
         initListener();
+
+        int id = getIntent().getIntExtra("id", 0);
+        if (id == 1) {
+            vp_mainPage.setCurrentItem(3);
+        }
     }
 
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +26,9 @@ public class SigninActivity extends AppCompatActivity {
     private TextView tv_signup,tv_signin;
     private RelativeLayout signin_top,signup_bottom;
     String username, password, nickname, email, signup_password;
+    public static int stateValue = 0;
+    public static String userAccount, userWelcomeName, growValue, userID;
+    ImageView iv_signin_back_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class SigninActivity extends AppCompatActivity {
         ed_signup_password = findViewById(R.id.ed_signup_password);
         bt_signup = findViewById(R.id.bt_signup);
 
-
+        iv_signin_back_bar = findViewById(R.id.iv_signin_back_bar);
 
 
         bt_signup.setOnClickListener(new View.OnClickListener() {
@@ -77,7 +81,32 @@ public class SigninActivity extends AppCompatActivity {
                     return;
                 }
 
-                new getAllCredentialAsyncTask().execute();
+                new getAllAsyncTask().execute();
+            }
+        });
+
+        bt_signin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                username = ed_username.getText().toString().trim();
+                password = ed_password.getText().toString().trim();
+                if (username.equals("")) {
+                    Toast.makeText(SigninActivity.this, "Please input the email.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!username.contains("@")||!username.contains(".")) {
+                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (username.lastIndexOf(".") < username.lastIndexOf("@")) {
+                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (password.equals("")) {
+                    Toast.makeText(SigninActivity.this, "Please input the password.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                new getAllUserAsyncTask().execute();
             }
         });
 
@@ -96,9 +125,64 @@ public class SigninActivity extends AppCompatActivity {
                 signin_top.setVisibility(View.VISIBLE);
             }
         });
+
+        iv_signin_back_bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
-    private class getAllCredentialAsyncTask extends AsyncTask<String, Void, String> {
+
+    private class getAllUserAsyncTask extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... strings) {
+            return RestClient.findAllUser();
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            try {
+                int test = 0;
+                int test1 = 0;
+                JSONArray jsonArray = new JSONArray(result);
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    if (username.equals(jsonArray.getJSONObject(i).getString("user_name"))) {
+                        userAccount = username;
+                        userWelcomeName = jsonArray.getJSONObject(i).getString("user_nick");
+                        growValue = jsonArray.getJSONObject(i).getString("user_grow");
+                        userID = jsonArray.getJSONObject(i).getString("user_id");
+                        test = 1;
+                        if (MD5.md5(password).equals(jsonArray.getJSONObject(i).getString("password_hash"))) {
+                            test1 = 1;
+                        }
+                    }
+                }
+                if (test != 1) {
+                    Toast.makeText(SigninActivity.this, "Account does not exist.", Toast.LENGTH_SHORT).show();
+                }
+                if (test == 1 && test1 != 1) {
+                    Toast.makeText(SigninActivity.this, "Password is incorrect.", Toast.LENGTH_SHORT).show();
+                }
+                if (test == 1 && test1 == 1) {
+                    Toast.makeText(SigninActivity.this, "Sign in success.", Toast.LENGTH_SHORT).show();
+                    stateValue = 1;
+                    Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                    intent.putExtra("id",1);
+                    startActivity(intent);
+                    finish();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
+    private class getAllAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
@@ -119,7 +203,7 @@ public class SigninActivity extends AppCompatActivity {
                 if (test == 1) {
                     Toast.makeText(SigninActivity.this, "The email has been used, please choose another one.", Toast.LENGTH_SHORT).show();
                 }else {
-                    new PostCredentialAsyncTask().execute();
+                    new PostUserAsyncTask().execute();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -127,11 +211,11 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
-    private class PostCredentialAsyncTask extends AsyncTask<String, Void, Integer> {
+    private class PostUserAsyncTask extends AsyncTask<String, Void, Integer> {
 
         @Override
         protected Integer doInBackground(String... strings) {
-            return RestClient.postCredential(nickname, email, MD5.md5(signup_password));
+            return RestClient.postUser(nickname, email, MD5.md5(signup_password));
         }
         @Override
         protected void onPostExecute(Integer result) {
@@ -139,9 +223,13 @@ public class SigninActivity extends AppCompatActivity {
                 Toast.makeText(SigninActivity.this, "Sign Up failed!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(SigninActivity.this, "Sign Up Success!", Toast.LENGTH_SHORT).show();
-                //SigninActivity.this.finish();
-                //Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                //startActivity(intent);
+                ed_nickname.setText("");
+                ed_email.setText("");
+                ed_signup_password.setText("");
+                signup_bottom.setVisibility(View.GONE);
+                signin_top.setVisibility(View.VISIBLE);
+                ed_username.setText(email);
+                ed_password.setText(signup_password);
             }
         }
     }

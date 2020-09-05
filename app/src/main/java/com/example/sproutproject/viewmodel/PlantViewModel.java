@@ -36,6 +36,9 @@ public class PlantViewModel extends ViewModel {
     public void deleteAll() {
         cRepository.deleteAll();
     }
+    public void delete(String plant) {
+        cRepository.delete(plant);
+    }
     public void update(FavoritePlant... plants) {
         cRepository.updateCustomers(plants);
     }

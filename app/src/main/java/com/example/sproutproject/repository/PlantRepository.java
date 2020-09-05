@@ -39,6 +39,15 @@ public class PlantRepository {
         });
     }
 
+    public void delete(final String plant){
+        PlantDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.deleteByName(plant);
+            }
+        });
+    }
+
     public void insertAll(final FavoritePlant... favoritePlants){
         PlantDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
