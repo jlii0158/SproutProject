@@ -3,27 +3,16 @@ package com.example.sproutproject.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
-
-import android.os.Environment;
-import android.os.Handler;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,39 +20,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.sproutproject.CreateActivity;
+import com.example.sproutproject.DetailActivity;
 import com.example.sproutproject.ListAdapter;
 import com.example.sproutproject.R;
+import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.networkConnection.TransApi;
 import com.example.sproutproject.utils.ThreadUtils;
-import com.example.sproutproject.utils.WaterUtils;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,9 +51,7 @@ import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 public class SearchFragment extends Fragment {
 
-    private Button bt_back,bt_collect, bt_generate, bt_camera, bt_album, bt_search_name, bt_search_water, bt_search_cycle;
-    private View top_view, bottom_view;
-    String plant_name, imgUrl;
+    private Button  bt_camera, bt_album, bt_search_name, bt_search_water, bt_search_cycle;
     private EditText et_plant, ed_search_by_water, ed_search_by_cycle;
     private ListView lv_plantList;
 
@@ -82,12 +59,8 @@ public class SearchFragment extends Fragment {
     private List<String> plantName, plantName2, waterNeed, waterNeed2, plantImg, plantImg2, harvestIns, harvestIns2, growthCycle, growthCycle2, harvestWeek;
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
-    ImageView iv_detailImage, iv_large, iv_nice_image;
-    private WaterUtils waterUtils;
-    private LinearLayout ll_water;
-    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_water;
-    CardView cv_detail;
-    View imgEntryView;
+
+
 
     private final String TAG = getClass().getSimpleName();
     private static final String PERMISSION_WRITE_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
@@ -98,7 +71,6 @@ public class SearchFragment extends Fragment {
     private static final String SECURITY_KEY = "99UXraNwDwpwC1ODtTsZ";
     private Toast toast = null;
 
-    public static String plant_name_pass, plant_water_pass, plant_harvest_pass, plant_img_pass;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -112,8 +84,6 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        final AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
-
         /*申请读取存储的权限*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Objects.requireNonNull(getContext()),PERMISSION_WRITE_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -121,29 +91,12 @@ public class SearchFragment extends Fragment {
             }
         }
 
-        bt_back = view.findViewById(R.id.button4);
-        bt_generate = view.findViewById(R.id.button6);
-        top_view = view.findViewById(R.id.search_view);
-        bottom_view = view.findViewById(R.id.plant_detail_view);
         et_plant = view.findViewById(R.id.editText2);
         ed_search_by_water = view.findViewById(R.id.ed_search_by_water);
         ed_search_by_cycle = view.findViewById(R.id.ed_search_by_cycle);
         lv_plantList = view.findViewById(R.id.lv_adminProvide);
-        iv_detailImage = view.findViewById(R.id.large_img);
-        iv_large = view.findViewById(R.id.large_image_show);
-        ll_water = view.findViewById(R.id.waterNeed_bar);
-        tv_plantName = view.findViewById(R.id.textView5);
-        tv_plantNickName = view.findViewById(R.id.textView6);
-        tv_space = view.findViewById(R.id.tv_space);
-        tv_cycle = view.findViewById(R.id.tv_cycle);
-        tv_sow = view.findViewById(R.id.tv_sow);
-        tv_comp = view.findViewById(R.id.tv_comp);
-        tv_water = view.findViewById(R.id.tv_water);
         bt_camera = view.findViewById(R.id.bt_camera);
         bt_album = view.findViewById(R.id.bt_album);
-        cv_detail = view.findViewById(R.id.large_image);
-        imgEntryView = inflater.inflate(R.layout.dialog_photo, null);
-        iv_nice_image = view.findViewById(R.id.iv_nice_image);
         bt_search_name = view.findViewById(R.id.bt_search_name);
         bt_search_water = view.findViewById(R.id.bt_search_water);
         bt_search_cycle  = view.findViewById(R.id.bt_search_cycle);
@@ -192,50 +145,20 @@ public class SearchFragment extends Fragment {
             @SuppressLint("SetTextI18n")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
-                plant_name_pass = plantName.get(i);
-                plant_water_pass = waterNeed.get(i);
-                plant_harvest_pass = growthCycle.get(i);
-                plant_img_pass = plantDesc.get(i);
-
-                Toast.makeText(getActivity(), plantName.get(i), Toast.LENGTH_SHORT).show();
-                //page switch
-                top_view.setVisibility(View.GONE);
-                bottom_view.setVisibility(View.VISIBLE);
-                //load image
-                imgUrl = plantImg.get(i);
-                Picasso.get().load(imgUrl).into(iv_detailImage);
-                //set plant name
-                tv_plantName.setText(plantName.get(i));
-                //set plant nickname
-                String aaa = plantNick.get(i);
-                if (!plantNick.get(i).equals("null")) {
-                    String nick = "Alias: " + plantNick.get(i);
-                    tv_plantNickName.setText(nick);
-                }
-
-                //set plant water need
-                tv_water.setText("Water need is " + waterNeed.get(i));
-                waterUtils = new WaterUtils();
-                int icon_array = R.drawable.ic_water;
-                int temp = 0;
-                switch (waterNeed.get(i)) {
-                    case "low":
-                        temp = 1;
-                        break;
-                    case "medium":
-                        temp = 2;
-                        break;
-                    case "high":
-                        temp = 3;
-                        break;
-                }
-                waterUtils.createWaterNeed(ll_water,icon_array,temp);
-                //set textView
-                tv_space.setText(plantSpace.get(i));
-                tv_cycle.setText(harvestIns.get(i));
-                tv_sow.setText(plantSow.get(i));
-                tv_comp.setText(compPlants.get(i));
-                Picasso.get().load(plantDesc.get(i)).into(iv_nice_image);
+                Plant plant = new Plant();
+                plant.setPlant_name(plantName.get(i));
+                plant.setPlant_nickname(plantNick.get(i));
+                plant.setPlant_sow_ins(plantSow.get(i));
+                plant.setPlant_space_ins(plantSpace.get(i));
+                plant.setPlant_harvest_ins(harvestIns.get(i));
+                plant.setComp_plant(compPlants.get(i));
+                plant.setWater_need(waterNeed.get(i));
+                plant.setPlant_desc(plantDesc.get(i));
+                plant.setPlant_img(plantImg.get(i));
+                plant.setGrowth_cycle(growthCycle.get(i));
+                Intent intent = new Intent(getActivity(), DetailActivity.class);
+                intent.putExtra("plant",plant);
+                startActivity(intent);
             }
         });
 
@@ -250,49 +173,6 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 openAlbum();
-            }
-        });
-
-        cv_detail.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onClick(View v) {
-
-                //dialog.show();
-                LayoutInflater inflater = LayoutInflater.from(getContext());
-                View imgEntryView = inflater.inflate(R.layout.dialog_photo, null); // 加载自定义的布局文件
-                final AlertDialog dialog = new AlertDialog.Builder(getContext()).create();
-                ImageView img = (ImageView)imgEntryView.findViewById(R.id.large_image_show);
-                Picasso.get().load(imgUrl).into(img);
-                dialog.setView(imgEntryView); // custom dialog
-                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
-                dialog.show();
-            }
-        });
-
-        imgEntryView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View paramView) {
-                dialog.cancel();
-            }
-        });
-
-
-        bt_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                top_view.setVisibility(View.VISIBLE);
-                bottom_view.setVisibility(View.GONE);
-                ll_water.removeAllViews();
-            }
-        });
-
-        bt_generate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //这部分之上还应该执行生成plan的逻辑，页面跳转是最后执行的，此处仅满足测试需求
-                Intent intent = new Intent(getActivity(), CreateActivity.class);
-                startActivity(intent);
             }
         });
 
@@ -325,8 +205,10 @@ public class SearchFragment extends Fragment {
                 growthCycle.clear();
                 String data = et_plant.getText().toString();
                 for (int i = 0; i < plantName2.size(); ++i) {
-                    if (plantName2.get(i).contains(data.toLowerCase()) || plantName2.get(i).toLowerCase().contains(data)
-                            || data.contains(plantName2.get(i).toLowerCase())) {
+                    if (data.toLowerCase().equals("baby cabbage")) {
+                        data = "chinese cabbage";
+                    }
+                    if (plantName2.get(i).toLowerCase().contains(data.toLowerCase()) || data.toLowerCase().contains(plantName2.get(i).toLowerCase())) {
                         plantName.add(plantName2.get(i));
                         harvestIns.add(harvestIns2.get(i));
                         waterNeed.add(waterNeed2.get(i));
@@ -435,7 +317,7 @@ public class SearchFragment extends Fragment {
                         data = Integer.parseInt(temp);
                     } else {
                         String back = "Please enter a number";
-                        Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();
+                        showToast(back);
                     }
                     for (int i = 0; i < plantName2.size(); ++i) {
                         if (stringToInt(data, harvestWeek2.get(i)) == 1) {

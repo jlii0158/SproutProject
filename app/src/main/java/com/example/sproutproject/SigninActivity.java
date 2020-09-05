@@ -102,30 +102,24 @@ public class SigninActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            return RestClient.findAllCredential();
+            return RestClient.findAllUser();
         }
 
         @Override
         protected void onPostExecute(String result) {
-            String[] cre_id;
 
             try {
-
                 int test = 0;
-                String newCreId = "";
                 JSONArray jsonArray = new JSONArray(result);
-                cre_id = new String[jsonArray.length()];
                 for (int i = 0; i < jsonArray.length(); i++) {
-                    cre_id[i] = jsonArray.getJSONObject(i).getString("cre_id");
                     if (email.equals(jsonArray.getJSONObject(i).getString("user_name"))) {
                         test = 1;
                     }
                 }
-                newCreId = cre_id[jsonArray.length() - 1];
                 if (test == 1) {
                     Toast.makeText(SigninActivity.this, "The email has been used, please choose another one.", Toast.LENGTH_SHORT).show();
                 }else {
-                    new PostCredentialAsyncTask().execute(newCreId);
+                    new PostCredentialAsyncTask().execute();
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -137,9 +131,7 @@ public class SigninActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(String... strings) {
-            int tempId = Integer.parseInt(strings[0]) + 1;
-            String temp = String.valueOf(tempId);
-            return RestClient.postCredential(temp, nickname, email, MD5.md5(signup_password));
+            return RestClient.postCredential(nickname, email, MD5.md5(signup_password));
         }
         @Override
         protected void onPostExecute(Integer result) {

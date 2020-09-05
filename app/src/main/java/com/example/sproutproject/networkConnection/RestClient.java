@@ -25,10 +25,9 @@ public class RestClient {
     //private static final String BASE_URL = "https://kmg09z4my0.execute-api.ap-southeast-2.amazonaws.com/iteration-1-search/allplants";
     //jlii0158 student account
     private static final String getAllPlants_URL = "https://fq4h60gx39.execute-api.ap-southeast-2.amazonaws.com/iteration-1-findPlants/plants";
-    private static final String getAllCredential_URL = "https://qw1zshde50.execute-api.ap-southeast-2.amazonaws.com/findCredential/findallcredential";
     private static final String getAllUser_URL = "https://j019m0u38a.execute-api.ap-southeast-2.amazonaws.com/findUser/findalluser";
-    private static final String postUser_URL = "https://auop78cuee.execute-api.ap-southeast-2.amazonaws.com/postUser/postuser";
-    private static final String postCredential_URL = "https://p6bcs1jb52.execute-api.ap-southeast-2.amazonaws.com/postCredential/postcredential";
+    private static final String postUser_URL = "https://7lykoo8hjj.execute-api.ap-southeast-2.amazonaws.com/postUserWithDetail/postuserwithdetail";
+    private static final String getPlantByName_URL = "https://obrykx3jfb.execute-api.ap-southeast-2.amazonaws.com/findPlantByName/findplantbyname?plantName=";
 
 
     private static OkHttpClient client=null;
@@ -52,9 +51,9 @@ public class RestClient {
         return results;
     }
 
-    public static String findAllCredential() {
+    public String findPlantByName(String plantName){
         Request.Builder builder = new Request.Builder();
-        builder.url(getAllCredential_URL);
+        builder.url(getPlantByName_URL + plantName);
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
@@ -65,80 +64,7 @@ public class RestClient {
         return results;
     }
 
-    public static int postCredential(String cre_id, String nickname, String email, String signup_password) {
-        int userId = getUserId();
-        String tempUser = String.valueOf(userId);
-        UserTable userTable = new UserTable(tempUser, "0", nickname, "6");
-
-        postUser(userTable);
-
-        String date = getCurrentDate();
-
-        Credential credential = new Credential(cre_id, email, signup_password, date, tempUser);
-
-        Gson gson = new Gson();
-        String credentialJson = gson.toJson(credential);
-        String strResponse="";
-        //this is for testing, you can check how the json looks like in Logcat
-        Log.i("json " , credentialJson);
-        RequestBody body = RequestBody.create(credentialJson, JSON);
-        Request request = new Request.Builder()
-                .url(postCredential_URL)
-                .post(body)
-                .build();
-        try {
-            Response response= client.newCall(request).execute();
-            strResponse= response.body().string();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    public static int postUser(UserTable userTable) {
-
-        Gson gson = new Gson();
-        String userJson = gson.toJson(userTable);
-        String strResponse="";
-        //this is for testing, you can check how the json looks like in Logcat
-        Log.i("json " , userJson);
-        RequestBody body = RequestBody.create(userJson, JSON);
-        Request request = new Request.Builder()
-                .url(postUser_URL)
-                .post(body)
-                .build();
-        try {
-            Response response= client.newCall(request).execute();
-            strResponse= response.body().string();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    private static int getUserId() {
-        String result = getAllUser();
-        String[] user_id;
-        int newUserId = 0;
-        try {
-            JSONArray jsonArray = new JSONArray(result);
-            if(jsonArray.length() == 0){
-                return 0;
-            }
-            user_id = new String[jsonArray.length()];
-
-            for (int i = 0; i < jsonArray.length(); i++){
-                user_id[i] = jsonArray.getJSONObject(i).getString("user_id");
-            }
-            //get the new user id, = last user id + 1
-            newUserId = Integer.parseInt(user_id[jsonArray.length() - 1]) + 1;
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return newUserId;
-    }
-
-    private static String getAllUser() {
+    public static String findAllUser() {
         Request.Builder builder = new Request.Builder();
         builder.url(getAllUser_URL);
         Request request = builder.build();
@@ -150,6 +76,33 @@ public class RestClient {
         }
         return results;
     }
+
+
+    public static int postCredential(String nickname, String email, String signup_password) {
+
+        UserTable userTable = new UserTable("0", nickname, "6");
+
+        String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
+        Gson gson = new Gson();
+        String credentialJson = gson.toJson(userTable);
+        String strResponse="";
+        //this is for testing, you can check how the json looks like in Logcat
+        Log.i("json " , credentialJson);
+        RequestBody body = RequestBody.create(credentialJson, JSON);
+        Request request = new Request.Builder()
+                .url(postUser_URL + res)
+                .post(body)
+                .build();
+        try {
+            Response response= client.newCall(request).execute();
+            strResponse= response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 

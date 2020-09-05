@@ -3,16 +3,20 @@ package com.example.sproutproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
 
@@ -23,24 +27,24 @@ import java.util.Calendar;
 
 public class CreateActivity extends AppCompatActivity {
 
-    String plant_name_pass = SearchFragment.plant_name_pass;
-    String plant_water_pass = SearchFragment.plant_water_pass;
-    String plant_harvest_pass = SearchFragment.plant_harvest_pass;
-    String plant_img_pass = SearchFragment.plant_img_pass;
     String startDate, endDateReal, endDateVir;
     int waterDays;
-    private ImageView iv_plan_img, iv_plan_img_bottom;
+    private ImageView iv_plan_img, iv_plan_img_bottom, iv_back_to_detail, iv_back_to_detail1;
     private EditText ed_plan_name, ed_plan_name_bottom;
     private TextView plan_water_need, plan_harvest_time, plan_start_time, plan_end_time, plan_water_need_bottom, virtual_plan_start_time;
     private Button real_plan_choice, virtual_plan_choice, cycle_min, cycle_plus;
     private TextView cycle_day_count;
-    private ScrollView generate_plan_top_view, generate_plan_bottom_view;
+    private LinearLayout generate_plan_top_view, generate_plan_bottom_view;
     private Toast toast = null;
+    private TextView tv_plan_title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+
+        Intent intent = getIntent();
+        final Plant plant = (Plant) intent.getSerializableExtra("onePlant");
 
         iv_plan_img = findViewById(R.id.iv_plan_img);
         iv_plan_img_bottom = findViewById(R.id.iv_plan_img_bottom);
@@ -59,6 +63,9 @@ public class CreateActivity extends AppCompatActivity {
         cycle_min = findViewById(R.id.cycle_min);
         cycle_plus = findViewById(R.id.cycle_plus);
         cycle_day_count = findViewById(R.id.cycle_day_count);
+        iv_back_to_detail = findViewById(R.id.iv_back_to_detail);
+        tv_plan_title = findViewById(R.id.tv_plan_title);
+        iv_back_to_detail1 = findViewById(R.id.iv_back_to_detail1);
 
 
         cycle_min.setOnClickListener(new View.OnClickListener() {
@@ -89,14 +96,15 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
-        Picasso.get().load(plant_img_pass).into(iv_plan_img);
+
+        Picasso.get().load(plant.getPlant_desc()).into(iv_plan_img);
 
         //set name
-        String planName = plant_name_pass + " planting plan";
+        String planName = plant.getPlant_name() + " planting plan";
         ed_plan_name.setHint(planName);
 
         //set water need
-        switch (plant_water_pass){
+        switch (plant.getWater_need()){
             case "low":
                 waterDays = 5;
                 String waterNeed = "My water need is Low. Please water me once every 5 days!";
@@ -114,7 +122,7 @@ public class CreateActivity extends AppCompatActivity {
                 break;
         }
         //set cycle
-        String cycle = "I will grow with you for the next " + plant_harvest_pass + " weeks.";
+        String cycle = "I will grow with you for the next " + plant.getGrowth_cycle() + " weeks.";
         plan_harvest_time.setText(cycle);
         //set start date
         startDate = getCurrentDate();
@@ -122,7 +130,7 @@ public class CreateActivity extends AppCompatActivity {
         plan_start_time.setText(dateDesc);
         //set end date for real plan
         try {
-            String endDate = getWorkDay(startDate, Integer.parseInt(plant_harvest_pass) * 7);
+            String endDate = getWorkDay(startDate, Integer.parseInt(plant.getGrowth_cycle()) * 7);
             endDateReal = endDate;
             String endDateDesc = "Our journey will end on " + endDate;
             plan_end_time.setText(endDateDesc);
@@ -136,10 +144,12 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 generate_plan_top_view.setVisibility(View.INVISIBLE);
                 generate_plan_bottom_view.setVisibility(View.VISIBLE);
-                Picasso.get().load(plant_img_pass).into(iv_plan_img_bottom);
-                String planName = plant_name_pass + " planting virtual plan";
+                String virtual = "Virtual Plan";
+                tv_plan_title.setText(virtual);
+                Picasso.get().load(plant.getPlant_desc()).into(iv_plan_img_bottom);
+                String planName = plant.getPlant_name() + " planting virtual plan";
                 ed_plan_name_bottom.setHint(planName);
-                switch (plant_water_pass){
+                switch (plant.getWater_need()){
                     case "low":
                         waterDays = 5;
                         String waterNeed = "My water need is Low. Enjoy!";
@@ -173,9 +183,25 @@ public class CreateActivity extends AppCompatActivity {
             public void onClick(View v) {
                 generate_plan_bottom_view.setVisibility(View.INVISIBLE);
                 generate_plan_top_view.setVisibility(View.VISIBLE);
+                String virtual = "Plan";
+                tv_plan_title.setText(virtual);
             }
         });
 
+        iv_back_to_detail1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
+
+        iv_back_to_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 

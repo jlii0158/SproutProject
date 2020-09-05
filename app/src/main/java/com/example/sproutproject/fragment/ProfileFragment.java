@@ -10,13 +10,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.sproutproject.FavoriteActivity;
 import com.example.sproutproject.R;
 import com.example.sproutproject.SigninActivity;
 
 
 public class ProfileFragment extends Fragment {
 
-    private CardView login_card;
+    private CardView login_card, cardView_favorite;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -30,11 +31,20 @@ public class ProfileFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         login_card = view.findViewById(R.id.login_card);
+        cardView_favorite = view.findViewById(R.id.cardView_favorite);
 
         login_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SigninActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        cardView_favorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FavoriteActivity.class);
                 startActivity(intent);
             }
         });
