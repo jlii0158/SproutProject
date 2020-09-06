@@ -34,6 +34,9 @@ public class UserInformationActivity extends AppCompatActivity {
         iv_profile_back_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(UserInformationActivity.this, MainActivity.class);
+                intent.putExtra("id",1);
+                startActivity(intent);
                 finish();
             }
         });

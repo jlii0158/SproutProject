@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sproutproject.database_entity.Plant;
+import com.example.sproutproject.databse.PlanDatabase;
+import com.example.sproutproject.entity.Plan;
 import com.example.sproutproject.fragment.SearchFragment;
 import com.squareup.picasso.Picasso;
 
@@ -32,19 +35,24 @@ public class CreateActivity extends AppCompatActivity {
     private ImageView iv_plan_img, iv_plan_img_bottom, iv_back_to_detail, iv_back_to_detail1;
     private EditText ed_plan_name, ed_plan_name_bottom;
     private TextView plan_water_need, plan_harvest_time, plan_start_time, plan_end_time, plan_water_need_bottom, virtual_plan_start_time;
-    private Button real_plan_choice, virtual_plan_choice, cycle_min, cycle_plus;
+    private Button real_plan_choice, virtual_plan_choice, cycle_min, cycle_plus, plan_submit, virtual_plan_submit;
     private TextView cycle_day_count;
     private LinearLayout generate_plan_top_view, generate_plan_bottom_view;
     private Toast toast = null;
     private TextView tv_plan_title;
+    PlanDatabase db = null;
+    String planNameToDatabase, plantName, plantImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        db = PlanDatabase.getInstance(this);
 
         Intent intent = getIntent();
         final Plant plant = (Plant) intent.getSerializableExtra("onePlant");
+        plantName = plant.getPlant_name();
+        plantImg = plant.getPlant_img();
 
         iv_plan_img = findViewById(R.id.iv_plan_img);
         iv_plan_img_bottom = findViewById(R.id.iv_plan_img_bottom);
@@ -66,6 +74,8 @@ public class CreateActivity extends AppCompatActivity {
         iv_back_to_detail = findViewById(R.id.iv_back_to_detail);
         tv_plan_title = findViewById(R.id.tv_plan_title);
         iv_back_to_detail1 = findViewById(R.id.iv_back_to_detail1);
+        plan_submit = findViewById(R.id.plan_submit);
+        virtual_plan_submit = findViewById(R.id.virtual_plan_submit);
 
 
         cycle_min.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +148,19 @@ public class CreateActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        plan_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                planNameToDatabase = ed_plan_name.getText().toString().trim();
+                if (planNameToDatabase.equals("")) {
+                    showToast("Please set a plan name.");
+                    return;
+                }
+                new InsertDatabase().execute();
+
+            }
+        });
+
 
         real_plan_choice.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -203,6 +226,22 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private class InsertDatabase extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            Plan plan = new Plan(planNameToDatabase, startDate, endDateReal, 0, 0, plantName, plantImg);
+            long id = db.planDao().insert(plan);
+            return "";
+        }
+        @Override
+        protected void onPostExecute(String details) {
+            showToast("Plan created successfully");
+            Intent intent = new Intent(CreateActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

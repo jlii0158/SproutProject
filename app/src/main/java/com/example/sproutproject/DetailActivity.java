@@ -78,12 +78,13 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         final Plant plant = (Plant) intent.getSerializableExtra("plant");
 
+        /*
         if (signState == 1) {
             bt_generate.setVisibility(View.VISIBLE);
         }
         else  {
             bt_generate.setVisibility(View.GONE);
-        }
+        }*/
 
 
 

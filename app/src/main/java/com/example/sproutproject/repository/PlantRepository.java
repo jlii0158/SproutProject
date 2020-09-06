@@ -64,30 +64,20 @@ public class PlantRepository {
             }
         });
     }
-    /*
-    public void updateWatchlistByID(final int movieId, final String movieName,
-                                    final String releaseDate, final String addDateTime) {
-        PlantDatabase.databaseWriteExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                dao.updatebyID(movieId, movieName, releaseDate, addDateTime);
-            }
-        });
-    }
-     */
+
     public List<FavoritePlant> findByName(final String plantName){
         PlantDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
                 List<FavoritePlant> runPlant= dao.findByName(plantName);
-                setWatchlist(runPlant);
+                setPlant(runPlant);
             }
         });
         return favoritePlant;
     }
 
 
-    public void setWatchlist(List<FavoritePlant> favoritePlant){
+    public void setPlant(List<FavoritePlant> favoritePlant){
         this.favoritePlant=favoritePlant;
     }
 }

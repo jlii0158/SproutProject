@@ -26,9 +26,10 @@ public class SigninActivity extends AppCompatActivity {
     private TextView tv_signup,tv_signin;
     private RelativeLayout signin_top,signup_bottom;
     String username, password, nickname, email, signup_password;
+    //This value is used to indicate the sign in state, 0 means no state, 1 means login.
     public static int stateValue = 0;
     public static String userAccount, userWelcomeName, growValue, userID;
-    ImageView iv_signin_back_bar;
+    private ImageView iv_signin_back_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,9 +130,19 @@ public class SigninActivity extends AppCompatActivity {
         iv_signin_back_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+                intent.putExtra("id",1);
+                startActivity(intent);
                 finish();
             }
         });
+    }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+        intent.putExtra("id",1);
+        startActivity(intent);
+        finish();
     }
 
 

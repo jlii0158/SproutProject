@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.example.sproutproject.adapter.OnboardingAdapter;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class OnboardActivity extends AppCompatActivity {
 
         OnboardingItem itemMakePlan = new OnboardingItem();
         itemMakePlan.setTitle("Easy touch, easy plan.");
-        itemMakePlan.setDescription("Do not worry about the process, start your customized planting plan and your private steward of garden.");
+        itemMakePlan.setDescription("Sign up to have a private steward of garden, log in to start your customized planting plan.");
         itemMakePlan.setImage(R.drawable.make_plan);
 
         OnboardingItem itemMetalGet = new OnboardingItem();

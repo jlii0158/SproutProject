@@ -1,27 +1,20 @@
 package com.example.sproutproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.example.sproutproject.adapter.FavoriteListAdapter;
 import com.example.sproutproject.database_entity.Plant;
-import com.example.sproutproject.databse.PlantDatabase;
 import com.example.sproutproject.entity.FavoritePlant;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.viewmodel.PlantViewModel;
@@ -30,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class FavoriteActivity extends AppCompatActivity {
@@ -42,8 +34,6 @@ public class FavoriteActivity extends AppCompatActivity {
     ListView my_listView;
     String[] plantImg, plantName;
     RestClient restClient = new RestClient();
-    private String plantNick, plantSow, plantSpace, compPlants, plantDesc;
-    private String plant_name, waterNeed, plant_img, harvestIns, growthCycle, harvestWeek;
 
 
 

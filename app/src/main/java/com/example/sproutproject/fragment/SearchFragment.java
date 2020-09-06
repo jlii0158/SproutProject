@@ -27,7 +27,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.sproutproject.DetailActivity;
-import com.example.sproutproject.ListAdapter;
+import com.example.sproutproject.adapter.ListAdapter;
 import com.example.sproutproject.R;
 import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.networkConnection.Ingredient;
