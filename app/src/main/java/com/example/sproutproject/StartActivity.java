@@ -20,12 +20,12 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        //在该页面停留3秒
+        //在该页面停留2秒
         ThreadUtils.runInThread(new Runnable() {
             @SuppressLint("WorldReadableFiles")
             @Override
             public void run() {
-                SystemClock.sleep(3000);
+                SystemClock.sleep(2000);
                 preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
                 int count = preferences.getInt("count", 0);
                 if (count == 0) {

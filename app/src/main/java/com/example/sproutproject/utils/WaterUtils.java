@@ -20,7 +20,7 @@ public class WaterUtils {
 
             tv.setCompoundDrawablesWithIntrinsicBounds(0, icon_array, 0, 0);
             //分配每个图标的空间
-            int width = 100;
+            int width = 75;
             int height = LinearLayout.LayoutParams.MATCH_PARENT;
             continer.addView(tv, width,height);
         }

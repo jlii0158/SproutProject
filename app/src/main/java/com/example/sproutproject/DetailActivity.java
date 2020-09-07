@@ -101,7 +101,7 @@ public class DetailActivity extends AppCompatActivity {
         tv_plantName.setText(plant.getPlant_name());
         //set plant nickname
         String aaa = plant.getPlant_nickname();
-        if (aaa != null) {
+        if (!aaa.equals("null")) {
             String nick = "Alias: " + aaa;
             tv_plantNickName.setText(nick);
         }

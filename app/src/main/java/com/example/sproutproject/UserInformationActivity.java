@@ -53,4 +53,11 @@ public class UserInformationActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onBackPressed() {
+        Intent intent = new Intent(UserInformationActivity.this, MainActivity.class);
+        intent.putExtra("id",1);
+        startActivity(intent);
+        finish();
+    }
 }

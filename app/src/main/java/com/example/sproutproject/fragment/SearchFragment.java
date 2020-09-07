@@ -422,7 +422,7 @@ public class SearchFragment extends Fragment {
                         plantImg.add(jsonArray.getJSONObject(i).getString("plantImg"));
                         harvestWeek.add(jsonArray.getJSONObject(i).getString("harvestWeek"));
                     }
-                    lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg);
+                    lAdapter = new ListAdapter(getActivity(), plantName, harvestIns, waterNeed, plantImg, plantSpace);
                     plantNick2.addAll(plantNick);
                     plantSow2.addAll(plantSow);
                     plantSpace2.addAll(plantSpace);

@@ -27,9 +27,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="My Profile"
-            android:textSize="20sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="8dp"/>
+            android:textSize="18sp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="5dp"/>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Profile Photo:"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_gravity="center"
@@ -89,7 +89,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Sprout Account:"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"/>
@@ -124,7 +124,7 @@
                 android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:text="Nickname:"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 android:layout_gravity="center"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"/>

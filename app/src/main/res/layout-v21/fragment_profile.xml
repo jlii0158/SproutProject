@@ -38,10 +38,10 @@
                     android:layout_height="wrap_content"
                     android:layout_toRightOf="@+id/iv_head"
                     android:layout_marginRight="8dp"
-                    android:layout_marginTop="24dp"
+                    android:layout_marginTop="30dp"
                     android:layout_marginLeft="8dp"
                     android:text="Login"
-                    android:textSize="20dp"
+                    android:textSize="15dp"
                     android:textStyle="bold"
                     android:layout_alignTop="@+id/iv_head"
                     android:drawableRight="@drawable/ic_right"/>
@@ -49,9 +49,9 @@
                     android:id="@+id/tv_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:layout_below="@id/tv_login_start"
-                    android:layout_alignLeft="@id/tv_login_start"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_alignLeft="@id/tv_login_start"/>
 
             </RelativeLayout>
 
@@ -77,7 +77,7 @@
                         android:id="@+id/tv_gift_show"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"/>
                 </LinearLayout>
@@ -98,7 +98,7 @@
                         android:id="@+id/tv_date_show"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_marginLeft="8dp"
                         android:layout_marginTop="12dp"/>
                 </LinearLayout>
@@ -122,8 +122,8 @@
 
             <ImageView
                 android:id="@+id/iv_favorite"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_margin="8dp"
                 android:background="@drawable/ic_heart_click"/>
 
@@ -132,7 +132,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Favorite"
-                android:textSize="15dp"
+                android:textSize="12sp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
@@ -168,7 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Setting"
-                android:textSize="15dp"
+                android:textSize="12sp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"
@@ -204,7 +204,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="About us"
-                android:textSize="15dp"
+                android:textSize="12sp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="8dp"

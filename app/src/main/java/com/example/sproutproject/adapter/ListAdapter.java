@@ -24,14 +24,16 @@ public class ListAdapter extends BaseAdapter {
     private final List<String> waterNeed;
     private final List<String> plantImg;
     private final List<String> harvestIns;
+    private final List<String> plantSpace;
 
-    public ListAdapter(Context context, List<String> plantName, List<String> harvestIns, List<String> waterNeed, List<String> plantImg){
+    public ListAdapter(Context context, List<String> plantName, List<String> harvestIns, List<String> waterNeed, List<String> plantImg, List<String> plantSpace){
         //super(context, R.layout.single_list_app_item, utilsArrayList);
         this.context = context;
         this.plantName = plantName;
         this.waterNeed = waterNeed;
         this.plantImg = plantImg;
         this.harvestIns = harvestIns;
+        this.plantSpace = plantSpace;
     }
 
     @Override
@@ -67,6 +69,7 @@ public class ListAdapter extends BaseAdapter {
             viewHolder.plantImg = (ImageView) convertView.findViewById(R.id.plant_image);
             viewHolder.waterNeed = (TextView) convertView.findViewById(R.id.textView11);
             viewHolder.harvestIns = (TextView) convertView.findViewById(R.id.textView4);
+            viewHolder.plantSpace = (TextView) convertView.findViewById(R.id.tv_grass);
 
             result=convertView;
 
@@ -82,6 +85,7 @@ public class ListAdapter extends BaseAdapter {
         Picasso.get()
                 .load(plantImg.get(position))
                 .into(viewHolder.plantImg);
+        viewHolder.plantSpace.setText(plantSpace.get(position));
 
         return convertView;
     }
@@ -91,6 +95,7 @@ public class ListAdapter extends BaseAdapter {
         TextView plantName;
         TextView waterNeed;
         TextView harvestIns;
+        TextView plantSpace;
         ImageView plantImg;
 
     }

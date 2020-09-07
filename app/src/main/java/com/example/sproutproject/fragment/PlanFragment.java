@@ -59,7 +59,7 @@ public class PlanFragment extends Fragment {
                 for (int i = 0; i < plans.size(); i++) {
                     plantImg[i] = plans.get(i).getPlantImg();
                     planName[i] = plans.get(i).getPlanName();
-                    String startString = "Starting Date: " + plans.get(i).getStartDate();
+                    String startString = "Starting On: " + plans.get(i).getStartDate();
                     startDate[i] = startString;
                     int days = 0;
                     try {
