@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/colorTextPrimary"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:textStyle="bold"/>
 
     <TextView
@@ -32,6 +32,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/colorTextSecondary"
-        android:textSize="18sp"/>
+        android:textSize="12sp"/>
 
 </LinearLayout>
