@@ -55,15 +55,24 @@ public class CreateActivity extends AppCompatActivity {
         plantImg = plant.getPlant_img();
 
         iv_plan_img = findViewById(R.id.iv_plan_img);
-        iv_plan_img_bottom = findViewById(R.id.iv_plan_img_bottom);
+
         ed_plan_name = findViewById(R.id.ed_plan_name);
         plan_water_need = findViewById(R.id.plan_water_need);
         plan_harvest_time = findViewById(R.id.plan_harvest_time);
         plan_start_time = findViewById(R.id.plan_start_time);
         plan_end_time = findViewById(R.id.plan_end_time);
+
+        generate_plan_top_view = findViewById(R.id.generate_plan_top_view);
+
+        iv_back_to_detail = findViewById(R.id.iv_back_to_detail);
+        tv_plan_title = findViewById(R.id.tv_plan_title);
+
+        plan_submit = findViewById(R.id.plan_submit);
+
+        /*
         real_plan_choice = findViewById(R.id.real_plan_choice);
         virtual_plan_choice = findViewById(R.id.virtual_plan_choice);
-        generate_plan_top_view = findViewById(R.id.generate_plan_top_view);
+        iv_plan_img_bottom = findViewById(R.id.iv_plan_img_bottom);
         generate_plan_bottom_view = findViewById(R.id.generate_plan_bottom_view);
         ed_plan_name_bottom = findViewById(R.id.ed_plan_name_bottom);
         plan_water_need_bottom = findViewById(R.id.plan_water_need_bottom);
@@ -71,13 +80,14 @@ public class CreateActivity extends AppCompatActivity {
         cycle_min = findViewById(R.id.cycle_min);
         cycle_plus = findViewById(R.id.cycle_plus);
         cycle_day_count = findViewById(R.id.cycle_day_count);
-        iv_back_to_detail = findViewById(R.id.iv_back_to_detail);
-        tv_plan_title = findViewById(R.id.tv_plan_title);
-        iv_back_to_detail1 = findViewById(R.id.iv_back_to_detail1);
-        plan_submit = findViewById(R.id.plan_submit);
         virtual_plan_submit = findViewById(R.id.virtual_plan_submit);
+        iv_back_to_detail1 = findViewById(R.id.iv_back_to_detail1);
+
+         */
 
 
+
+        /*
         cycle_min.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -106,6 +116,9 @@ public class CreateActivity extends AppCompatActivity {
             }
         });
 
+         */
+
+        plan_submit.setVisibility(View.VISIBLE);
 
         Picasso.get().load(plant.getPlant_desc()).into(iv_plan_img);
 
@@ -134,10 +147,23 @@ public class CreateActivity extends AppCompatActivity {
         //set cycle
         String cycle = "I will grow with you for the next " + plant.getGrowth_cycle() + " weeks.";
         plan_harvest_time.setText(cycle);
-        //set start date
-        startDate = getCurrentDate();
-        final String dateDesc = "We will start our journey at " + startDate;
-        plan_start_time.setText(dateDesc);
+
+
+        if (PlanDetailActivity.info == 0) {
+            //set start date
+            startDate = getCurrentDate();
+            final String dateDesc = "We will start our journey at " + startDate;
+            plan_start_time.setText(dateDesc);
+        } else {
+            //set start date
+            startDate = PlanDetailActivity.startDatePass;
+            final String dateDesc = "Plan started on " + startDate;
+            plan_start_time.setText(dateDesc);
+            plan_submit.setVisibility(View.GONE);
+        }
+
+
+
         //set end date for real plan
         try {
             String endDate = getWorkDay(startDate, Integer.parseInt(plant.getGrowth_cycle()) * 7);
@@ -162,6 +188,7 @@ public class CreateActivity extends AppCompatActivity {
         });
 
 
+        /*
         real_plan_choice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,8 +226,9 @@ public class CreateActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
+        /*
         virtual_plan_choice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,36 +237,46 @@ public class CreateActivity extends AppCompatActivity {
                 String virtual = "Plan";
                 tv_plan_title.setText(virtual);
             }
-        });
+        });*/
 
+        /*
         iv_back_to_detail1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
+         */
 
 
         iv_back_to_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                PlanDetailActivity.info = 0;
                 finish();
             }
         });
 
     }
 
+    public void onBackPressed() {
+        PlanDetailActivity.info = 0;
+        finish();
+    }
+
     private class InsertDatabase extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            Plan plan = new Plan(planNameToDatabase, startDate, endDateReal, 0, 0, plantName, plantImg);
+            Plan plan = new Plan(planNameToDatabase, startDate, endDateReal, 0, 0, plantName, plantImg, 0);
             long id = db.planDao().insert(plan);
             return "";
         }
         @Override
         protected void onPostExecute(String details) {
             showToast("Plan created successfully");
+            MainActivity.instance.finish();
             Intent intent = new Intent(CreateActivity.this, MainActivity.class);
+            intent.putExtra("pid",1);
             startActivity(intent);
             finish();
         }

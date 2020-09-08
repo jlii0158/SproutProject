@@ -33,11 +33,14 @@ public class MainActivity extends AppCompatActivity {
     private String[] title;
     private long firstTime = 0;
     private Toast toast = null;
+    static MainActivity instance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        instance = this;
+
 
         tv_title = findViewById(R.id.textView2);
         vp_mainPage = findViewById(R.id.vp_main);
@@ -60,10 +63,17 @@ public class MainActivity extends AppCompatActivity {
         toolbarUtils.changeColor(0);
         initListener();
 
+        //id is from signInActivity
         int id = getIntent().getIntExtra("id", 0);
         if (id == 1) {
             vp_mainPage.setCurrentItem(3);
         }
+        //pid is from createActivity and planDetail activity
+        int pid = getIntent().getIntExtra("pid", 0);
+        if (pid == 1) {
+            vp_mainPage.setCurrentItem(1);
+        }
+
     }
 
     @Override

@@ -23,8 +23,10 @@ public class Plan {
     public String plantName;
     @ColumnInfo(name = "plant_img")
     public String plantImg;
+    @ColumnInfo(name = "real_water_count")
+    public int realWaterCount;
 
-    public Plan(String planName, String startDate, String endDate, int waterCount, int waterState, String plantName, String plantImg) {
+    public Plan(String planName, String startDate, String endDate, int waterCount, int waterState, String plantName, String plantImg, int realWaterCount) {
         this.planName = planName;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -32,6 +34,15 @@ public class Plan {
         this.waterState = waterState;
         this.plantName = plantName;
         this.plantImg = plantImg;
+        this.realWaterCount = realWaterCount;
+    }
+
+    public int getRealWaterCount() {
+        return realWaterCount;
+    }
+
+    public void setRealWaterCount(int realWaterCount) {
+        this.realWaterCount = realWaterCount;
     }
 
     public String getPlantImg() {
