@@ -14,7 +14,7 @@ public class PlanRepository {
 
     private PlanDAO dao;
     private LiveData<List<Plan>> allPlans;
-    private List<Plan> plan;
+    private Plan plan;
     public PlanRepository(Application application){
         PlanDatabase db = PlanDatabase.getInstance(application);
         dao=db.planDao();
@@ -40,15 +40,14 @@ public class PlanRepository {
         });
     }
 
-    /*
-    public void delete(final String plan){
+    public void delete(final int planId){
         PlanDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                dao.deleteByName(plan);
+                dao.deleteById(planId);
             }
         });
-    }*/
+    }
 
     public void insertAll(final Plan... plans){
         PlanDatabase.databaseWriteExecutor.execute(new Runnable() {
@@ -67,11 +66,11 @@ public class PlanRepository {
         });
     }
 
-    public List<Plan> findByID(final int plantId){
+    public Plan findByID(final int plantId){
         PlanDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                List<Plan> runPlant= dao.findByID(plantId);
+                Plan runPlant= dao.findByID(plantId);
                 setPlant(runPlant);
             }
         });
@@ -79,7 +78,7 @@ public class PlanRepository {
     }
 
 
-    public void setPlant(List<Plan> plan){
+    public void setPlant(Plan plan){
         this.plan=plan;
     }
 }

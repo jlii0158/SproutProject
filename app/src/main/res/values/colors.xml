@@ -7,4 +7,6 @@
     <color name="colorTextSecondary">#757575</color>
     <color name="colorBackground">#FFFFFF</color>
     <color name="colorOnBoardingIndicatorInactive">#B9D68C</color>
+    <color name="colorOneButton">#f6f6f6</color>
+
 </resources>

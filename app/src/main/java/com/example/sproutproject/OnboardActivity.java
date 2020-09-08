@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -21,7 +22,7 @@ public class OnboardActivity extends AppCompatActivity {
 
     private OnboardingAdapter onboardingAdapter;
     private LinearLayout layoutOnboardingIndicators;
-    private MaterialButton buttonOnboardingAction;
+    private Button buttonOnboardingAction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

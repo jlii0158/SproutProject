@@ -159,6 +159,9 @@ public class CreateActivity extends AppCompatActivity {
             startDate = PlanDetailActivity.startDatePass;
             final String dateDesc = "Plan started on " + startDate;
             plan_start_time.setText(dateDesc);
+            String planNamePass = (String) intent.getSerializableExtra("planName");
+            ed_plan_name.setText(planNamePass);
+            ed_plan_name.setFocusable(false);
             plan_submit.setVisibility(View.GONE);
         }
 

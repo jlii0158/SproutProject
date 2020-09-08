@@ -34,7 +34,7 @@ public class PlanFragment extends Fragment {
     private ListView lv_plan;
     static PlanViewModel planViewModel;
     private PlanAdapter planAdapter;
-    String[] plantImg, planName, startDate, daysToNow, endDate, plantName, startDate1;
+    String[] plantImg, planName, startDate, daysToNow, endDate, plantName, startDate1, planBackground;
     int[] planId, waterCount, waterState, realWaterCount;
 
     public PlanFragment() {
@@ -61,6 +61,7 @@ public class PlanFragment extends Fragment {
                 startDate = new String[plans.size()];
                 startDate1 = new String[plans.size()];
                 daysToNow = new String[plans.size()];
+                planBackground = new String[plans.size()];
 
                 endDate = new String[plans.size()];
                 plantName = new String[plans.size()];
@@ -68,6 +69,7 @@ public class PlanFragment extends Fragment {
                 waterCount = new int[plans.size()];
                 waterState = new int[plans.size()];
                 realWaterCount = new int[plans.size()];
+
                 for (int i = 0; i < plans.size(); i++) {
                     plantImg[i] = plans.get(i).getPlantImg();
                     planName[i] = plans.get(i).getPlanName();
@@ -78,6 +80,7 @@ public class PlanFragment extends Fragment {
                     waterCount[i] = plans.get(i).getWaterCount();
                     waterState[i] = plans.get(i).getWaterState();
                     realWaterCount[i] = plans.get(i).getRealWaterCount();
+                    planBackground[i] = plans.get(i).getPlanBackground();
 
                     int days = 0;
                     try {
@@ -113,10 +116,12 @@ public class PlanFragment extends Fragment {
                 planDisplay.setPlant_name(plantName[position]);
                 planDisplay.setPlant_img(plantImg[position]);
                 planDisplay.setDaysToCurrentDate(daysToNow[position]);
+                planDisplay.setPlanBackground(planBackground[position]);
 
                 Intent intent = new Intent(getActivity(), PlanDetailActivity.class);
                 intent.putExtra("planDisplay", planDisplay);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 

@@ -13,6 +13,7 @@ public class PlanDisplay implements Serializable {
     public String plant_name;
     public String plant_img;
     public String daysToCurrentDate;
+    public String planBackground;
 
     public PlanDisplay() {
     }
@@ -28,6 +29,14 @@ public class PlanDisplay implements Serializable {
         this.plant_name = plant_name;
         this.plant_img = plant_img;
         this.daysToCurrentDate = daysToCurrentDate;
+    }
+
+    public String getPlanBackground() {
+        return planBackground;
+    }
+
+    public void setPlanBackground(String planBackground) {
+        this.planBackground = planBackground;
     }
 
     public int getPlanId() {

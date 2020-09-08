@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".SigninActivity"
     android:orientation="vertical">
 
@@ -75,6 +76,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:textColor="#FFFFFF"
                 android:text="Sign in"/>
 
             <TextView
@@ -147,6 +149,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginRight="30dp"
+                android:textColor="#FFFFFF"
                 android:text="Sign up"/>
 
             <TextView

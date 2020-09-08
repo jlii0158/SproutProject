@@ -36,17 +36,16 @@ public class PlanViewModel extends ViewModel {
     public void deleteAll() {
         cRepository.deleteAll();
     }
-    /*
-    public void delete(String plan) {
-        cRepository.delete(plan);
+
+    public void delete(int planId) {
+        cRepository.delete(planId);
     }
 
-     */
     public void update(Plan... plans) {
         cRepository.updateCustomers(plans);
     }
 
-    public List<Plan> findByID(int planName){
-        return cRepository.findByID(planName);
+    public Plan findByID(int planId){
+        return cRepository.findByID(planId);
     }
 }

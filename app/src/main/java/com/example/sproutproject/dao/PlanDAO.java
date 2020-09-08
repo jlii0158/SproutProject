@@ -20,7 +20,7 @@ public interface PlanDAO {
     @Query("SELECT * FROM `Plan`")
     LiveData<List<Plan>> getAll();
     @Query("SELECT * FROM `Plan` WHERE planId = :planId LIMIT 1")
-    List<Plan> findByID(int planId);
+    Plan findByID(int planId);
     @Insert
     void insertAll(Plan... plans);
     @Insert
@@ -31,4 +31,6 @@ public interface PlanDAO {
     void updatePlans(Plan... plans);
     @Query("DELETE FROM `Plan`")
     void deleteAll();
+    @Query("DELETE FROM `plan` WHERE planId=:planId")
+    void deleteById(int planId);
 }
