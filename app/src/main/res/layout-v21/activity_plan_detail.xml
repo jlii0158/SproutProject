@@ -60,6 +60,7 @@
             android:layout_marginTop="32dp"
             app:cardElevation="3dp"
             android:foreground="?android:attr/selectableItemBackgroundBorderless">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -68,7 +69,6 @@
                     android:id="@+id/tv_plan_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Plan Name"
                     android:background="@color/colorPrimary"
                     android:gravity="center"
                     android:textSize="20sp"
@@ -85,7 +85,6 @@
                         android:id="@+id/tv_number_of_days"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="30"
                         android:layout_gravity="center"
                         android:gravity="center"
                         android:textSize="100sp"
@@ -96,7 +95,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="3"
-                        android:text="/100 days"
                         android:textSize="20sp"
                         android:layout_gravity="center"
                         android:gravity="center"/>
@@ -107,7 +105,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="20sp"
-                    android:text="Start Date"
                     android:gravity="center"
                     android:layout_weight="1"
                     android:background="#f6f6f6"/>
@@ -125,14 +122,16 @@
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="16dp"/>
+
         <ProgressBar
             android:id="@+id/pb_true_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
             android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="32dp"
-            android:layout_marginTop="8dp"/>
+            android:progressDrawable="@drawable/progressbar_preview" />
 
         <TextView
             android:id="@+id/tv_real_water_times"
@@ -144,14 +143,16 @@
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="16dp"/>
+
         <ProgressBar
             android:id="@+id/pb_real"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
             android:layout_marginLeft="32dp"
+            android:layout_marginTop="8dp"
             android:layout_marginRight="32dp"
-            android:layout_marginTop="8dp"/>
+            android:progressDrawable="@drawable/progressbar_preview" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -185,6 +186,7 @@
                 android:gravity="center"/>
             -->
             <Button
+                android:id="@+id/bt_water_main"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

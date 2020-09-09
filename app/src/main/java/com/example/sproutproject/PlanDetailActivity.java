@@ -1,5 +1,6 @@
 package com.example.sproutproject;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -19,10 +20,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Messenger;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -43,7 +46,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,15 +70,18 @@ public class PlanDetailActivity extends AppCompatActivity {
     private TextView tv_choose_background;
     private LinearLayout ll_plan_background;
     private static final int CHOOSE_PHOTO = 385;
+    private static final int TAKE_PHOTO = 189;
     private final String TAG = getClass().getSimpleName();
     private Toast toast = null;
     PlanDatabase db = null;
     Plan plan;
-    int planidPass;
+    int planidPass, waterSum;
     PlanViewModel planViewModel;
+    private Button bt_water_main;
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,15 +108,27 @@ public class PlanDetailActivity extends AppCompatActivity {
         iv_edit_plan = findViewById(R.id.iv_edit_plan);
         tv_choose_background = findViewById(R.id.tv_choose_background);
         ll_plan_background = findViewById(R.id.ll_plan_background);
+        bt_water_main = findViewById(R.id.bt_water_main);
 
         planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
         planViewModel.initalizeVars(getApplication());
 
-        String aaa = planDisplay.getPlanBackground();
-        Bitmap bitmap = stringToBitmap(planDisplay.getPlanBackground());
+        final String aaa = planDisplay.getPlanBackground();
+
         if (aaa != null) {
+            final Uri uri = Uri.parse((String) aaa);
+            Bitmap bitmap = null;
+            try {
+                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                //bitmap = compressImage(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            cv_generate_plan.setAlpha((float) 0.8);
             ll_plan_background.setBackground(new BitmapDrawable(getResources(),bitmap));
+
         }
+
 
         tv_choose_background.setOnClickListener(new OnClickListenerImpl());
 
@@ -147,7 +168,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        String totalDays = "/" + String.valueOf(days) + " days";
+        final String totalDays = "/" + String.valueOf(days) + " days";
         tv_number_of_days.setText(planDisplay.getDaysToCurrentDate());
         tv_total_days_of_plan.setText(totalDays);
 
@@ -177,12 +198,14 @@ public class PlanDetailActivity extends AppCompatActivity {
                     ThreadUtils.runInUIThread(new Runnable() {
                         @Override
                         public void run() {
-                            int waterSum = finalDays /waterDays;
+                            waterSum = finalDays /waterDays;
+                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) /waterSum + 1;
+
                             //设置应该浇水多少次
-                            String grandTotal = "Grand Total: " + String.valueOf(planDisplay.getRealWaterCount()) + "/" + String.valueOf(waterSum);
+                            String grandTotal = "Grand Total: " + totalValue + "/" + waterSum;
                             tv_grandTotal.setText(grandTotal);
                             pb_true_value.setMax(waterSum);
-                            pb_true_value.setProgress(planDisplay.getRealWaterCount());
+                            pb_true_value.setProgress(totalValue);
                             //设置实际浇了几次水
                             String realTotal = "Actual Water Times: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
                             tv_real_water_times.setText(realTotal);
@@ -196,6 +219,38 @@ public class PlanDetailActivity extends AppCompatActivity {
                 }
             }
         });
+
+        ThreadUtils.runInThread(new Runnable() {
+            @Override
+            public void run() {
+                plan = db.planDao().findByID(planidPass);
+            }
+        });
+
+
+
+        bt_water_main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
+                    if (plan.getWaterState() == 1) {
+                        showToast("It's been watered today");
+                    } else {
+                        int currentWaterCount = plan.getWaterCount() + 1;
+                        plan.setWaterCount(currentWaterCount);
+                        plan.setWaterState(1);
+                        planViewModel.update(plan);
+                        pb_real.setProgress(plan.getWaterCount());
+                        String realTotal = "Actual Water Times: " + String.valueOf(plan.getWaterCount()) + "/" + String.valueOf(waterSum);
+                        tv_real_water_times.setText(realTotal);
+                        showToast("Well done");
+                    }
+                } else {
+                    showToast("Need no water today");
+                }
+            }
+        });
+
 
         cv_generate_plan.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,8 +276,10 @@ public class PlanDetailActivity extends AppCompatActivity {
         finish();
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void openAlbum() {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         if (Build.VERSION.SDK_INT >= 23) {
             if(Objects.requireNonNull(PlanDetailActivity.this).checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -236,6 +293,21 @@ public class PlanDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void takePhoto() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (Build.VERSION.SDK_INT >= 23) {
+            if(Objects.requireNonNull(PlanDetailActivity.this).checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+                ActivityCompat.requestPermissions(PlanDetailActivity.this,new String[]{Manifest.permission.CAMERA},222);
+                return;
+            }else{
+                startActivityForResult(intent,TAKE_PHOTO);
+            }
+        } else {
+            startActivityForResult(intent,TAKE_PHOTO);
+        }
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -248,22 +320,27 @@ public class PlanDetailActivity extends AppCompatActivity {
                 Log.i(TAG, "onActivityResult: ImageUriFromAlbum: " + data.getData());
                 if (resultCode == Activity.RESULT_OK) {
                     try {
-                        Uri imageUri = data.getData();
-
+                        final Uri imageUri = data.getData();
+                        final String uriString = imageUri.toString();
                         Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri));
-                        ll_plan_background.setBackground(new BitmapDrawable(getResources(),bitmap));
-                        showToast("Background change success");
-                        final String backgroundBitmap = bitmapToString(bitmap);
+                        //bitmap = compressImage(bitmap);
+                        final Bitmap finalBitmap = bitmap;
                         ThreadUtils.runInThread(new Runnable() {
                             @Override
                             public void run() {
                                 plan = db.planDao().findByID(planidPass);
-                                plan.setPlanBackground(backgroundBitmap);
+                                plan.setPlanBackground(uriString);
                                 planViewModel.update(plan);
+                                ThreadUtils.runInUIThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ll_plan_background.setBackground(new BitmapDrawable(getResources(), finalBitmap));
+                                        cv_generate_plan.setAlpha((float) 0.8);
+                                        showToast("Background change success");
+                                    }
+                                });
                             }
                         });
-
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -273,6 +350,8 @@ public class PlanDetailActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
 
     private void showToast(String msg){
         if (toast != null) {
@@ -286,31 +365,6 @@ public class PlanDetailActivity extends AppCompatActivity {
     }
 
 
-    private String bitmapToString(Bitmap bitmap){
-        //将Bitmap转换成字符串
-        String string=null;
-        ByteArrayOutputStream bStream=new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG,100,bStream);
-        byte[]bytes=bStream.toByteArray();
-        string = Base64.encodeToString(bytes,Base64.DEFAULT);
-        return string;
-    }
-
-
-    public Bitmap stringToBitmap(String string) {
-        // 将字符串转换成Bitmap类型
-        Bitmap bitmap = null;
-        try {
-            byte[] bitmapArray;
-            bitmapArray = Base64.decode(string, Base64.DEFAULT);
-            bitmap = BitmapFactory.decodeByteArray(bitmapArray, 0,
-                    bitmapArray.length);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return bitmap;
-    }
-
     private class OnClickListenerImpl implements View.OnClickListener {
 
         public void onClick(View v) {
@@ -319,6 +373,7 @@ public class PlanDetailActivity extends AppCompatActivity {
                     .setMessage("CHANGE or DELETE?")    //create content
                     .setIcon(R.drawable.ic_album111) //set logo
                     .setNeutralButton("CHANGE", new DialogInterface.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
                         public void onClick(DialogInterface dialog, int which) {
                             openAlbum();
                         }
@@ -332,7 +387,7 @@ public class PlanDetailActivity extends AppCompatActivity {
                                     planViewModel.update(plan);
                                 }
                             });
-
+                            cv_generate_plan.setAlpha(1);
                             ll_plan_background.setBackgroundColor(PlanDetailActivity.this.getResources().getColor(R.color.colorOneButton));
                             showToast("Background delete success");
                         }
@@ -344,6 +399,19 @@ public class PlanDetailActivity extends AppCompatActivity {
             dialog.show();  //show dialog
 
         }
+    }
 
+    private Bitmap compressImage(Bitmap image) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        image.compress(Bitmap.CompressFormat.JPEG, 100, baos);//质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        int options = 100;
+        while (baos.toByteArray().length / 1024>1024) {  //循环判断如果压缩后图片是否大于1024kb,大于继续压缩
+            baos.reset();//重置baos即清空baos
+            image.compress(Bitmap.CompressFormat.JPEG, options, baos);//这里压缩options%，把压缩后的数据存放到baos中
+            options -= 1;//每次都减少10
+        }
+        ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
+        Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
+        return bitmap;
     }
 }

@@ -1,9 +1,12 @@
 package com.example.sproutproject.fragment;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,7 +17,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.example.sproutproject.MainActivity;
 import com.example.sproutproject.PlanDetailActivity;
 import com.example.sproutproject.R;
 import com.example.sproutproject.adapter.PlanAdapter;
@@ -36,6 +41,7 @@ public class PlanFragment extends Fragment {
     private PlanAdapter planAdapter;
     String[] plantImg, planName, startDate, daysToNow, endDate, plantName, startDate1, planBackground;
     int[] planId, waterCount, waterState, realWaterCount;
+    private Toast toast = null;
 
     public PlanFragment() {
         // Required empty public constructor
@@ -125,6 +131,31 @@ public class PlanFragment extends Fragment {
             }
         });
 
+        //lv_plan.setOnItemLongClickListener((AdapterView.OnItemLongClickListener) new OnClickListenerImpl());
+
+        lv_plan.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+
+                Dialog dialog = new AlertDialog.Builder(getContext())
+                        .setTitle("Delete plan")  // create title
+                        .setMessage("Are you sure to delete the plan?")    //create content
+                        .setIcon(R.drawable.ic_garbage) //set logo
+                        .setPositiveButton("DELETE", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                showToast("Delete plan success");
+                                planViewModel.delete(planId[position]);
+                            }
+                        }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).create();  //create dialog
+                dialog.show();  //show dialog
+                return true;
+            }
+        });
+
         return view;
     }
 
@@ -133,5 +164,16 @@ public class PlanFragment extends Fragment {
         long cur_time = System.currentTimeMillis();
         String datetime = df.format(new Date(cur_time));
         return datetime;
+    }
+
+    private void showToast(String msg){
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(getActivity(),msg,Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

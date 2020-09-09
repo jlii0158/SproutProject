@@ -66,12 +66,12 @@ public class OnboardActivity extends AppCompatActivity {
 
         OnboardingItem itemAISearch = new OnboardingItem();
         itemAISearch.setTitle("One shoot, whole world.");
-        itemAISearch.setDescription("Hold the camera on your hand, upload the knowledge to your brain. Use intelligent identification starts your green journey!");
+        itemAISearch.setDescription("Use intelligent identification starts your green journey!");
         itemAISearch.setImage(R.drawable.search_plant);
 
         OnboardingItem itemMakePlan = new OnboardingItem();
         itemMakePlan.setTitle("Easy touch, easy plan.");
-        itemMakePlan.setDescription("Sign up to have a private steward of garden, log in to start your customized planting plan.");
+        itemMakePlan.setDescription("Open your personal mobile garden steward, start your customized planting plan!");
         itemMakePlan.setImage(R.drawable.make_plan);
 
         OnboardingItem itemMetalGet = new OnboardingItem();
