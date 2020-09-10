@@ -22,23 +22,16 @@
             android:layout_height="48dp"
             android:orientation="horizontal"
             android:background="#FFFFFF">
-            <ImageView
-                android:id="@+id/iv_back_to_detail"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:background="@drawable/ic_left"
-                android:layout_marginTop="15dp"
-                android:layout_marginLeft="8dp"/>
 
             <TextView
                 android:id="@+id/tv_plan_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Plan"
+                android:text=" Plan"
                 android:textSize="18sp"
                 android:layout_marginTop="9dp"
-                android:layout_marginLeft="5dp"
-                android:layout_weight="1"/>
+                android:layout_marginLeft="8dp"
+                android:drawableLeft="@drawable/ic_left"/>
             <!--
             <Button
                 android:id="@+id/real_plan_choice"
@@ -92,12 +85,13 @@
                             android:layout_marginTop="16dp"
                             android:textSize="15sp"
                             android:textStyle="bold"
+                            android:singleLine="true"
+                            android:maxLength="50"
                             android:gravity="center" />
                         <TextView
                             android:id="@+id/plan_water_need"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Water need"
                             android:textSize="12sp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"
@@ -110,7 +104,6 @@
                             android:id="@+id/plan_harvest_time"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Harvest time"
                             android:textSize="12sp"
                             android:paddingTop="8dp"
                             android:paddingBottom="8dp"

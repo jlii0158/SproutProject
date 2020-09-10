@@ -10,12 +10,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -35,12 +37,13 @@ import java.util.List;
 
 public class PlanFragment extends Fragment {
 
-    private Button bt_addPlan;
+    private Button bt_go_to_add;
     private ListView lv_plan;
     static PlanViewModel planViewModel;
     private PlanAdapter planAdapter;
     String[] plantImg, planName, startDate, daysToNow, endDate, plantName, startDate1, planBackground;
     int[] planId, waterCount, waterState, realWaterCount;
+    private LinearLayout ll_noPlan_view;
     private Toast toast = null;
 
     public PlanFragment() {
@@ -54,8 +57,22 @@ public class PlanFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_plan, container, false);
 
         lv_plan = view.findViewById(R.id.lv_plan);
+        ll_noPlan_view = view.findViewById(R.id.ll_noPlan_view);
+        bt_go_to_add = view.findViewById(R.id.bt_go_to_add);
 
-
+        bt_go_to_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.setFragment2Fragment(new MainActivity.Fragment2Fragment() {
+                    @Override
+                    public void gotoFragment(ViewPager viewPager) {
+                        viewPager.setCurrentItem(0);
+                    }
+                });
+                mainActivity.forSkip();
+            }
+        });
 
         planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
         planViewModel.initalizeVars(getActivity().getApplication());
@@ -76,6 +93,13 @@ public class PlanFragment extends Fragment {
                 waterState = new int[plans.size()];
                 realWaterCount = new int[plans.size()];
 
+                if (plans.size() != 0) {
+                    lv_plan.setVisibility(View.VISIBLE);
+                    ll_noPlan_view.setVisibility(View.INVISIBLE);
+                } else {
+                    lv_plan.setVisibility(View.INVISIBLE);
+                    ll_noPlan_view.setVisibility(View.VISIBLE);
+                }
                 for (int i = 0; i < plans.size(); i++) {
                     plantImg[i] = plans.get(i).getPlantImg();
                     planName[i] = plans.get(i).getPlanName();

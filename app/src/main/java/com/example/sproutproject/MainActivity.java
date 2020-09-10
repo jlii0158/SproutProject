@@ -73,8 +73,30 @@ public class MainActivity extends AppCompatActivity {
         if (pid == 1) {
             vp_mainPage.setCurrentItem(1);
         }
-
+        //favorite is from favoriteActivity
+        int favorite = getIntent().getIntExtra("favorite", 0);
+        if (favorite == 1) {
+            vp_mainPage.setCurrentItem(0);
+        }
     }
+
+    // This method is used to achieve fragment switch
+    public interface Fragment2Fragment{
+        void gotoFragment(ViewPager viewPager);
+    }
+
+    private  Fragment2Fragment fragment2Fragment;
+
+    public void setFragment2Fragment(Fragment2Fragment fragment2Fragment){
+        this.fragment2Fragment = fragment2Fragment;
+    }
+
+    public void forSkip(){
+        if(fragment2Fragment!=null){
+            fragment2Fragment.gotoFragment(vp_mainPage);
+        }
+    }
+    //上面的方法到这里结束
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {

@@ -32,7 +32,7 @@ public class CreateActivity extends AppCompatActivity {
 
     String startDate, endDateReal, endDateVir;
     int waterDays;
-    private ImageView iv_plan_img, iv_plan_img_bottom, iv_back_to_detail, iv_back_to_detail1;
+    private ImageView iv_plan_img, iv_plan_img_bottom, iv_back_to_detail1;
     private EditText ed_plan_name, ed_plan_name_bottom;
     private TextView plan_water_need, plan_harvest_time, plan_start_time, plan_end_time, plan_water_need_bottom, virtual_plan_start_time;
     private Button real_plan_choice, virtual_plan_choice, cycle_min, cycle_plus, plan_submit, virtual_plan_submit;
@@ -64,7 +64,6 @@ public class CreateActivity extends AppCompatActivity {
 
         generate_plan_top_view = findViewById(R.id.generate_plan_top_view);
 
-        iv_back_to_detail = findViewById(R.id.iv_back_to_detail);
         tv_plan_title = findViewById(R.id.tv_plan_title);
 
         plan_submit = findViewById(R.id.plan_submit);
@@ -252,7 +251,7 @@ public class CreateActivity extends AppCompatActivity {
          */
 
 
-        iv_back_to_detail.setOnClickListener(new View.OnClickListener() {
+        tv_plan_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PlanDetailActivity.info = 0;

@@ -57,7 +57,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class PlanDetailActivity extends AppCompatActivity {
-    private ImageView iv_plan_back_button, iv_edit_plan;
+    private ImageView iv_edit_plan;
     private TextView tv_plan_name, tv_number_of_days, tv_plan_start_date, tv_grandTotal, tv_real_water_times, tv_total_days_of_plan;
     private ProgressBar pb_true_value, pb_real;
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -67,7 +67,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     public static int info = 0;
     public static String startDatePass;
     static PlanDetailActivity instance;
-    private TextView tv_choose_background;
+    private TextView tv_choose_background, tv_plan_back_button;
     private LinearLayout ll_plan_background;
     private static final int CHOOSE_PHOTO = 385;
     private static final int TAKE_PHOTO = 189;
@@ -94,7 +94,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         db = PlanDatabase.getInstance(this);
         plan = new Plan();
         planidPass = planDisplay.getPlanId();
-        iv_plan_back_button = findViewById(R.id.iv_plan_back_button);
+        tv_plan_back_button = findViewById(R.id.tv_plan_back_button);
         tv_plan_name = findViewById(R.id.tv_plan_name);
         tv_number_of_days = findViewById(R.id.tv_number_of_days);
         tv_plan_start_date = findViewById(R.id.tv_plan_start_date);
@@ -132,7 +132,7 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         tv_choose_background.setOnClickListener(new OnClickListenerImpl());
 
-        iv_plan_back_button.setOnClickListener(new View.OnClickListener() {
+        tv_plan_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PlanDetailActivity.this, MainActivity.class);
@@ -172,6 +172,13 @@ public class PlanDetailActivity extends AppCompatActivity {
         tv_number_of_days.setText(planDisplay.getDaysToCurrentDate());
         tv_total_days_of_plan.setText(totalDays);
 
+        ThreadUtils.runInThread(new Runnable() {
+            @Override
+            public void run() {
+                plan = db.planDao().findByID(planidPass);
+            }
+        });
+
         final int finalDays = days;
         ThreadUtils.runInThread(new Runnable() {
             @Override
@@ -198,20 +205,28 @@ public class PlanDetailActivity extends AppCompatActivity {
                     ThreadUtils.runInUIThread(new Runnable() {
                         @Override
                         public void run() {
+                            //totalValue是到目前为止需要浇多少次水
+                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            //每次计算当前需要浇水多少次，然后从数据库取出来记录的需要浇水的次数
+                            //如果当前的这个次数，大于数据库里存的次数
+                            //就把数据库里的那个数据更新，就说明又可以浇水了
+                            if (totalValue > plan.getRealWaterCount()) {
+                                plan.setRealWaterCount(totalValue);
+                                plan.setWaterState(0);
+                                planViewModel.update(plan);
+                            }
+                            //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays /waterDays;
-                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) /waterSum + 1;
-
-                            //设置应该浇水多少次
-                            String grandTotal = "Grand Total: " + totalValue + "/" + waterSum;
+                            //Required watering times
+                            String grandTotal = "Required watering times: " + totalValue + "/" + waterSum;
                             tv_grandTotal.setText(grandTotal);
                             pb_true_value.setMax(waterSum);
                             pb_true_value.setProgress(totalValue);
-                            //设置实际浇了几次水
-                            String realTotal = "Actual Water Times: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
+                            //Actual watering times
+                            String realTotal = "Actual watering times: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
                             tv_real_water_times.setText(realTotal);
                             pb_real.setMax(waterSum);
                             pb_real.setProgress(planDisplay.getWaterCount());
-
                         }
                     });
                 } catch (JSONException e) {
@@ -219,15 +234,6 @@ public class PlanDetailActivity extends AppCompatActivity {
                 }
             }
         });
-
-        ThreadUtils.runInThread(new Runnable() {
-            @Override
-            public void run() {
-                plan = db.planDao().findByID(planidPass);
-            }
-        });
-
-
 
         bt_water_main.setOnClickListener(new View.OnClickListener() {
             @Override

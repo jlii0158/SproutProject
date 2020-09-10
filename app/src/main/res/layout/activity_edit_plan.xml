@@ -14,22 +14,17 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="#FFFFFF">
-        <ImageView
-            android:id="@+id/iv_edit_back_button"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/ic_left"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="8dp"/>
 
         <TextView
+            android:id="@+id/tv_edit_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit"
+            android:text=" Edit"
+            android:clickable="true"
             android:textSize="18sp"
             android:layout_marginTop="9dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"/>
+            android:layout_marginLeft="8dp"
+            android:drawableLeft="@drawable/ic_left"/>
 
     </LinearLayout>
 
@@ -40,6 +35,8 @@
         android:textSize="18sp"
         android:background="@drawable/input_rectangle_shape"
         android:drawableLeft="@drawable/ic_nickname"
+        android:singleLine="true"
+        android:maxLength="50"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="16dp"/>

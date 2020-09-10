@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sproutproject.database_entity.PlanDisplay;
@@ -24,7 +25,6 @@ import com.example.sproutproject.viewmodel.PlantViewModel;
 import java.util.List;
 
 public class EditPlanActivity extends AppCompatActivity {
-    private ImageView iv_edit_back_button;
     private EditText et_change_name;
     private Button edit_delete, edit_save;
     PlanViewModel planViewModel;
@@ -32,6 +32,7 @@ public class EditPlanActivity extends AppCompatActivity {
     int planidPass;
     PlanDatabase db = null;
     Plan plan;
+    private TextView tv_edit_back_button;
 
 
     @Override
@@ -42,10 +43,11 @@ public class EditPlanActivity extends AppCompatActivity {
 
         db = PlanDatabase.getInstance(this);
 
-        iv_edit_back_button= findViewById(R.id.iv_edit_back_button);
         et_change_name = findViewById(R.id.et_change_name);
         edit_delete = findViewById(R.id.edit_delete);
         edit_save = findViewById(R.id.edit_save);
+        tv_edit_back_button = findViewById(R.id.tv_edit_back_button);
+
         plan = new Plan();
 
         planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
@@ -83,7 +85,7 @@ public class EditPlanActivity extends AppCompatActivity {
 
         edit_delete.setOnClickListener(new OnClickListenerImpl());
 
-        iv_edit_back_button.setOnClickListener(new View.OnClickListener() {
+        tv_edit_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

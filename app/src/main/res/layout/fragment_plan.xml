@@ -4,12 +4,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragment.PlanFragment">
+    <LinearLayout
+        android:id="@+id/ll_noPlan_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="visible">
+        <Button
+            android:id="@+id/bt_go_to_add"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@drawable/ic_create"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#EAEAEA"
+            android:text="Create you plan!"
+            android:gravity="center"
+            android:textSize="30dp"
+            android:textStyle="bold"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/lv_plan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:divider="#00000000">
+        android:divider="#00000000"
+        android:visibility="invisible">
     </ListView>
+
 
 
 </FrameLayout>

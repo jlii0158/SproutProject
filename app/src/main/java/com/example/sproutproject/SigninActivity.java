@@ -30,6 +30,7 @@ public class SigninActivity extends AppCompatActivity {
     public static int stateValue = 0;
     public static String userAccount, userWelcomeName, growValue, userID;
     private ImageView iv_signin_back_bar;
+    private Toast toast = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,23 +63,23 @@ public class SigninActivity extends AppCompatActivity {
                 signup_password = ed_signup_password.getText().toString().trim();
 
                 if (nickname.equals("")) {
-                    Toast.makeText(SigninActivity.this, "Please set a name.", Toast.LENGTH_SHORT).show();
+                    showToast("Please set a name.");
                     return;
                 }
                 if (email.equals("")) {
-                    Toast.makeText(SigninActivity.this, "Please set the email.", Toast.LENGTH_SHORT).show();
+                    showToast("Please set the email.");
                     return;
                 }
                 if (!email.contains("@")||!email.contains(".")) {
-                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    showToast("The email address is invalid, please try again.");
                     return;
                 }
                 if (email.lastIndexOf(".") < email.lastIndexOf("@")) {
-                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    showToast("The email address is invalid, please try again.");
                     return;
                 }
                 if (signup_password.equals("")) {
-                    Toast.makeText(SigninActivity.this, "Please set the password.", Toast.LENGTH_SHORT).show();
+                    showToast("Please set the password.");
                     return;
                 }
 
@@ -92,19 +93,19 @@ public class SigninActivity extends AppCompatActivity {
                 username = ed_username.getText().toString().trim();
                 password = ed_password.getText().toString().trim();
                 if (username.equals("")) {
-                    Toast.makeText(SigninActivity.this, "Please input the email.", Toast.LENGTH_SHORT).show();
+                    showToast("Please input the email.");
                     return;
                 }
                 if (!username.contains("@")||!username.contains(".")) {
-                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    showToast("The email address is invalid, please try again.");
                     return;
                 }
                 if (username.lastIndexOf(".") < username.lastIndexOf("@")) {
-                    Toast.makeText(SigninActivity.this, "The email address is invalid, please try again.", Toast.LENGTH_SHORT).show();
+                    showToast("The email address is invalid, please try again.");
                     return;
                 }
                 if (password.equals("")) {
-                    Toast.makeText(SigninActivity.this, "Please input the password.", Toast.LENGTH_SHORT).show();
+                    showToast("Please input the password.");
                     return;
                 }
                 new getAllUserAsyncTask().execute();
@@ -173,13 +174,13 @@ public class SigninActivity extends AppCompatActivity {
                     }
                 }
                 if (test != 1) {
-                    Toast.makeText(SigninActivity.this, "Account does not exist.", Toast.LENGTH_SHORT).show();
+                    showToast("Account does not exist.");
                 }
                 if (test == 1 && test1 != 1) {
-                    Toast.makeText(SigninActivity.this, "Password is incorrect.", Toast.LENGTH_SHORT).show();
+                    showToast("Password is incorrect.");
                 }
                 if (test == 1 && test1 == 1) {
-                    Toast.makeText(SigninActivity.this, "Sign in success.", Toast.LENGTH_SHORT).show();
+                    showToast("Sign in success.");
                     stateValue = 1;
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     intent.putExtra("id",1);
@@ -212,7 +213,7 @@ public class SigninActivity extends AppCompatActivity {
                     }
                 }
                 if (test == 1) {
-                    Toast.makeText(SigninActivity.this, "The email has been used, please choose another one.", Toast.LENGTH_SHORT).show();
+                    showToast("The email has been used, please choose another one.");
                 }else {
                     new PostUserAsyncTask().execute();
                 }
@@ -245,5 +246,15 @@ public class SigninActivity extends AppCompatActivity {
         }
     }
 
+    private void showToast(String msg){
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(this,msg,Toast.LENGTH_SHORT);
+            toast.show();
+        }
+    }
 
 }

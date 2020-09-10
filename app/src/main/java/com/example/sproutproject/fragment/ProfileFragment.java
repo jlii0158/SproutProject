@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
     String account = SigninActivity.userAccount;
     String grow = SigninActivity.growValue;
     private LinearLayout ll_after_login;
+    private Toast toast = null;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -93,13 +94,14 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FavoriteActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 
         cardView_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "The settings feature is available in the future version .", Toast.LENGTH_SHORT).show();
+                showToast("The settings feature is available in the future version.");
             }
         });
 
@@ -113,5 +115,16 @@ public class ProfileFragment extends Fragment {
         long cur_time = System.currentTimeMillis();
         String datetime = df.format(new Date(cur_time));
         return datetime;
+    }
+
+    private void showToast(String msg){
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(getContext(),msg,Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 }

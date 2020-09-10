@@ -32,10 +32,10 @@ import java.util.Objects;
 public class DetailActivity extends AppCompatActivity {
 
     String imgUrl;
-    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_water;
+    private TextView tv_plantName,tv_plantNickName, tv_space, tv_cycle, tv_sow, tv_comp, tv_water, tv_back_button;
     private WaterUtils waterUtils;
     private LinearLayout ll_water;
-    ImageView iv_detailImage, iv_large, iv_nice_image, iv_back_button;
+    ImageView iv_detailImage, iv_large, iv_nice_image;
     CardView cv_detail;
     View imgEntryView;
     private Button bt_generate, bt_collect, bt_garbage;
@@ -68,9 +68,9 @@ public class DetailActivity extends AppCompatActivity {
         cv_detail = findViewById(R.id.large_image);
         imgEntryView = View.inflate(DetailActivity.this,R.layout.dialog_photo,null);
         bt_generate = findViewById(R.id.button6);
-        iv_back_button = findViewById(R.id.iv_back_button);
         bt_collect = findViewById(R.id.bt_collect);
         bt_garbage = findViewById(R.id.bt_garbage);
+        tv_back_button = findViewById(R.id.tv_back_button);
 
         plantViewModel = new ViewModelProvider(this).get(PlantViewModel.class);
         plantViewModel.initalizeVars(getApplication());
@@ -91,7 +91,7 @@ public class DetailActivity extends AppCompatActivity {
         store_name = plant.getPlant_name();
         imgUrl = plant.getPlant_img();
 
-        Toast.makeText(DetailActivity.this, plant.getPlant_name(), Toast.LENGTH_SHORT).show();
+        showToast(plant.getPlant_name());
 
         new FindPlantByName().execute();
 
@@ -161,7 +161,7 @@ public class DetailActivity extends AppCompatActivity {
             }
         });
 
-        iv_back_button.setOnClickListener(new View.OnClickListener() {
+        tv_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
