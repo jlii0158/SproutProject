@@ -126,7 +126,7 @@ public class PlanFragment extends Fragment {
                     startDate[i] = startString;
 
                 }
-                planAdapter = new PlanAdapter(getActivity(), plantImg, planName, startDate, daysToNow);
+                planAdapter = new PlanAdapter(getActivity(), plantImg, planName, startDate, daysToNow, waterState);
                 lv_plan.setAdapter(planAdapter);
             }
         });

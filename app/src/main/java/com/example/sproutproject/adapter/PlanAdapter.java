@@ -1,6 +1,7 @@
 package com.example.sproutproject.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.sproutproject.R;
+import com.example.sproutproject.databse.PlanDatabase;
+import com.example.sproutproject.entity.Plan;
+import com.example.sproutproject.utils.ThreadUtils;
 import com.squareup.picasso.Picasso;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 
 public class PlanAdapter extends BaseAdapter {
@@ -21,15 +30,17 @@ public class PlanAdapter extends BaseAdapter {
     private final String[] planName;
     private final String[] startDate;
     private final String[] daysToNow;
+    private final int[] waterState;
 
 
-    public PlanAdapter(Context context, String[] plantImg, String[] plantName, String[] startDate, String[] daysToNow){
+    public PlanAdapter(Context context, String[] plantImg, String[] plantName, String[] startDate, String[] daysToNow, int[] waterState){
         //super(context, R.layout.single_list_app_item, utilsArrayList);
         this.context = context;
         this.plantImg = plantImg;
         this.planName = plantName;
         this.startDate = startDate;
         this.daysToNow = daysToNow;
+        this.waterState = waterState;
     }
 
     @Override
@@ -52,7 +63,7 @@ public class PlanAdapter extends BaseAdapter {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
 
         final View result;
 
@@ -65,6 +76,7 @@ public class PlanAdapter extends BaseAdapter {
             viewHolder.planName = (TextView) convertView.findViewById(R.id.tv_plan_name);
             viewHolder.startDate = (TextView) convertView.findViewById(R.id.tv_start_date);
             viewHolder.daysToNow = (TextView) convertView.findViewById(R.id.tv_days_to_now);
+            viewHolder.daysBackground = (TextView) convertView.findViewById(R.id.tv_days);
 
             result=convertView;
 
@@ -73,6 +85,13 @@ public class PlanAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
             result=convertView;
         }
+
+
+        if (waterState[position] == 0) {
+            viewHolder.daysToNow.setBackgroundColor(Color.parseColor("#FED46E"));
+            viewHolder.daysBackground.setBackgroundColor(Color.parseColor("#fcc02d"));
+        }
+
 
         Picasso.get()
                 .load(plantImg[position])
@@ -90,6 +109,7 @@ public class PlanAdapter extends BaseAdapter {
         TextView planName;
         TextView startDate;
         TextView daysToNow;
+        TextView daysBackground;
 
     }
 }

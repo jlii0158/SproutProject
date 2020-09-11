@@ -129,29 +129,29 @@ public class CreateActivity extends AppCompatActivity {
         switch (plant.getWater_need()){
             case "low":
                 waterDays = 5;
-                String waterNeed = "My water need is Low. Please water me once every 5 days!";
+                String waterNeed = "My water needs are Low. Please water me once every 5 days!";
                 plan_water_need.setText(waterNeed);
                 break;
             case "medium":
                 waterDays = 3;
-                String waterNeed1 = "My water need is Medium. Please water me once every 3 days!";
+                String waterNeed1 = "My water needs are Medium. Please water me once every 3 days!";
                 plan_water_need.setText(waterNeed1);
                 break;
             case "high":
                 waterDays = 1;
-                String waterNeed2 = "My water need is High. Please water me everyday!";
+                String waterNeed2 = "My water needs are High. Please water me everyday!";
                 plan_water_need.setText(waterNeed2);
                 break;
         }
         //set cycle
-        String cycle = "I will grow with you for the next " + plant.getGrowth_cycle() + " weeks.";
+        String cycle = "I can grow in " + plant.getGrowth_cycle() + " weeks.";
         plan_harvest_time.setText(cycle);
 
 
         if (PlanDetailActivity.info == 0) {
             //set start date
             startDate = getCurrentDate();
-            final String dateDesc = "We will start our journey at " + startDate;
+            final String dateDesc = "We can start our journey on " + startDate;
             plan_start_time.setText(dateDesc);
         } else {
             //set start date
@@ -269,7 +269,7 @@ public class CreateActivity extends AppCompatActivity {
     private class InsertDatabase extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
-            Plan plan = new Plan(planNameToDatabase, startDate, endDateReal, 0, 0, plantName, plantImg, 0);
+            Plan plan = new Plan(planNameToDatabase, startDate, endDateReal, 0, 0, plantName, plantImg, 0, waterDays);
             long id = db.planDao().insert(plan);
             return "";
         }

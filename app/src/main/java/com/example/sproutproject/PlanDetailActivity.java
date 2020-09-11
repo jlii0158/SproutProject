@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -211,19 +212,25 @@ public class PlanDetailActivity extends AppCompatActivity {
                             //如果当前的这个次数，大于数据库里存的次数
                             //就把数据库里的那个数据更新，就说明又可以浇水了
                             if (totalValue > plan.getRealWaterCount()) {
+                                tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
                                 plan.setRealWaterCount(totalValue);
                                 plan.setWaterState(0);
                                 planViewModel.update(plan);
                             }
+                            if (plan.waterState == 0) {
+                                tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                            }
                             //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays /waterDays;
                             //Required watering times
-                            String grandTotal = "Required watering times: " + totalValue + "/" + waterSum;
+                            String grandTotal = "Required: " + totalValue + "/" + waterSum;
                             tv_grandTotal.setText(grandTotal);
                             pb_true_value.setMax(waterSum);
                             pb_true_value.setProgress(totalValue);
                             //Actual watering times
-                            String realTotal = "Actual watering times: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
+                            String realTotal = "Actual: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
                             tv_real_water_times.setText(realTotal);
                             pb_real.setMax(waterSum);
                             pb_real.setProgress(planDisplay.getWaterCount());
@@ -249,6 +256,8 @@ public class PlanDetailActivity extends AppCompatActivity {
                         pb_real.setProgress(plan.getWaterCount());
                         String realTotal = "Actual Water Times: " + String.valueOf(plan.getWaterCount()) + "/" + String.valueOf(waterSum);
                         tv_real_water_times.setText(realTotal);
+                        tv_plan_name.setBackgroundColor(Color.parseColor("#A2D89F"));
+                        bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape));
                         showToast("Well done");
                     }
                 } else {

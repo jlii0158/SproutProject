@@ -113,11 +113,21 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:layout_marginTop="16dp"
+            android:text="Watering records"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/tv_grandTotal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Grand Total"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
@@ -138,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Actual watering times"
-            android:textSize="15sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"

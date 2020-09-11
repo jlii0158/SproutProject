@@ -51,6 +51,8 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+        <receiver android:name=".AlarmReceiver"/>
     </application>
 
 </manifest>

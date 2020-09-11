@@ -25,6 +25,7 @@
             android:gravity="center"
             android:textSize="30dp"
             android:textStyle="bold"/>
+
     </LinearLayout>
 
     <ListView
@@ -34,7 +35,6 @@
         android:divider="#00000000"
         android:visibility="invisible">
     </ListView>
-
 
 
 </FrameLayout>

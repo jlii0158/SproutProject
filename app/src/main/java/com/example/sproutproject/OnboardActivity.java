@@ -66,7 +66,7 @@ public class OnboardActivity extends AppCompatActivity {
 
         OnboardingItem itemAISearch = new OnboardingItem();
         itemAISearch.setTitle("One shoot, whole world.");
-        itemAISearch.setDescription("Use intelligent identification starts your green journey!");
+        itemAISearch.setDescription("Using intelligent identification can start your green journey!");
         itemAISearch.setImage(R.drawable.search_plant);
 
         OnboardingItem itemMakePlan = new OnboardingItem();
@@ -75,8 +75,8 @@ public class OnboardActivity extends AppCompatActivity {
         itemMakePlan.setImage(R.drawable.make_plan);
 
         OnboardingItem itemMetalGet = new OnboardingItem();
-        itemMetalGet.setTitle("Shining yourself from shining medal.");
-        itemMetalGet.setDescription("Get medals to be a little garden knight, proud yourself!");
+        itemMetalGet.setTitle("Earn medals, make yourself proud!");
+        itemMetalGet.setDescription("Get medals to be a little garden knight, be proud of yourself!");
         itemMetalGet.setImage(R.drawable.metal_get);
 
         onboardingItems.add(itemAISearch);

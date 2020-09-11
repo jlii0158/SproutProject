@@ -33,4 +33,6 @@ public interface PlanDAO {
     void deleteAll();
     @Query("DELETE FROM `plan` WHERE planId=:planId")
     void deleteById(int planId);
+    @Query("SELECT * FROM `Plan`")
+    List<Plan> findAllPlan();
 }

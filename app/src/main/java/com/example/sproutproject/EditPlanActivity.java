@@ -4,14 +4,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +32,7 @@ import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.viewmodel.PlanViewModel;
 import com.example.sproutproject.viewmodel.PlantViewModel;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class EditPlanActivity extends AppCompatActivity {
@@ -33,6 +44,11 @@ public class EditPlanActivity extends AppCompatActivity {
     PlanDatabase db = null;
     Plan plan;
     private TextView tv_edit_back_button;
+    private Switch sw_notification_bar;
+    private PendingIntent pendingIntent;
+    public static final String CHANNEL_ID = "sprout";
+    SharedPreferences preferences;
+    final boolean falg = false;
 
 
     @Override
@@ -47,6 +63,8 @@ public class EditPlanActivity extends AppCompatActivity {
         edit_delete = findViewById(R.id.edit_delete);
         edit_save = findViewById(R.id.edit_save);
         tv_edit_back_button = findViewById(R.id.tv_edit_back_button);
+        sw_notification_bar = findViewById(R.id.sw_notification_bar);
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
         plan = new Plan();
 
@@ -65,7 +83,6 @@ public class EditPlanActivity extends AppCompatActivity {
                 plan = db.planDao().findByID(planidPass);
             }
         });
-
 
         edit_save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,6 +108,70 @@ public class EditPlanActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
+        if (preferences != null) {
+            boolean name = preferences.getBoolean("flag", falg);
+            sw_notification_bar.setChecked(name);
+        }
+        sw_notification_bar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
+                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                if (isChecked) {
+
+                    SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("flag", true);
+                    editor.commit();
+
+                    createNotificationChannel();
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.set(Calendar.HOUR_OF_DAY, 12);
+                    calendar.set(Calendar.MINUTE, 0);
+                    calendar.set(Calendar.SECOND, 0);
+
+                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+                    showToast("Notification Started");
+                } else {
+
+                    SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putBoolean("flag", false);
+                    editor.commit();
+
+                    cancelAlarm();
+                }
+            }
+        });
+
+    }
+
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public void cancelAlarm() {
+        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingIntent);
+        showToast("Notification Canceled");
     }
 
     private void showToast(String msg){
