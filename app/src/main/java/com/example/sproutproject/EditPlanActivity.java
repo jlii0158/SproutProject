@@ -45,10 +45,9 @@ public class EditPlanActivity extends AppCompatActivity {
     Plan plan;
     private TextView tv_edit_back_button;
     private Switch sw_notification_bar;
-    private PendingIntent pendingIntent;
-    public static final String CHANNEL_ID = "sprout";
     SharedPreferences preferences;
     final boolean falg = false;
+    private  Intent intentService;
 
 
     @Override
@@ -114,64 +113,37 @@ public class EditPlanActivity extends AppCompatActivity {
             boolean name = preferences.getBoolean("flag", falg);
             sw_notification_bar.setChecked(name);
         }
+
+
+        intentService = new Intent(getApplicationContext(), LongRunningService.class);
         sw_notification_bar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                Intent intent = new Intent(getApplicationContext(), AlarmReceiver.class);
-                pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
                 if (isChecked) {
-
                     SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("flag", true);
+                    showToast("Notification Opened");
                     editor.commit();
-
-                    createNotificationChannel();
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.set(Calendar.HOUR_OF_DAY, 12);
-                    calendar.set(Calendar.MINUTE, 0);
-                    calendar.set(Calendar.SECOND, 0);
-
-                    AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-                    alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-                    showToast("Notification Started");
+                    //开启Service
+                    startService(intentService);
                 } else {
-
                     SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putBoolean("flag", false);
                     editor.commit();
+                    showToast("Notification Closed");
+                    //关闭service
+                    stopService(intentService);
+                    AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+                    Intent i = new Intent(getApplicationContext(), AlarmReceiver.class);
+                    PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+                    manager.cancel(pi);
 
-                    cancelAlarm();
                 }
             }
         });
 
-    }
-
-
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-    public void cancelAlarm() {
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        manager.cancel(pendingIntent);
-        showToast("Notification Canceled");
     }
 
     private void showToast(String msg){

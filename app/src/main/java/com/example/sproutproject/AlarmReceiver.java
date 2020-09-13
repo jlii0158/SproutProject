@@ -31,7 +31,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
     @Override
-    public void onReceive (Context context, Intent intent) {
+    public void onReceive (final Context context, Intent intent) {
 
         db = PlanDatabase.getInstance(context);
 
@@ -48,34 +48,46 @@ public class AlarmReceiver extends BroadcastReceiver {
                         Date date2 = df.parse(getCurrentDate());
                         days = (int) ((date2.getTime() - date.getTime()) / (1000*3600*24));
                         if (days % plans.get(i).waterNeed == 0) {
+                            Plan plan = plans.get(i);
+                            plan.setWaterState(0);
+                            db.planDao().updatePlans(plan);
                             temp[0] = 1;
-                            break;
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
+
+                ThreadUtils.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (temp[0] == 1) {
+                            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
+                            Intent  repeating_intent = new Intent(context, StartActivity.class);
+                            repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+
+                            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                                    .setContentIntent(pendingIntent)
+                                    .setSmallIcon(R.drawable.logo_notification)
+                                    .setContentTitle("Sprout")
+                                    .setContentText("It's time to water your plant!")
+                                    .setAutoCancel(true);
+                            notificationManager.notify(0, builder.build());
+                        }
+                    }
+                });
             }
         });
 
-
-        if (temp[0] == 1) {
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-            Intent  repeating_intent = new Intent(context, StartActivity.class);
-            repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                    .setContentIntent(pendingIntent)
-                    .setSmallIcon(R.drawable.logo_notification)
-                    .setContentTitle("Sprout")
-                    .setContentText("It's time to water your plant!")
-                    .setAutoCancel(true);
-            notificationManager.notify(0, builder.build());
-        }
-
+        /*
+        //再次开启LongRunningService这个服务，从而可以
+        Intent i = new Intent(context, LongRunningService.class);
+        context.startService(i);
+         */
 
     }
 

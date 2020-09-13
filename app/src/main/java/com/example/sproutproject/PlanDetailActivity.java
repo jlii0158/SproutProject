@@ -10,8 +10,10 @@ import androidx.lifecycle.ViewModelProvider;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -79,6 +81,8 @@ public class PlanDetailActivity extends AppCompatActivity {
     int planidPass, waterSum;
     PlanViewModel planViewModel;
     private Button bt_water_main;
+    SharedPreferences preferences;
+    final boolean falg = false;
 
 
 
@@ -110,6 +114,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         tv_choose_background = findViewById(R.id.tv_choose_background);
         ll_plan_background = findViewById(R.id.ll_plan_background);
         bt_water_main = findViewById(R.id.bt_water_main);
+        preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
 
         planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
         planViewModel.initalizeVars(getApplication());
@@ -176,21 +181,71 @@ public class PlanDetailActivity extends AppCompatActivity {
         ThreadUtils.runInThread(new Runnable() {
             @Override
             public void run() {
-                plan = db.planDao().findByID(planidPass);
-            }
-        });
-
-        final int finalDays = days;
-        ThreadUtils.runInThread(new Runnable() {
-            @Override
-            public void run() {
                 RestClient restClient = new RestClient();
                 String result = restClient.findPlantByName(planDisplay.getPlant_name());
+                plan = db.planDao().findByID(planidPass);
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     plant_img = jsonArray.getJSONObject(0).getString("plantDesc");
                     waterNeed = jsonArray.getJSONObject(0).getString("waterNeed");
                     harvest_time = jsonArray.getJSONObject(0).getString("growthCycle");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        if (preferences.getBoolean("flag", falg)) {
+            final int finalDays = days;
+            ThreadUtils.runInThread(new Runnable() {
+                @Override
+                public void run() {
+                    plan = db.planDao().findByID(planidPass);
+                    ThreadUtils.runInUIThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (plan.waterState == 0) {
+                                tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                            }
+
+                            waterDays = plan.waterNeed;
+                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            if (totalValue > plan.getRealWaterCount()) {
+                                plan.setRealWaterCount(totalValue);
+                            }
+
+                            //waterSum是这个计划总共需要浇多少次水
+                            waterSum = finalDays / waterDays;
+                            //Required watering times
+                            String grandTotal = "Required: " + totalValue + "/" + waterSum;
+                            tv_grandTotal.setText(grandTotal);
+                            pb_true_value.setMax(waterSum);
+                            pb_true_value.setProgress(totalValue);
+                            //Actual watering times
+                            String realTotal = "Actual: " + String.valueOf(planDisplay.getWaterCount()) + "/" + String.valueOf(waterSum);
+                            tv_real_water_times.setText(realTotal);
+                            pb_real.setMax(waterSum);
+                            pb_real.setProgress(planDisplay.getWaterCount());
+                        }
+                    });
+
+                }
+            });
+        } else {
+            final int finalDays = days;
+            ThreadUtils.runInThread(new Runnable() {
+                @Override
+                public void run() {
+                    RestClient restClient = new RestClient();
+                    String result = restClient.findPlantByName(planDisplay.getPlant_name());
+                    plan = db.planDao().findByID(planidPass);
+                    try {
+                        JSONArray jsonArray = new JSONArray(result);
+                        plant_img = jsonArray.getJSONObject(0).getString("plantDesc");
+                        waterNeed = jsonArray.getJSONObject(0).getString("waterNeed");
+                        harvest_time = jsonArray.getJSONObject(0).getString("growthCycle");
+
 
                     switch (waterNeed){
                         case "low":
@@ -218,10 +273,13 @@ public class PlanDetailActivity extends AppCompatActivity {
                                 plan.setWaterState(0);
                                 planViewModel.update(plan);
                             }
+
                             if (plan.waterState == 0) {
                                 tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
                                 bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
                             }
+
+
                             //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays /waterDays;
                             //Required watering times
@@ -236,11 +294,16 @@ public class PlanDetailActivity extends AppCompatActivity {
                             pb_real.setProgress(planDisplay.getWaterCount());
                         }
                     });
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }
+
+
+
 
         bt_water_main.setOnClickListener(new View.OnClickListener() {
             @Override

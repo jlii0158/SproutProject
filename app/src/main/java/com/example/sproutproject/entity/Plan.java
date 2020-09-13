@@ -45,6 +45,14 @@ public class Plan {
     public Plan() {
     }
 
+    public int getWaterNeed() {
+        return waterNeed;
+    }
+
+    public void setWaterNeed(int waterNeed) {
+        this.waterNeed = waterNeed;
+    }
+
     public String getPlanBackground() {
         return planBackground;
     }

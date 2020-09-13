@@ -53,6 +53,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <receiver android:name=".AlarmReceiver"/>
+        <service android:name=".LongRunningService"/>
     </application>
 
 </manifest>
