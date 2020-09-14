@@ -14,11 +14,24 @@ Sprout is an Android-based platform application tailor-made for families with ch
 
 ### 1.Search
 Sprout provides searching function for capturing information of any plants you want.
+
+![search](https://user-images.githubusercontent.com/54625104/93086790-3ae2f300-f6ca-11ea-968c-ab8c3d710d8f.png)
+
 Also, Sprout supports searching by AI recognition and inputting the value of “water need” or “harvest time”.	
+
+![detail](https://user-images.githubusercontent.com/54625104/93086814-43d3c480-f6ca-11ea-8203-b19f319054ad.png)
+
+
  
 ### 2.Plan
 The feature of plan supports to generate a customized planting plan for what users want to grow.
+
+![plan1](https://user-images.githubusercontent.com/54625104/93086822-46ceb500-f6ca-11ea-9765-8fd89544a982.png)
+
 providing information of watering frequency and recording mechanism as well as informing watering by Pop-up information.
+
+![plan2](https://user-images.githubusercontent.com/54625104/93086830-48987880-f6ca-11ea-9689-b9b9f794619a.png)
+
 
 ### 3.Madals
 ### Tech
