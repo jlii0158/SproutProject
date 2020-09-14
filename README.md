@@ -15,22 +15,20 @@ Sprout is an Android-based platform application tailor-made for families with ch
 ### 1.Search
 Sprout provides searching function for capturing information of any plants you want.
 
-![search](https://user-images.githubusercontent.com/54625104/93086790-3ae2f300-f6ca-11ea-968c-ab8c3d710d8f.png)
+![search-small](https://user-images.githubusercontent.com/54625104/93087978-e8a2d180-f6cb-11ea-9ba7-f5eae1fa011e.png)
 
 Also, Sprout supports searching by AI recognition and inputting the value of “water need” or “harvest time”.	
 
-![detail](https://user-images.githubusercontent.com/54625104/93086814-43d3c480-f6ca-11ea-8203-b19f319054ad.png)
-
-
+![detail-small](https://user-images.githubusercontent.com/54625104/93087991-eb9dc200-f6cb-11ea-8a94-8eee69724c74.png)
  
 ### 2.Plan
 The feature of plan supports to generate a customized planting plan for what users want to grow.
 
-![plan1](https://user-images.githubusercontent.com/54625104/93086822-46ceb500-f6ca-11ea-9765-8fd89544a982.png)
+![plan1-small](https://user-images.githubusercontent.com/54625104/93087994-ee001c00-f6cb-11ea-96fa-ec5cdbac89ca.png)
 
 providing information of watering frequency and recording mechanism as well as informing watering by Pop-up information.
 
-![plan2](https://user-images.githubusercontent.com/54625104/93086830-48987880-f6ca-11ea-9689-b9b9f794619a.png)
+![plan2-small](https://user-images.githubusercontent.com/54625104/93087999-ef314900-f6cb-11ea-8e66-338df394848a.png)
 
 
 ### 3.Madals
