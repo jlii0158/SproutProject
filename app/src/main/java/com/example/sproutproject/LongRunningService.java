@@ -1,6 +1,7 @@
 package com.example.sproutproject;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,6 +13,8 @@ import android.os.IBinder;
 import android.os.SystemClock;
 
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class LongRunningService extends Service {
 
@@ -25,6 +28,7 @@ public class LongRunningService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         Intent intentAlarm = new Intent(this, AlarmReceiver.class);
         pendingIntent = PendingIntent.getBroadcast(this, 0, intentAlarm, PendingIntent.FLAG_UPDATE_CURRENT);
         createNotificationChannel();
@@ -33,27 +37,58 @@ public class LongRunningService extends Service {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
+        if(calendar.before(Calendar.getInstance())){ // if it's in the past, increment
+            calendar.add(Calendar.DATE, 1);
+        }
+
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000, pendingIntent);
 
+        thread.start();
+        flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
+        //return START_STICKY;
     }
 
+    Thread thread = new Thread(new Runnable() {
 
-    /*
+        @Override
+        public void run() {
+            Timer timer = new Timer();
+            TimerTask task = new TimerTask() {
+
+                @Override
+                public void run() {
+                    boolean b = EditPlanActivity.isServiceWorked(LongRunningService.this, "com.example.sproutproject.LongRunningService2");
+                    if(!b) {
+                        Intent service = new Intent(LongRunningService.this, LongRunningService2.class);
+                        startService(service);
+                    }
+                }
+            };
+            timer.schedule(task, 0, 1000);
+        }
+    });
+
+
+/*
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         //在Service结束后关闭AlarmManager
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         Intent i = new Intent(this, AlarmReceiver.class);
         PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         manager.cancel(pi);
 
-    }
+        Intent intentService = new Intent(getApplicationContext(), LongRunningService.class);
+        startService(intentService);
 
-     */
+    }
+    */
+
 
 
     private void createNotificationChannel() {

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.app.ActivityManager;
 import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -32,6 +33,7 @@ import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.viewmodel.PlanViewModel;
 import com.example.sproutproject.viewmodel.PlantViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -47,7 +49,7 @@ public class EditPlanActivity extends AppCompatActivity {
     private Switch sw_notification_bar;
     SharedPreferences preferences;
     final boolean falg = false;
-    private  Intent intentService;
+    private  Intent intentService, intentServiceTwo;
 
 
     @Override
@@ -116,6 +118,7 @@ public class EditPlanActivity extends AppCompatActivity {
 
 
         intentService = new Intent(getApplicationContext(), LongRunningService.class);
+        intentServiceTwo = new Intent(getApplicationContext(), LongRunningService2.class);
         sw_notification_bar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -127,6 +130,7 @@ public class EditPlanActivity extends AppCompatActivity {
                     editor.commit();
                     //开启Service
                     startService(intentService);
+                    startService(intentServiceTwo);
                 } else {
                     SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -135,6 +139,7 @@ public class EditPlanActivity extends AppCompatActivity {
                     showToast("Notification Closed");
                     //关闭service
                     stopService(intentService);
+                    stopService(intentServiceTwo);
                     AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
                     Intent i = new Intent(getApplicationContext(), AlarmReceiver.class);
                     PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -146,7 +151,18 @@ public class EditPlanActivity extends AppCompatActivity {
 
     }
 
-    private void showToast(String msg){
+    public static boolean isServiceWorked(Context context, String serviceName) {
+        ActivityManager myManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        ArrayList<ActivityManager.RunningServiceInfo> runningService = (ArrayList<ActivityManager.RunningServiceInfo>) myManager.getRunningServices(Integer.MAX_VALUE);
+        for (int i = 0; i < runningService.size(); i++) {
+            if (runningService.get(i).service.getClassName().toString().equals(serviceName)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+        private void showToast(String msg){
         if (toast != null) {
             toast.setText(msg);
             toast.setDuration(Toast.LENGTH_SHORT);

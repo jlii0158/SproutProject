@@ -274,12 +274,15 @@ public class PlanDetailActivity extends AppCompatActivity {
                                 planViewModel.update(plan);
                             }
 
+
+
                             if (plan.waterState == 0) {
-                                tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
-                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                                if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
+                                    tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                    bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                                }
+
                             }
-
-
                             //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays /waterDays;
                             //Required watering times

@@ -52,6 +52,10 @@ public class AlarmReceiver extends BroadcastReceiver {
                             plan.setWaterState(0);
                             db.planDao().updatePlans(plan);
                             temp[0] = 1;
+                        } else {
+                            Plan plan = plans.get(i);
+                            plan.setWaterState(1);
+                            db.planDao().updatePlans(plan);
                         }
                     } catch (ParseException e) {
                         e.printStackTrace();

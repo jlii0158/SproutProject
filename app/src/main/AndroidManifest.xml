@@ -54,6 +54,7 @@
 
         <receiver android:name=".AlarmReceiver"/>
         <service android:name=".LongRunningService"/>
+        <service android:name=".LongRunningService2"/>
     </application>
 
 </manifest>
