@@ -25,7 +25,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="bottom"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="25dp">
 
 
         <LinearLayout
@@ -48,7 +48,7 @@
             android:id="@+id/textView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Copyright © 2019-2020 SPROUT"
+            android:text="Copyright © 2019-2020 Monash University SPROUT"
             android:layout_gravity="center"/>
 
     </LinearLayout>

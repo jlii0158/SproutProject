@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sproutproject.AboutUsActivity;
 import com.example.sproutproject.FavoriteActivity;
 import com.example.sproutproject.R;
 import com.example.sproutproject.SigninActivity;
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat;
 
 public class ProfileFragment extends Fragment {
 
-    private CardView login_card, cardView_favorite, cardView_setting;
+    private CardView login_card, cardView_favorite, cardView_setting, cardView_about_us;
     int signState = SigninActivity.stateValue;
     private TextView tv_login_start, tv_account, tv_gift_show, tv_date_show;
     String nick = SigninActivity.userWelcomeName;
@@ -52,6 +53,15 @@ public class ProfileFragment extends Fragment {
         tv_gift_show = view.findViewById(R.id.tv_gift_show);
         tv_date_show = view.findViewById(R.id.tv_date_show);
         cardView_setting = view.findViewById(R.id.cardView_setting);
+        cardView_about_us = view.findViewById(R.id.cardView_about_us);
+
+        cardView_about_us.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AboutUsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         if (signState == 1) {
