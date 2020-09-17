@@ -45,7 +45,7 @@ public class LongRunningService extends Service {
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
         //alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 60000, pendingIntent);
 
-        thread.start();
+        //thread.start();
         flags = START_STICKY;
         return super.onStartCommand(intent, flags, startId);
         //return START_STICKY;

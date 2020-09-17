@@ -63,11 +63,14 @@ public class MainActivity extends AppCompatActivity {
         toolbarUtils.changeColor(0);
         initListener();
 
-        //id is from signInActivity
+
+        //id is from signInActivity and UserInformationActivity
         int id = getIntent().getIntExtra("id", 0);
         if (id == 1) {
             vp_mainPage.setCurrentItem(3);
         }
+
+
         //pid is from createActivity and planDetail activity
         int pid = getIntent().getIntExtra("pid", 0);
         if (pid == 1) {

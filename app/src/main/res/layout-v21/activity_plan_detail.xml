@@ -118,7 +118,7 @@
             android:layout_marginLeft="32dp"
             android:layout_marginRight="32dp"
             android:layout_marginTop="16dp"
-            android:text="Watering records"
+            android:text="The number of watering times"
             android:textSize="15sp"
             android:textStyle="bold"/>
 

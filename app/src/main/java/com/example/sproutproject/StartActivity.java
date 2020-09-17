@@ -13,7 +13,7 @@ import com.example.sproutproject.utils.ThreadUtils;
 
 public class StartActivity extends AppCompatActivity {
 
-    SharedPreferences preferences;
+    SharedPreferences preferences, signPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +26,28 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void run() {
                 SystemClock.sleep(2000);
+
                 preferences = getSharedPreferences("count", Context.MODE_PRIVATE);
                 int count = preferences.getInt("count", 0);
-                if (count == 0) {
 
-                    Intent intent = new Intent(StartActivity.this,OnboardActivity.class);
+                signPreference = getSharedPreferences("login", Context.MODE_PRIVATE);
+                int signState = signPreference.getInt("loginState", 0);
+
+                if (count == 0) {
+                    Intent intent = new Intent(StartActivity.this, OnboardActivity.class);
                     startActivity(intent);
                     finish();
                 }else {
-                    Intent intent = new Intent(StartActivity.this,MainActivity.class);
-                    startActivity(intent);
-                    finish();
+                    if (signState == 1) {
+                        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(StartActivity.this, SigninActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+
                 }
                 SharedPreferences.Editor editor = preferences.edit();
                 //存入数据

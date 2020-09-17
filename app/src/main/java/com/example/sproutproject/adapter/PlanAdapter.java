@@ -31,9 +31,12 @@ public class PlanAdapter extends BaseAdapter {
     private final String[] startDate;
     private final String[] daysToNow;
     private final int[] waterState;
+    private final int[] waterDays;
+    private final String[] endDate;
+    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
 
-    public PlanAdapter(Context context, String[] plantImg, String[] plantName, String[] startDate, String[] daysToNow, int[] waterState){
+    public PlanAdapter(Context context, String[] plantImg, String[] plantName, String[] startDate, String[] daysToNow, int[] waterState, int[] waterDays, String[] endDate){
         //super(context, R.layout.single_list_app_item, utilsArrayList);
         this.context = context;
         this.plantImg = plantImg;
@@ -41,6 +44,8 @@ public class PlanAdapter extends BaseAdapter {
         this.startDate = startDate;
         this.daysToNow = daysToNow;
         this.waterState = waterState;
+        this.waterDays = waterDays;
+        this.endDate = endDate;
     }
 
     @Override
@@ -88,8 +93,22 @@ public class PlanAdapter extends BaseAdapter {
 
 
         if (waterState[position] == 0) {
-            viewHolder.daysToNow.setBackgroundColor(Color.parseColor("#FED46E"));
-            viewHolder.daysBackground.setBackgroundColor(Color.parseColor("#fcc02d"));
+            if (Integer.parseInt(daysToNow[position]) % waterDays[position] == 0) {
+                viewHolder.daysToNow.setBackgroundColor(Color.parseColor("#FED46E"));
+                viewHolder.daysBackground.setBackgroundColor(Color.parseColor("#fcc02d"));
+            }
+        }
+
+
+        try {
+            Date date = df.parse(getCurrentDate());
+            Date date1 = df.parse(endDate[position]);
+            if (date == date1) {
+                viewHolder.daysToNow.setBackgroundColor(Color.parseColor("#C1C1C1"));
+                viewHolder.daysBackground.setBackgroundColor(Color.parseColor("#989898"));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
 
@@ -110,6 +129,11 @@ public class PlanAdapter extends BaseAdapter {
         TextView startDate;
         TextView daysToNow;
         TextView daysBackground;
+    }
 
+    public static String getCurrentDate() {
+        long cur_time = System.currentTimeMillis();
+        String datetime = df.format(new Date(cur_time));
+        return datetime;
     }
 }

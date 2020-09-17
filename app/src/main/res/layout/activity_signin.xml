@@ -9,6 +9,7 @@
     tools:context=".SigninActivity"
     android:orientation="vertical">
 
+    <!--
     <LinearLayout
         android:id="@+id/tv_signin_bar"
         android:layout_width="match_parent"
@@ -23,6 +24,7 @@
             android:layout_marginTop="15dp"
             android:layout_marginLeft="8dp"/>
     </LinearLayout>
+    -->
 
     <ImageView
         android:layout_width="wrap_content"

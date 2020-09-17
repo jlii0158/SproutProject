@@ -43,20 +43,34 @@ public class AlarmReceiver extends BroadcastReceiver {
                 List<Plan> plans = db.planDao().findAllPlan();
                 for (int i = 0; i < plans.size(); i++) {
                     int days;
+                    int days2;
                     try {
                         Date date = df.parse(plans.get(i).startDate);
                         Date date2 = df.parse(getCurrentDate());
+                        Date date3 = df.parse(plans.get(i).endDate);
                         days = (int) ((date2.getTime() - date.getTime()) / (1000*3600*24));
-                        if (days % plans.get(i).waterNeed == 0) {
-                            Plan plan = plans.get(i);
-                            plan.setWaterState(0);
-                            db.planDao().updatePlans(plan);
-                            temp[0] = 1;
+                        days2 = (int) ((date3.getTime() - date.getTime()) / (1000*3600*24));
+                        //判断是不是到了截止日期
+                        if (days < days2) {
+                        //if (date2 != date3) {
+                            if (days % plans.get(i).waterNeed == 0) {
+                                Plan plan = plans.get(i);
+                                plan.setWaterState(0);
+                                //int realWaterCount = plan.getRealWaterCount() + 1;
+                                //plan.setWaterCount(realWaterCount);
+                                db.planDao().updatePlans(plan);
+                                temp[0] = 1;
+                            } else {
+                                Plan plan = plans.get(i);
+                                plan.setWaterState(1);
+                                db.planDao().updatePlans(plan);
+                            }
                         } else {
                             Plan plan = plans.get(i);
                             plan.setWaterState(1);
                             db.planDao().updatePlans(plan);
                         }
+
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -68,7 +82,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                         if (temp[0] == 1) {
                             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-                            Intent  repeating_intent = new Intent(context, StartActivity.class);
+                            Intent  repeating_intent = new Intent(context, MainActivity.class);
+                            repeating_intent.putExtra("pid",1);
                             repeating_intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, repeating_intent, PendingIntent.FLAG_UPDATE_CURRENT);

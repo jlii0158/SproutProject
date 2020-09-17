@@ -1,6 +1,8 @@
 package com.example.sproutproject.fragment;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -26,13 +28,11 @@ import java.text.SimpleDateFormat;
 public class ProfileFragment extends Fragment {
 
     private CardView login_card, cardView_favorite, cardView_setting, cardView_about_us;
-    int signState = SigninActivity.stateValue;
+    //int signState = SigninActivity.stateValue;
     private TextView tv_login_start, tv_account, tv_gift_show, tv_date_show;
-    String nick = SigninActivity.userWelcomeName;
-    String account = SigninActivity.userAccount;
-    String grow = SigninActivity.growValue;
     private LinearLayout ll_after_login;
     private Toast toast = null;
+    SharedPreferences preferences;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -55,6 +55,8 @@ public class ProfileFragment extends Fragment {
         cardView_setting = view.findViewById(R.id.cardView_setting);
         cardView_about_us = view.findViewById(R.id.cardView_about_us);
 
+        preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+
         cardView_about_us.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,13 +65,17 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        int signState = preferences.getInt("loginState", 0);
+        String nickname = preferences.getString("userWelcomeName", null);
+        String userAccount = preferences.getString("userAccount", null);
+        String growValue = preferences.getString("growValue", null);
 
         if (signState == 1) {
-            String welcome = "Welcome back, " + nick;
-            String growString = "Grow Value: " + grow;
+            String welcome = "Welcome back, " + nickname;
+            String growString = "Grow Value: " + growValue;
             String currentDate = getCurrentDate();
             tv_login_start.setText(welcome);
-            tv_account.setText(account);
+            tv_account.setText(userAccount);
 
             tv_gift_show.setText(growString);
             tv_date_show.setText(currentDate);

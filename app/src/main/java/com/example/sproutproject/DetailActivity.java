@@ -42,7 +42,7 @@ public class DetailActivity extends AppCompatActivity {
     PlantDatabase db = null;
     private Toast toast = null;
     String store_name, store_img;
-    int signState = SigninActivity.stateValue;
+    //int signState = SigninActivity.stateValue;
     PlantViewModel plantViewModel;
 
 

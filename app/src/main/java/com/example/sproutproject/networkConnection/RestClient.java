@@ -64,7 +64,7 @@ public class RestClient {
         return results;
     }
 
-    public static String findAllUser() {
+    public String findAllUser() {
         Request.Builder builder = new Request.Builder();
         builder.url(getAllUser_URL);
         Request request = builder.build();

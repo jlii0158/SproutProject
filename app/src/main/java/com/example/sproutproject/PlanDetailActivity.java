@@ -8,6 +8,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -27,7 +28,10 @@ import android.os.Messenger;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,6 +47,7 @@ import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.networkConnection.TransApi;
 import com.example.sproutproject.utils.ThreadUtils;
+import com.example.sproutproject.utils.ToastUtils;
 import com.example.sproutproject.viewmodel.PlanViewModel;
 
 import org.json.JSONArray;
@@ -71,11 +76,13 @@ public class PlanDetailActivity extends AppCompatActivity {
     public static String startDatePass;
     static PlanDetailActivity instance;
     private TextView tv_choose_background, tv_plan_back_button;
-    private LinearLayout ll_plan_background;
+    private LinearLayout ll_plan_background, toastView;
     private static final int CHOOSE_PHOTO = 385;
     private static final int TAKE_PHOTO = 189;
     private final String TAG = getClass().getSimpleName();
     private Toast toast = null;
+    private Toast toastWithImage = null;
+    private ToastUtils toastUtils = new ToastUtils();
     PlanDatabase db = null;
     Plan plan;
     int planidPass, waterSum;
@@ -178,12 +185,18 @@ public class PlanDetailActivity extends AppCompatActivity {
         tv_number_of_days.setText(planDisplay.getDaysToCurrentDate());
         tv_total_days_of_plan.setText(totalDays);
 
+        if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) >= days) {
+            ImageView toastImage = new ImageView(getApplicationContext());
+            toastImage.setImageResource(R.drawable.ic_like);
+            toastUtils.Long(PlanDetailActivity.this,"          Well done          ").addView(toastImage,0).show();
+        }
+
         ThreadUtils.runInThread(new Runnable() {
             @Override
             public void run() {
                 RestClient restClient = new RestClient();
                 String result = restClient.findPlantByName(planDisplay.getPlant_name());
-                plan = db.planDao().findByID(planidPass);
+                //plan = db.planDao().findByID(planidPass);
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     plant_img = jsonArray.getJSONObject(0).getString("plantDesc");
@@ -204,19 +217,31 @@ public class PlanDetailActivity extends AppCompatActivity {
                     ThreadUtils.runInUIThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (plan.waterState == 0) {
-                                tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
-                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
-                            }
 
                             waterDays = plan.waterNeed;
-                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
-                            if (totalValue > plan.getRealWaterCount()) {
-                                plan.setRealWaterCount(totalValue);
-                            }
-
                             //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays / waterDays;
+                            int totalValue = 0;
+                            if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) < finalDays) {
+                                totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            } else {
+                                totalValue = waterSum;
+                            }
+
+                            if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) < finalDays) {
+                                if (plan.waterState == 0) {
+                                    tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                    bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                                }
+                                if (totalValue > plan.getRealWaterCount()) {
+                                    plan.setRealWaterCount(totalValue);
+                                }
+                            } else {
+                                tv_plan_name.setBackgroundColor(Color.parseColor("#C1C1C1"));
+                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_grey));
+                            }
+
+
                             //Required watering times
                             String grandTotal = "Required: " + totalValue + "/" + waterSum;
                             tv_grandTotal.setText(grandTotal);
@@ -246,7 +271,6 @@ public class PlanDetailActivity extends AppCompatActivity {
                         waterNeed = jsonArray.getJSONObject(0).getString("waterNeed");
                         harvest_time = jsonArray.getJSONObject(0).getString("growthCycle");
 
-
                     switch (waterNeed){
                         case "low":
                             waterDays = 5;
@@ -262,7 +286,15 @@ public class PlanDetailActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             //totalValue是到目前为止需要浇多少次水
-                            int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            //int totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            //waterSum是这个计划总共需要浇多少次水
+                            waterSum = finalDays / waterDays;
+                            int totalValue = 0;
+                            if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) < finalDays) {
+                                totalValue = Integer.parseInt(planDisplay.getDaysToCurrentDate()) / waterDays + 1;
+                            } else {
+                                totalValue = waterSum;
+                            }
                             //每次计算当前需要浇水多少次，然后从数据库取出来记录的需要浇水的次数
                             //如果当前的这个次数，大于数据库里存的次数
                             //就把数据库里的那个数据更新，就说明又可以浇水了
@@ -274,15 +306,18 @@ public class PlanDetailActivity extends AppCompatActivity {
                                 planViewModel.update(plan);
                             }
 
-
-
-                            if (plan.waterState == 0) {
-                                if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
-                                    tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
-                                    bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                            if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) < finalDays) {
+                                if (plan.waterState == 0) {
+                                    if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
+                                        tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
+                                        bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
+                                    }
                                 }
-
+                            } else {
+                                tv_plan_name.setBackgroundColor(Color.parseColor("#C1C1C1"));
+                                bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_grey));
                             }
+
                             //waterSum是这个计划总共需要浇多少次水
                             waterSum = finalDays /waterDays;
                             //Required watering times
@@ -309,11 +344,15 @@ public class PlanDetailActivity extends AppCompatActivity {
 
 
         bt_water_main.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
+            @SuppressLint("Range")
             @Override
             public void onClick(View v) {
                 if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
                     if (plan.getWaterState() == 1) {
-                        showToast("It's been watered today");
+                        ImageView toastImage = new ImageView(getApplicationContext());
+                        toastImage.setImageResource(R.drawable.ic_rain);
+                        centralToast("   It's been watered today   ", toastImage);
                     } else {
                         int currentWaterCount = plan.getWaterCount() + 1;
                         plan.setWaterCount(currentWaterCount);
@@ -324,10 +363,15 @@ public class PlanDetailActivity extends AppCompatActivity {
                         tv_real_water_times.setText(realTotal);
                         tv_plan_name.setBackgroundColor(Color.parseColor("#A2D89F"));
                         bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape));
-                        showToast("Well done");
+
+                        ImageView toastImage = new ImageView(getApplicationContext());
+                        toastImage.setImageResource(R.drawable.ic_90crown);
+                        toastUtils.Long(PlanDetailActivity.this,"          Well done          ").addView(toastImage,0).show();
                     }
                 } else {
-                    showToast("Need no water today");
+                    ImageView toastImage = new ImageView(getApplicationContext());
+                    toastImage.setImageResource(R.drawable.ic_forbiden);
+                    centralToast("     Need no water today     ", toastImage);
                 }
             }
         });
@@ -432,7 +476,19 @@ public class PlanDetailActivity extends AppCompatActivity {
         }
     }
 
-
+    public void centralToast(String msg, ImageView imageView){
+        if(toastWithImage!=null){
+            //toastWithImage.setText(msg);
+            //toastWithImage.setDuration(Toast.LENGTH_LONG);
+            toastWithImage.show();
+        }else{
+            toastWithImage = Toast.makeText(PlanDetailActivity.this,msg,Toast.LENGTH_SHORT);
+            toastWithImage.setGravity(Gravity.CENTER, 0, 0);
+            toastView = (LinearLayout) toastWithImage.getView();
+            toastView.addView(imageView,0);
+            toastWithImage.show();
+        }
+    }
 
     private void showToast(String msg){
         if (toast != null) {

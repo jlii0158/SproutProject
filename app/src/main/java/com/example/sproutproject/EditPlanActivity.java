@@ -1,5 +1,6 @@
 package com.example.sproutproject;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -14,8 +15,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +56,7 @@ public class EditPlanActivity extends AppCompatActivity {
     private  Intent intentService, intentServiceTwo;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,7 +121,6 @@ public class EditPlanActivity extends AppCompatActivity {
             sw_notification_bar.setChecked(name);
         }
 
-
         intentService = new Intent(getApplicationContext(), LongRunningService.class);
         intentServiceTwo = new Intent(getApplicationContext(), LongRunningService2.class);
         sw_notification_bar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -130,7 +134,7 @@ public class EditPlanActivity extends AppCompatActivity {
                     editor.commit();
                     //开启Service
                     startService(intentService);
-                    startService(intentServiceTwo);
+                    //startService(intentServiceTwo);
                 } else {
                     SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = preferences.edit();
@@ -139,7 +143,7 @@ public class EditPlanActivity extends AppCompatActivity {
                     showToast("Notification Closed");
                     //关闭service
                     stopService(intentService);
-                    stopService(intentServiceTwo);
+                    //stopService(intentServiceTwo);
                     AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
                     Intent i = new Intent(getApplicationContext(), AlarmReceiver.class);
                     PendingIntent pi = PendingIntent.getBroadcast(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -147,9 +151,11 @@ public class EditPlanActivity extends AppCompatActivity {
 
                 }
             }
+
         });
 
     }
+
 
     public static boolean isServiceWorked(Context context, String serviceName) {
         ActivityManager myManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);

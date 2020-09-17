@@ -2,9 +2,12 @@ package com.example.sproutproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,8 +32,11 @@ public class SigninActivity extends AppCompatActivity {
     //This value is used to indicate the sign in state, 0 means no state, 1 means login.
     public static int stateValue = 0;
     public static String userAccount, userWelcomeName, growValue, userID;
-    private ImageView iv_signin_back_bar;
+    //private ImageView iv_signin_back_bar;
     private Toast toast = null;
+    SharedPreferences preferences;
+    RestClient restClient = new RestClient();
+    private long firstTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +58,9 @@ public class SigninActivity extends AppCompatActivity {
         ed_signup_password = findViewById(R.id.ed_signup_password);
         bt_signup = findViewById(R.id.bt_signup);
 
-        iv_signin_back_bar = findViewById(R.id.iv_signin_back_bar);
+        //iv_signin_back_bar = findViewById(R.id.iv_signin_back_bar);
 
+        preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         bt_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -128,6 +135,7 @@ public class SigninActivity extends AppCompatActivity {
             }
         });
 
+        /*
         iv_signin_back_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,8 +145,11 @@ public class SigninActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+         */
     }
 
+    /*
     public void onBackPressed() {
         Intent intent = new Intent(SigninActivity.this, MainActivity.class);
         intent.putExtra("id",1);
@@ -146,17 +157,35 @@ public class SigninActivity extends AppCompatActivity {
         finish();
     }
 
+     */
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_UP) {
+            long secondTime = System.currentTimeMillis();
+            if (secondTime - firstTime > 1000) {
+                showToast("Click once again to exit");
+                firstTime = secondTime;
+                return true;
+            } else {
+                finish();
+            }
+        }
+
+        return super.onKeyUp(keyCode, event);
+    }
+
 
     private class getAllUserAsyncTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
-            return RestClient.findAllUser();
+
+            return restClient.findAllUser();
         }
 
         @Override
         protected void onPostExecute(String result) {
-
             try {
                 int test = 0;
                 int test1 = 0;
@@ -183,7 +212,18 @@ public class SigninActivity extends AppCompatActivity {
                     showToast("Sign in success.");
                     stateValue = 1;
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
-                    intent.putExtra("id",1);
+                    //intent.putExtra("id",1);
+
+
+                    preferences.edit()
+                            .putString("userAccount", userAccount)
+                            .putString("userWelcomeName", userWelcomeName)
+                            .putString("growValue", growValue)
+                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                            .apply();
+
+
+
                     startActivity(intent);
                     finish();
                 }
@@ -198,7 +238,7 @@ public class SigninActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            return RestClient.findAllUser();
+            return restClient.findAllUser();
         }
 
         @Override
@@ -227,6 +267,9 @@ public class SigninActivity extends AppCompatActivity {
 
         @Override
         protected Integer doInBackground(String... strings) {
+            userAccount = email;
+            userWelcomeName = nickname;
+            growValue = "0";
             return RestClient.postUser(nickname, email, MD5.md5(signup_password));
         }
         @Override
@@ -235,6 +278,18 @@ public class SigninActivity extends AppCompatActivity {
                 Toast.makeText(SigninActivity.this, "Sign Up failed!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(SigninActivity.this, "Sign Up Success!", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(SigninActivity.this, MainActivity.class);
+
+
+                preferences.edit()
+                           .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                           .putString("userAccount", userAccount)
+                           .putString("userWelcomeName", userWelcomeName)
+                           .apply();
+
+                startActivity(intent);
+                finish();
+                /*
                 ed_nickname.setText("");
                 ed_email.setText("");
                 ed_signup_password.setText("");
@@ -242,6 +297,8 @@ public class SigninActivity extends AppCompatActivity {
                 signin_top.setVisibility(View.VISIBLE);
                 ed_username.setText(email);
                 ed_password.setText(signup_password);
+
+                 */
             }
         }
     }

@@ -42,7 +42,7 @@ public class PlanFragment extends Fragment {
     static PlanViewModel planViewModel;
     private PlanAdapter planAdapter;
     String[] plantImg, planName, startDate, daysToNow, endDate, plantName, startDate1, planBackground;
-    int[] planId, waterCount, waterState, realWaterCount;
+    int[] planId, waterCount, waterState, realWaterCount, waterDays;
     private LinearLayout ll_noPlan_view;
     private Toast toast = null;
 
@@ -92,6 +92,7 @@ public class PlanFragment extends Fragment {
                 waterCount = new int[plans.size()];
                 waterState = new int[plans.size()];
                 realWaterCount = new int[plans.size()];
+                waterDays = new int[plans.size()];
 
                 if (plans.size() != 0) {
                     lv_plan.setVisibility(View.VISIBLE);
@@ -111,6 +112,7 @@ public class PlanFragment extends Fragment {
                     waterState[i] = plans.get(i).getWaterState();
                     realWaterCount[i] = plans.get(i).getRealWaterCount();
                     planBackground[i] = plans.get(i).getPlanBackground();
+                    waterDays[i] = plans.get(i).getWaterNeed();
 
                     int days = 0;
                     try {
@@ -126,7 +128,7 @@ public class PlanFragment extends Fragment {
                     startDate[i] = startString;
 
                 }
-                planAdapter = new PlanAdapter(getActivity(), plantImg, planName, startDate, daysToNow, waterState);
+                planAdapter = new PlanAdapter(getActivity(), plantImg, planName, startDate, daysToNow, waterState, waterDays, endDate);
                 lv_plan.setAdapter(planAdapter);
             }
         });
