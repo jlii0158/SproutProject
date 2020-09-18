@@ -37,6 +37,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive (final Context context, Intent intent) {
 
         preferences = context.getSharedPreferences("login", Context.MODE_PRIVATE);
+        preferences.edit().putInt("dailyGrow", 0).apply();
 
         db = PlanDatabase.getInstance(context);
 

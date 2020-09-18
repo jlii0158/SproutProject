@@ -210,6 +210,7 @@ public class PlanDetailActivity extends AppCompatActivity {
             }
         });
 
+        //这个if是notification是开启的状态，下面的else是notification是关闭状态
         if (preferences.getBoolean("flag", falg)) {
             final int finalDays = days;
             ThreadUtils.runInThread(new Runnable() {
@@ -368,17 +369,24 @@ public class PlanDetailActivity extends AppCompatActivity {
                         bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape));
 
                         String growValue = preferencesGrowValue.getString("growValue", null);
-                        if (Integer.parseInt(growValue) <= 200) {
-                            growValue = String.valueOf(Integer.parseInt(growValue) + 5);
-                            preferencesGrowValue.edit()
-                                    .putString("growValue", growValue)
-                                    .apply();
+                        /*
+                        int dailyGrow = preferencesGrowValue.getInt("dailyGrow", 0);
+                        if (dailyGrow < 200) {
+                            dailyGrow += 5;
 
-                            ImageView toastImage = new ImageView(getApplicationContext());
-                            toastImage.setImageResource(R.drawable.ic_90crown);
-                            toastUtils.Long(PlanDetailActivity.this,"Well done! Get 5 growth value!")
-                                    .addView(toastImage,0)
-                                    .show();
+                         */
+                        growValue = String.valueOf(Integer.parseInt(growValue) + 5);
+                        preferencesGrowValue.edit()
+                                .putString("growValue", growValue)
+                                //.putInt("dailyGrow", dailyGrow)
+                                .apply();
+
+                        ImageView toastImage = new ImageView(getApplicationContext());
+                        toastImage.setImageResource(R.drawable.ic_90crown);
+                        toastUtils.Long(PlanDetailActivity.this,"Well done! Get 5 growth value!")
+                                .addView(toastImage,0)
+                                .show();
+                        /*
                         } else {
                             ImageView toastImage = new ImageView(getApplicationContext());
                             toastImage.setImageResource(R.drawable.ic_90crown);
@@ -386,6 +394,8 @@ public class PlanDetailActivity extends AppCompatActivity {
                                     .addView(toastImage,0)
                                     .show();
                         }
+
+                         */
 
                     }
                 } else {

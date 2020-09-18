@@ -223,6 +223,7 @@ public class SigninActivity extends AppCompatActivity {
                                 .putString("userWelcomeName", userWelcomeName)
                                 .putString("growValue", growValueFromNative)
                                 .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                                //.putInt("dailyGrow", 0)
                                 .apply();
                     } else {
                         preferences.edit()
@@ -230,6 +231,7 @@ public class SigninActivity extends AppCompatActivity {
                                 .putString("userWelcomeName", userWelcomeName)
                                 .putString("growValue", growValue)
                                 .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                                //.putInt("dailyGrow", 0)
                                 .apply();
                     }
 
@@ -299,6 +301,7 @@ public class SigninActivity extends AppCompatActivity {
                             .putString("userWelcomeName", userWelcomeName)
                             .putString("growValue", growValueFromNative)
                             .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                            //.putInt("dailyGrow", 0)
                             .apply();
                 } else {
                     preferences.edit()
@@ -306,6 +309,7 @@ public class SigninActivity extends AppCompatActivity {
                             .putString("userWelcomeName", userWelcomeName)
                             .putString("growValue", growValue)
                             .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                            //.putInt("dailyGrow", 0)
                             .apply();
                 }
 
