@@ -1,10 +1,12 @@
 package com.example.sproutproject;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -273,8 +275,10 @@ public class CreateActivity extends AppCompatActivity {
             long id = db.planDao().insert(plan);
             return "";
         }
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         protected void onPostExecute(String details) {
+            DetailActivity.instance.finish();
             showToast("Plan created successfully");
             MainActivity.instance.finish();
             Intent intent = new Intent(CreateActivity.this, MainActivity.class);

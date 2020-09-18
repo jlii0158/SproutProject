@@ -28,6 +28,7 @@ public class RestClient {
     private static final String getAllUser_URL = "https://j019m0u38a.execute-api.ap-southeast-2.amazonaws.com/findUser/findalluser";
     private static final String postUser_URL = "https://7lykoo8hjj.execute-api.ap-southeast-2.amazonaws.com/postUserWithDetail/postuserwithdetail";
     private static final String getPlantByName_URL = "https://obrykx3jfb.execute-api.ap-southeast-2.amazonaws.com/findPlantByName/findplantbyname?plantName=";
+    private static final String updateGrowValue_URL = "https://h68g7av5mg.execute-api.ap-southeast-2.amazonaws.com/updateGrowValue/updategrowvalue?user_grow=";
 
 
     private static OkHttpClient client=null;
@@ -96,6 +97,24 @@ public class RestClient {
         try {
             Response response= client.newCall(request).execute();
             strResponse= response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int updateGrowValue(String growValue, String userAccount) {
+
+        UserTable userTable = new UserTable("0", "kkk", "6");
+        Gson gson = new Gson();
+        String credentialJson = gson.toJson(userTable);
+        RequestBody body = RequestBody.create(credentialJson, JSON);
+        Request request = new Request.Builder()
+                .url(updateGrowValue_URL + Integer.parseInt(growValue) + "&user_name=" + userAccount)
+                .post(body)
+                .build();
+        try {
+            Response response= client.newCall(request).execute();
         } catch (Exception e) {
             e.printStackTrace();
         }

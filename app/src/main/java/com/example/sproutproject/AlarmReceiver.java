@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -16,6 +17,7 @@ import androidx.lifecycle.ViewModelStoreOwner;
 
 import com.example.sproutproject.databse.PlanDatabase;
 import com.example.sproutproject.entity.Plan;
+import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.viewmodel.PlanViewModel;
 
@@ -29,9 +31,12 @@ public class AlarmReceiver extends BroadcastReceiver {
     public static final String CHANNEL_ID = "sprout";
     PlanDatabase db = null;
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    SharedPreferences preferences;
 
     @Override
     public void onReceive (final Context context, Intent intent) {
+
+        preferences = context.getSharedPreferences("login", Context.MODE_PRIVATE);
 
         db = PlanDatabase.getInstance(context);
 
@@ -40,6 +45,11 @@ public class AlarmReceiver extends BroadcastReceiver {
         ThreadUtils.runInThread(new Runnable() {
             @Override
             public void run() {
+
+                RestClient.updateGrowValue(
+                        preferences.getString("growValue", null),
+                        preferences.getString("userAccount", null));
+
                 List<Plan> plans = db.planDao().findAllPlan();
                 for (int i = 0; i < plans.size(); i++) {
                     int days;

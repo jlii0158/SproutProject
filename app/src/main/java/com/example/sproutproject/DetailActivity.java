@@ -44,6 +44,7 @@ public class DetailActivity extends AppCompatActivity {
     String store_name, store_img;
     //int signState = SigninActivity.stateValue;
     PlantViewModel plantViewModel;
+    public static DetailActivity instance;
 
 
     @Override
@@ -51,6 +52,8 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         db = PlantDatabase.getInstance(this);
+
+        instance = this;
 
         final AlertDialog dialog = new AlertDialog.Builder(DetailActivity.this).create();
 

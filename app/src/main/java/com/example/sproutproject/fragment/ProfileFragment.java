@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private TextView tv_login_start, tv_account, tv_gift_show, tv_date_show;
     private LinearLayout ll_after_login;
     private Toast toast = null;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferencesGrowValue;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -56,6 +56,7 @@ public class ProfileFragment extends Fragment {
         cardView_about_us = view.findViewById(R.id.cardView_about_us);
 
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+        preferencesGrowValue = getActivity().getSharedPreferences("growValueAfterLogout", Context.MODE_PRIVATE);
 
         cardView_about_us.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +69,12 @@ public class ProfileFragment extends Fragment {
         int signState = preferences.getInt("loginState", 0);
         String nickname = preferences.getString("userWelcomeName", null);
         String userAccount = preferences.getString("userAccount", null);
+        //这个pre是从登录界面传过来的, 每次登录都会去数据库读一边growValue值
         String growValue = preferences.getString("growValue", null);
 
         if (signState == 1) {
             String welcome = "Welcome back, " + nickname;
-            String growString = "Grow Value: " + growValue;
+            String growString = "Growth Value: " + growValue;
             String currentDate = getCurrentDate();
             tv_login_start.setText(welcome);
             tv_account.setText(userAccount);

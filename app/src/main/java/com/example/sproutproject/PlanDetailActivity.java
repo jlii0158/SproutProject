@@ -88,8 +88,9 @@ public class PlanDetailActivity extends AppCompatActivity {
     int planidPass, waterSum;
     PlanViewModel planViewModel;
     private Button bt_water_main;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferencesGrowValue;
     final boolean falg = false;
+    int days = 0;
 
 
 
@@ -122,6 +123,8 @@ public class PlanDetailActivity extends AppCompatActivity {
         ll_plan_background = findViewById(R.id.ll_plan_background);
         bt_water_main = findViewById(R.id.bt_water_main);
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+
+        preferencesGrowValue = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
         planViewModel.initalizeVars(getApplication());
@@ -173,7 +176,6 @@ public class PlanDetailActivity extends AppCompatActivity {
         tv_plan_start_date.setText(startString);
 
 
-        int days = 0;
         try {
             Date date = df.parse(planDisplay.getStartDate());
             Date date2 = df.parse(planDisplay.getEndDate());
@@ -348,7 +350,8 @@ public class PlanDetailActivity extends AppCompatActivity {
             @SuppressLint("Range")
             @Override
             public void onClick(View v) {
-                if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
+                if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0
+                   && Integer.parseInt(planDisplay.getDaysToCurrentDate()) < days) {
                     if (plan.getWaterState() == 1) {
                         ImageView toastImage = new ImageView(getApplicationContext());
                         toastImage.setImageResource(R.drawable.ic_rain);
@@ -359,14 +362,31 @@ public class PlanDetailActivity extends AppCompatActivity {
                         plan.setWaterState(1);
                         planViewModel.update(plan);
                         pb_real.setProgress(plan.getWaterCount());
-                        String realTotal = "Actual Water Times: " + String.valueOf(plan.getWaterCount()) + "/" + String.valueOf(waterSum);
+                        String realTotal = "Actual: " + String.valueOf(plan.getWaterCount()) + "/" + String.valueOf(waterSum);
                         tv_real_water_times.setText(realTotal);
                         tv_plan_name.setBackgroundColor(Color.parseColor("#A2D89F"));
                         bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape));
 
-                        ImageView toastImage = new ImageView(getApplicationContext());
-                        toastImage.setImageResource(R.drawable.ic_90crown);
-                        toastUtils.Long(PlanDetailActivity.this,"          Well done          ").addView(toastImage,0).show();
+                        String growValue = preferencesGrowValue.getString("growValue", null);
+                        if (Integer.parseInt(growValue) <= 200) {
+                            growValue = String.valueOf(Integer.parseInt(growValue) + 5);
+                            preferencesGrowValue.edit()
+                                    .putString("growValue", growValue)
+                                    .apply();
+
+                            ImageView toastImage = new ImageView(getApplicationContext());
+                            toastImage.setImageResource(R.drawable.ic_90crown);
+                            toastUtils.Long(PlanDetailActivity.this,"Well done! Get 5 growth value!")
+                                    .addView(toastImage,0)
+                                    .show();
+                        } else {
+                            ImageView toastImage = new ImageView(getApplicationContext());
+                            toastImage.setImageResource(R.drawable.ic_90crown);
+                            toastUtils.Long(PlanDetailActivity.this,"Well done! Growth value reached the upper limit!")
+                                    .addView(toastImage,0)
+                                    .show();
+                        }
+
                     }
                 } else {
                     ImageView toastImage = new ImageView(getApplicationContext());

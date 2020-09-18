@@ -34,7 +34,7 @@ public class SigninActivity extends AppCompatActivity {
     public static String userAccount, userWelcomeName, growValue, userID;
     //private ImageView iv_signin_back_bar;
     private Toast toast = null;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferencesGrowValue;
     RestClient restClient = new RestClient();
     private long firstTime = 0;
 
@@ -61,6 +61,7 @@ public class SigninActivity extends AppCompatActivity {
         //iv_signin_back_bar = findViewById(R.id.iv_signin_back_bar);
 
         preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+        preferencesGrowValue = getSharedPreferences("growValueAfterLogout", Context.MODE_PRIVATE);
 
         bt_signup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -214,14 +215,23 @@ public class SigninActivity extends AppCompatActivity {
                     Intent intent = new Intent(SigninActivity.this, MainActivity.class);
                     //intent.putExtra("id",1);
 
+                    String growValueFromNative = preferencesGrowValue.getString("growValue", null);
 
-                    preferences.edit()
-                            .putString("userAccount", userAccount)
-                            .putString("userWelcomeName", userWelcomeName)
-                            .putString("growValue", growValue)
-                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
-                            .apply();
-
+                    if (Integer.parseInt(growValueFromNative) > Integer.parseInt(growValue)) {
+                        preferences.edit()
+                                .putString("userAccount", userAccount)
+                                .putString("userWelcomeName", userWelcomeName)
+                                .putString("growValue", growValueFromNative)
+                                .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                                .apply();
+                    } else {
+                        preferences.edit()
+                                .putString("userAccount", userAccount)
+                                .putString("userWelcomeName", userWelcomeName)
+                                .putString("growValue", growValue)
+                                .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                                .apply();
+                    }
 
 
                     startActivity(intent);
@@ -281,11 +291,23 @@ public class SigninActivity extends AppCompatActivity {
                 Intent intent = new Intent(SigninActivity.this, MainActivity.class);
 
 
-                preferences.edit()
-                           .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
-                           .putString("userAccount", userAccount)
-                           .putString("userWelcomeName", userWelcomeName)
-                           .apply();
+                String growValueFromNative = preferencesGrowValue.getString("growValue", null);
+
+                if (Integer.parseInt(growValueFromNative) > Integer.parseInt(growValue)) {
+                    preferences.edit()
+                            .putString("userAccount", userAccount)
+                            .putString("userWelcomeName", userWelcomeName)
+                            .putString("growValue", growValueFromNative)
+                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                            .apply();
+                } else {
+                    preferences.edit()
+                            .putString("userAccount", userAccount)
+                            .putString("userWelcomeName", userWelcomeName)
+                            .putString("growValue", growValue)
+                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                            .apply();
+                }
 
                 startActivity(intent);
                 finish();
