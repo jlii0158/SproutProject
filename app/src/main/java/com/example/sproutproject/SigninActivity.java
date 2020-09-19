@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,7 @@ public class SigninActivity extends AppCompatActivity {
     private EditText ed_username, ed_password, ed_nickname, ed_email, ed_signup_password;
     private Button bt_signin,bt_signup;
     private TextView tv_signup,tv_signin;
-    private RelativeLayout signin_top,signup_bottom;
+    private ScrollView signin_top,signup_bottom;
     String username, password, nickname, email, signup_password;
     //This value is used to indicate the sign in state, 0 means no state, 1 means login.
     public static int stateValue = 0;
@@ -216,8 +217,11 @@ public class SigninActivity extends AppCompatActivity {
                     //intent.putExtra("id",1);
 
                     String growValueFromNative = preferencesGrowValue.getString("growValue", null);
+                    if (growValueFromNative == null) {
+                        growValueFromNative = "20";
+                    }
 
-                    if (Integer.parseInt(growValueFromNative) > Integer.parseInt(growValue)) {
+                    if (Integer.parseInt(growValueFromNative) != Integer.parseInt(growValue)) {
                         preferences.edit()
                                 .putString("userAccount", userAccount)
                                 .putString("userWelcomeName", userWelcomeName)
@@ -281,7 +285,7 @@ public class SigninActivity extends AppCompatActivity {
         protected Integer doInBackground(String... strings) {
             userAccount = email;
             userWelcomeName = nickname;
-            growValue = "0";
+            growValue = "20";
             return RestClient.postUser(nickname, email, MD5.md5(signup_password));
         }
         @Override
@@ -293,25 +297,21 @@ public class SigninActivity extends AppCompatActivity {
                 Intent intent = new Intent(SigninActivity.this, MainActivity.class);
 
 
+                /*
                 String growValueFromNative = preferencesGrowValue.getString("growValue", null);
-
-                if (Integer.parseInt(growValueFromNative) > Integer.parseInt(growValue)) {
-                    preferences.edit()
-                            .putString("userAccount", userAccount)
-                            .putString("userWelcomeName", userWelcomeName)
-                            .putString("growValue", growValueFromNative)
-                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
-                            //.putInt("dailyGrow", 0)
-                            .apply();
-                } else {
-                    preferences.edit()
-                            .putString("userAccount", userAccount)
-                            .putString("userWelcomeName", userWelcomeName)
-                            .putString("growValue", growValue)
-                            .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
-                            //.putInt("dailyGrow", 0)
-                            .apply();
+                if (growValueFromNative == null) {
+                    growValueFromNative = "20";
                 }
+
+                 */
+
+                preferences.edit()
+                        .putString("userAccount", userAccount)
+                        .putString("userWelcomeName", userWelcomeName)
+                        .putString("growValue", growValue)
+                        .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
+                        //.putInt("dailyGrow", 0)
+                        .apply();
 
                 startActivity(intent);
                 finish();

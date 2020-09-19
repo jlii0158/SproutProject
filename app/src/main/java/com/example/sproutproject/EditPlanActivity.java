@@ -51,7 +51,7 @@ public class EditPlanActivity extends AppCompatActivity {
     Plan plan;
     private TextView tv_edit_back_button;
     private Switch sw_notification_bar;
-    SharedPreferences preferences;
+    SharedPreferences preferences, preferencesGrowValue;
     final boolean falg = false;
     private  Intent intentService, intentServiceTwo;
 
@@ -190,6 +190,15 @@ public class EditPlanActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             showToast("Delete plan success");
                             planViewModel.delete(planidPass);
+
+                            preferencesGrowValue = getSharedPreferences("login", Context.MODE_PRIVATE);
+                            String growValue = preferencesGrowValue.getString("growValue", null);
+                            growValue = String.valueOf(Integer.parseInt(growValue) + 20);
+                            preferencesGrowValue.edit()
+                                    .putString("growValue", growValue)
+                                    //.putInt("dailyGrow", dailyGrow)
+                                    .apply();
+
                             Intent intent = new Intent(EditPlanActivity.this, MainActivity.class);
                             intent.putExtra("pid",1);
                             startActivity(intent);

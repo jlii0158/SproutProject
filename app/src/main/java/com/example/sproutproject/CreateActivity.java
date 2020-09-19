@@ -4,7 +4,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +46,7 @@ public class CreateActivity extends AppCompatActivity {
     private TextView tv_plan_title;
     PlanDatabase db = null;
     String planNameToDatabase, plantName, plantImg;
+    SharedPreferences preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -186,7 +189,21 @@ public class CreateActivity extends AppCompatActivity {
                     showToast("Please set a plan name.");
                     return;
                 }
-                new InsertDatabase().execute();
+
+                preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                String growValue = preferences.getString("growValue", null);
+                int intGrowValue = Integer.parseInt(growValue);
+                if (intGrowValue >= 20) {
+                    growValue = String.valueOf(Integer.parseInt(growValue) - 20);
+                    preferences.edit()
+                            .putString("growValue", growValue)
+                            //.putInt("dailyGrow", dailyGrow)
+                            .apply();
+
+                    new InsertDatabase().execute();
+                } else {
+                    showToast("You don't have enough growth value!");
+                }
 
             }
         });
@@ -279,8 +296,9 @@ public class CreateActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String details) {
             DetailActivity.instance.finish();
-            showToast("Plan created successfully");
+            showToast("Plan created successfully! Consumes 20 growth value");
             MainActivity.instance.finish();
+
             Intent intent = new Intent(CreateActivity.this, MainActivity.class);
             intent.putExtra("pid",1);
             startActivity(intent);

@@ -20,7 +20,7 @@ public class UserInformationActivity extends AppCompatActivity {
     private TextView tv_account, tv_nickname_profile;
     private Button bt_logout;
 
-    private ImageView iv_profile_back_bar;
+    private TextView tv_profile_back_bar;
     SharedPreferences preferences, preferencesGrowValue;
 
     @Override
@@ -35,7 +35,7 @@ public class UserInformationActivity extends AppCompatActivity {
         tv_account = findViewById(R.id.tv_account);
         tv_nickname_profile = findViewById(R.id.tv_nickname_profile);
         bt_logout = findViewById(R.id.bt_logout);
-        iv_profile_back_bar = findViewById(R.id.iv_profile_back_bar);
+        tv_profile_back_bar = findViewById(R.id.tv_profile_back_bar);
 
         String nickname = preferences.getString("userWelcomeName", null);
         final String userAccount = preferences.getString("userAccount", null);
@@ -46,7 +46,7 @@ public class UserInformationActivity extends AppCompatActivity {
 
 
 
-        iv_profile_back_bar.setOnClickListener(new View.OnClickListener() {
+        tv_profile_back_bar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

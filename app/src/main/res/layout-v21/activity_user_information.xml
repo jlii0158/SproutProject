@@ -15,21 +15,15 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="#FFFFFF">
-        <ImageView
-            android:id="@+id/iv_profile_back_bar"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/ic_left"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="8dp"/>
-
         <TextView
+            android:id="@+id/tv_profile_back_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="My Profile"
+            android:text=" Profile"
             android:textSize="18sp"
             android:layout_marginTop="9dp"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginLeft="8dp"
+            android:drawableLeft="@drawable/ic_left"/>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView

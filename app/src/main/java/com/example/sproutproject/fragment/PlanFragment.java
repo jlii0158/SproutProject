@@ -1,8 +1,10 @@
 package com.example.sproutproject.fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -45,6 +47,7 @@ public class PlanFragment extends Fragment {
     int[] planId, waterCount, waterState, realWaterCount, waterDays;
     private LinearLayout ll_noPlan_view;
     private Toast toast = null;
+    SharedPreferences preferences;
 
     public PlanFragment() {
         // Required empty public constructor
@@ -171,6 +174,15 @@ public class PlanFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 showToast("Delete plan success");
                                 planViewModel.delete(planId[position]);
+
+                                preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
+                                String growValue = preferences.getString("growValue", null);
+                                growValue = String.valueOf(Integer.parseInt(growValue) + 20);
+                                preferences.edit()
+                                        .putString("growValue", growValue)
+                                        //.putInt("dailyGrow", dailyGrow)
+                                        .apply();
+
                             }
                         }).setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {

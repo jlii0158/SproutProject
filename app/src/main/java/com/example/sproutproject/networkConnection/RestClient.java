@@ -29,6 +29,7 @@ public class RestClient {
     private static final String postUser_URL = "https://7lykoo8hjj.execute-api.ap-southeast-2.amazonaws.com/postUserWithDetail/postuserwithdetail";
     private static final String getPlantByName_URL = "https://obrykx3jfb.execute-api.ap-southeast-2.amazonaws.com/findPlantByName/findplantbyname?plantName=";
     private static final String updateGrowValue_URL = "https://h68g7av5mg.execute-api.ap-southeast-2.amazonaws.com/updateGrowValue/updategrowvalue?user_grow=";
+    private static final String getAllMedals_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/getallmedalresource";
 
 
     private static OkHttpClient client=null;
@@ -81,9 +82,9 @@ public class RestClient {
 
     public static int postUser(String nickname, String email, String signup_password) {
 
-        UserTable userTable = new UserTable("0", nickname, "6");
+        UserTable userTable = new UserTable("20", nickname, "6");
 
-        String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
+        String res = "?user_grow=20&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
         Gson gson = new Gson();
         String credentialJson = gson.toJson(userTable);
         String strResponse="";
@@ -119,6 +120,19 @@ public class RestClient {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public String findAllMedals(){
+        Request.Builder builder = new Request.Builder();
+        builder.url(getAllMedals_URL);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results=response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
     }
 
 }
