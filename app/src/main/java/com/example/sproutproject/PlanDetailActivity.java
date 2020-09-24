@@ -44,6 +44,8 @@ import android.widget.Toast;
 import com.example.sproutproject.database_entity.PlanDisplay;
 import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.databse.PlanDatabase;
+import com.example.sproutproject.databse.UserMedalDatabase;
+import com.example.sproutproject.entity.GetMedal;
 import com.example.sproutproject.entity.Plan;
 import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
@@ -93,6 +95,8 @@ public class PlanDetailActivity extends AppCompatActivity {
     SharedPreferences preferences, preferencesGrowValue;
     final boolean falg = false;
     int days = 0;
+    UserMedalDatabase userMedalDb = null;
+    RestClient restClient = new RestClient();
 
 
 
@@ -107,6 +111,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         final PlanDisplay planDisplay = (PlanDisplay) intent.getSerializableExtra("planDisplay");
 
         db = PlanDatabase.getInstance(this);
+        userMedalDb = UserMedalDatabase.getInstance(this);
         plan = new Plan();
         planidPass = planDisplay.getPlanId();
         tv_plan_back_button = findViewById(R.id.tv_plan_back_button);
@@ -391,10 +396,12 @@ public class PlanDetailActivity extends AppCompatActivity {
 
                          */
                         growValue = String.valueOf(Integer.parseInt(growValue) + 5);
+                        final int growValueFinal = Integer.parseInt(growValue);
                         preferencesGrowValue.edit()
                                 .putString("growValue", growValue)
                                 //.putInt("dailyGrow", dailyGrow)
                                 .apply();
+
 
                         ImageView toastImage = new ImageView(getApplicationContext());
                         toastImage.setImageResource(R.drawable.ic_90crown);

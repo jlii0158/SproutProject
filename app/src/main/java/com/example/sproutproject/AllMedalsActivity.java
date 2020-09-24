@@ -53,7 +53,8 @@ public class AllMedalsActivity extends AppCompatActivity {
                 intent.putExtra("medalImage", medalImage.get(position))
                         .putExtra("medalImageGrey", medalImageGrey.get(position))
                         .putExtra("medalName", medalName.get(position))
-                        .putExtra("medalDesc", medalDesc.get(position));
+                        .putExtra("medalDesc", medalDesc.get(position))
+                        .putExtra("medalID", metalID.get(position));
                 startActivity(intent);
             }
         });

@@ -11,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.sproutproject.databse.UserMedalDatabase;
+import com.example.sproutproject.entity.GetMedal;
+import com.example.sproutproject.utils.ThreadUtils;
 import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.Nullable;
@@ -27,6 +30,7 @@ public class MedalListAdapter extends BaseAdapter {
     private final List<Integer> medalGrowValue;
     private final List<String> medalImage;
     private final List<String> medalImageGrey;
+    UserMedalDatabase userMedalDb = null;
 
     public MedalListAdapter(Context context, List<Integer> metalID, List<String> medalName, List<String> medalDesc, List<Integer> medalGrowValue, List<String> medalImage, List<String> medalImageGrey){
         //super(context, R.layout.single_list_app_item, utilsArrayList);
@@ -56,10 +60,11 @@ public class MedalListAdapter extends BaseAdapter {
 
     @NonNull
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+    public View getView(final int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
 
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
+        userMedalDb = UserMedalDatabase.getInstance(context);
 
         final View result;
 
@@ -81,14 +86,32 @@ public class MedalListAdapter extends BaseAdapter {
             result=convertView;
         }
 
-
-        Picasso.get().load(medalImageGrey.get(position)).into(viewHolder.medalImage);
-        viewHolder.medalImage.setAlpha((float) 0.3);
-        viewHolder.medalName.setText(medalName.get(position));
-        viewHolder.medalDesc.setText(medalDesc.get(position));
-        String unlock = "Locked";
-        viewHolder.medalState.setText(unlock);
-
+        ThreadUtils.runInThread(new Runnable() {
+            @Override
+            public void run() {
+                final GetMedal existMedal = userMedalDb.userMedalDAO().findById(metalID.get(position));
+                ThreadUtils.runInUIThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (existMedal == null) {
+                            Picasso.get().load(medalImageGrey.get(position)).into(viewHolder.medalImage);
+                            viewHolder.medalImage.setAlpha((float) 0.3);
+                            viewHolder.medalName.setText(medalName.get(position));
+                            viewHolder.medalDesc.setText(medalDesc.get(position));
+                            String unlock = "Locked";
+                            viewHolder.medalState.setText(unlock);
+                        } else {
+                            Picasso.get().load(medalImage.get(position)).into(viewHolder.medalImage);
+                            viewHolder.medalImage.setAlpha((float) 1);
+                            viewHolder.medalName.setText(medalName.get(position));
+                            viewHolder.medalDesc.setText(medalDesc.get(position));
+                            String unlock = "Unlocked";
+                            viewHolder.medalState.setText(unlock);
+                        }
+                    }
+                });
+            }
+        });
 
         return convertView;
     }

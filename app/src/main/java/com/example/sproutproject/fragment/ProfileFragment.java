@@ -20,6 +20,13 @@ import com.example.sproutproject.FavoriteActivity;
 import com.example.sproutproject.R;
 import com.example.sproutproject.SigninActivity;
 import com.example.sproutproject.UserInformationActivity;
+import com.example.sproutproject.databse.UserMedalDatabase;
+import com.example.sproutproject.entity.GetMedal;
+import com.example.sproutproject.networkConnection.RestClient;
+import com.example.sproutproject.utils.ThreadUtils;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -33,6 +40,8 @@ public class ProfileFragment extends Fragment {
     private LinearLayout ll_after_login;
     private Toast toast = null;
     SharedPreferences preferences, preferencesGrowValue;
+    RestClient restClient = new RestClient();
+    UserMedalDatabase userMedalDb = null;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -54,6 +63,7 @@ public class ProfileFragment extends Fragment {
         tv_date_show = view.findViewById(R.id.tv_date_show);
         cardView_setting = view.findViewById(R.id.cardView_setting);
         cardView_about_us = view.findViewById(R.id.cardView_about_us);
+        userMedalDb = UserMedalDatabase.getInstance(getContext());
 
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         preferencesGrowValue = getActivity().getSharedPreferences("growValueAfterLogout", Context.MODE_PRIVATE);
@@ -71,6 +81,43 @@ public class ProfileFragment extends Fragment {
         String userAccount = preferences.getString("userAccount", null);
         //这个pre是从登录界面传过来的, 每次登录都会去数据库读一边growValue值
         String growValue = preferences.getString("growValue", null);
+        final int growValueFinal = Integer.parseInt(growValue);
+
+
+        //判断现有成长值是否可以激活图标
+        //如果可以激活，说明累计的成长值已经足够激活一个奖章
+        //那就把这个奖章的ID和用户的account，也就是email存到room中
+        ThreadUtils.runInThread(new Runnable() {
+            @Override
+            public void run() {
+                String result = restClient.findAllMedals();
+                try {
+                    JSONArray jsonArray = new JSONArray(result);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        if (growValueFinal >= jsonArray.getJSONObject(i).getInt("grow_vale")){
+                            GetMedal existMedal = userMedalDb.userMedalDAO().findById(jsonArray.getJSONObject(i).getInt("metal_id"));
+                            if (existMedal == null) {
+                                int metalID = jsonArray.getJSONObject(i).getInt("metal_id");
+                                String userAccount = preferencesGrowValue.getString("userAccount",null);
+                                String medalName = jsonArray.getJSONObject(i).getString("medel_name");
+                                String medalDesc = jsonArray.getJSONObject(i).getString("medal_desc");
+                                int growValue = jsonArray.getJSONObject(i).getInt("grow_vale");
+                                String medalImage = jsonArray.getJSONObject(i).getString("medal_image");
+                                String medalImageGrey = jsonArray.getJSONObject(i).getString("medal_image_grey");
+                                GetMedal getMedal = new GetMedal(metalID, userAccount, medalName, medalDesc, growValue, medalImage, medalImageGrey);
+                                userMedalDb.userMedalDAO().insert(getMedal);
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+
 
         if (signState == 1) {
             String welcome = "Welcome back, " + nickname;
