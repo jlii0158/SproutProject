@@ -20,6 +20,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -31,6 +32,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -123,6 +125,14 @@ public class PlanDetailActivity extends AppCompatActivity {
         ll_plan_background = findViewById(R.id.ll_plan_background);
         bt_water_main = findViewById(R.id.bt_water_main);
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+
+        //Set the height for plan cardView
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        ViewGroup.LayoutParams lp = cv_generate_plan.getLayoutParams();
+        lp.height = point.y * 5 / 12;
+        cv_generate_plan.setLayoutParams(lp);
+
 
         preferencesGrowValue = getSharedPreferences("login", Context.MODE_PRIVATE);
 

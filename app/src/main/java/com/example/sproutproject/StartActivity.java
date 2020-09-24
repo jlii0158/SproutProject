@@ -6,19 +6,38 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.text.Html;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.example.sproutproject.utils.ThreadUtils;
 
 public class StartActivity extends AppCompatActivity {
 
     SharedPreferences preferences, signPreference;
+    private ImageView imageView;
+    private LinearLayout ll_start_page_img;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        imageView = findViewById(R.id.imageView);
+        ll_start_page_img = findViewById(R.id.ll_start_page_img);
+
+        Point point = new Point();
+        getWindowManager().getDefaultDisplay().getSize(point);
+        ViewGroup.LayoutParams lp = imageView.getLayoutParams();
+        lp.height = point.x * 4 / 5;
+        lp.width = point.x * 4 / 5;
+
+        imageView.setLayoutParams(lp);
+        LinearLayout.LayoutParams lp1 = (LinearLayout.LayoutParams) ll_start_page_img.getLayoutParams();
+        lp1.setMargins(0, point.y / 5, 0, 0);
 
         //在该页面停留2秒
         ThreadUtils.runInThread(new Runnable() {

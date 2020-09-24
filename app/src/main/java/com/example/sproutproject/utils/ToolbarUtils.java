@@ -1,6 +1,8 @@
 package com.example.sproutproject.utils;
 
 
+import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,8 +52,10 @@ public class ToolbarUtils {
 
         for (TextView tv : mTextView) {
             tv.setSelected(false);
+            tv.setTextColor(0xff8a8a8a);
         }
         mTextView.get(position).setSelected(true);
+        mTextView.get(position).setTextColor(0xff71B66D);
     }
 
 

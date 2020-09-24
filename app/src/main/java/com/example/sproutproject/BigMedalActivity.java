@@ -43,6 +43,7 @@ public class BigMedalActivity extends AppCompatActivity {
         Picasso.get()
                 .load(medalImageGrey)
                 .into(iv_big_medal_img);
+        iv_big_medal_img.setAlpha((float) 0.3);
 
     }
 }

@@ -2,7 +2,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:drawable="@drawable/ic_metalpress" android:state_pressed="true"/>
-    <item android:drawable="@drawable/ic_metalpress" android:state_selected="true"/>
-    <item android:drawable="@drawable/ic_metal"/>
+    <item android:drawable="@drawable/ic_medal_replace_press" android:state_pressed="true"/>
+    <item android:drawable="@drawable/ic_medal_replace_press" android:state_selected="true"/>
+    <item android:drawable="@drawable/ic_medal_replace"/>
 </selector>

@@ -1,6 +1,7 @@
 package com.example.sproutproject.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,9 +81,9 @@ public class MedalListAdapter extends BaseAdapter {
             result=convertView;
         }
 
-        Picasso.get()
-                .load(medalImageGrey.get(position))
-                .into(viewHolder.medalImage);
+
+        Picasso.get().load(medalImageGrey.get(position)).into(viewHolder.medalImage);
+        viewHolder.medalImage.setAlpha((float) 0.3);
         viewHolder.medalName.setText(medalName.get(position));
         viewHolder.medalDesc.setText(medalDesc.get(position));
         String unlock = "Locked";
