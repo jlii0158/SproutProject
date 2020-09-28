@@ -1,7 +1,10 @@
 package com.example.sproutproject;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -25,12 +28,14 @@ import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.databse.PlanDatabase;
 import com.example.sproutproject.entity.Plan;
 import com.example.sproutproject.fragment.SearchFragment;
+import com.example.sproutproject.viewmodel.PlanViewModel;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 public class CreateActivity extends AppCompatActivity {
 
@@ -47,6 +52,8 @@ public class CreateActivity extends AppCompatActivity {
     PlanDatabase db = null;
     String planNameToDatabase, plantName, plantImg;
     SharedPreferences preferences;
+    static PlanViewModel planViewModel;
+    int planSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,13 +163,36 @@ public class CreateActivity extends AppCompatActivity {
         if (PlanDetailActivity.info == 0) {
             //set start date
             startDate = getCurrentDate();
-            final String dateDesc = "We can start our journey on " + startDate;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dfTemp = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = null;
+            try {
+                date = (Date)formatter.parse(startDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String reStr = dfTemp.format(date);
+
+            final String dateDesc = "We can start our journey on " + reStr;
             plan_start_time.setText(dateDesc);
         } else {
             //set start date
             startDate = PlanDetailActivity.startDatePass;
-            final String dateDesc = "Plan started on " + startDate;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dfTemp = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = null;
+            try {
+                date = (Date)formatter.parse(startDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String reStr = dfTemp.format(date);
+
+            final String dateDesc = "Plan started on " + reStr;
             plan_start_time.setText(dateDesc);
+
             String planNamePass = (String) intent.getSerializableExtra("planName");
             ed_plan_name.setText(planNamePass);
             ed_plan_name.setFocusable(false);
@@ -175,11 +205,36 @@ public class CreateActivity extends AppCompatActivity {
         try {
             String endDate = getWorkDay(startDate, Integer.parseInt(plant.getGrowth_cycle()) * 7);
             endDateReal = endDate;
-            String endDateDesc = "Our journey will end on " + endDate;
+
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dfTemp = new SimpleDateFormat("dd-MM-yyyy");
+            Date date = null;
+            try {
+                date = (Date)formatter.parse(endDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String reStr = dfTemp.format(date);
+
+            String endDateDesc = "Our journey will end on " + reStr;
             plan_end_time.setText(endDateDesc);
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        planViewModel = new ViewModelProvider(this).get(PlanViewModel.class);
+        planViewModel.initalizeVars(getApplication());
+        planViewModel.getAllPlans().observe(this, new Observer<List<Plan>>() {
+            @Override
+            public void onChanged(@Nullable final List<Plan> plans) {
+                if (plans == null) {
+                    planSize = 0;
+                } else {
+                    planSize = plans.size();
+                }
+
+            }
+        });
 
         plan_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,20 +245,26 @@ public class CreateActivity extends AppCompatActivity {
                     return;
                 }
 
-                preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
-                String growValue = preferences.getString("growValue", null);
-                int intGrowValue = Integer.parseInt(growValue);
-                if (intGrowValue >= 20) {
-                    growValue = String.valueOf(Integer.parseInt(growValue) - 20);
-                    preferences.edit()
-                            .putString("growValue", growValue)
-                            //.putInt("dailyGrow", dailyGrow)
-                            .apply();
+                if (planSize < 10) {
+                    preferences = getSharedPreferences("login", Context.MODE_PRIVATE);
+                    String growValue = preferences.getString("growValue", null);
+                    int intGrowValue = Integer.parseInt(growValue);
+                    //if (intGrowValue >= 20) {
+                        growValue = String.valueOf(Integer.parseInt(growValue) + 5);
+                        preferences.edit()
+                                .putString("growValue", growValue)
+                                //.putInt("dailyGrow", dailyGrow)
+                                .apply();
 
-                    new InsertDatabase().execute();
+                        new InsertDatabase().execute();
+                    //} else {
+                        //showToast("You don't have enough growth value! Water to get more!");
+                    //}
                 } else {
-                    showToast("You don't have enough growth value!");
+                    showToast("You can have up to 10 plans!");
                 }
+
+
 
             }
         });
@@ -295,8 +356,11 @@ public class CreateActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         protected void onPostExecute(String details) {
+            if (FavoriteActivity.instance != null) {
+                FavoriteActivity.instance.finish();
+            }
             DetailActivity.instance.finish();
-            showToast("Plan created successfully! Consumes 20 growth value");
+            showToast("Plan created successfully! Get 5 growth value");
             MainActivity.instance.finish();
 
             Intent intent = new Intent(CreateActivity.this, MainActivity.class);
@@ -305,6 +369,8 @@ public class CreateActivity extends AppCompatActivity {
             finish();
         }
     }
+
+
 
     private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
     public static String getCurrentDate() {

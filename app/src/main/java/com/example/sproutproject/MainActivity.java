@@ -7,9 +7,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -129,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 toolbarUtils.changeColor(position);
                 tv_title.setText(title[position]);
+                closeKeybord(instance);
             }
 
             @Override
@@ -145,6 +149,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public static void closeKeybord(Activity activity) {
+        InputMethodManager imm =  (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) {
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
 
     private void showToast(String msg){
         if (toast != null) {

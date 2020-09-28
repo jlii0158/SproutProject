@@ -4,6 +4,7 @@ public class OnboardingItem {
     private int image;
     private String title;
     private String description;
+    private String searchImg;
 
     public void setImage(int image) {
         this.image = image;
@@ -27,5 +28,13 @@ public class OnboardingItem {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getSearchImg() {
+        return searchImg;
+    }
+
+    public void setSearchImg(String searchImg) {
+        this.searchImg = searchImg;
     }
 }

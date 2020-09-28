@@ -45,8 +45,10 @@ import com.example.sproutproject.database_entity.PlanDisplay;
 import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.databse.PlanDatabase;
 import com.example.sproutproject.databse.UserMedalDatabase;
+import com.example.sproutproject.databse.WaterDatabase;
 import com.example.sproutproject.entity.GetMedal;
 import com.example.sproutproject.entity.Plan;
+import com.example.sproutproject.entity.Water;
 import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.networkConnection.TransApi;
@@ -88,6 +90,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     private Toast toastWithImage = null;
     private ToastUtils toastUtils = new ToastUtils();
     PlanDatabase db = null;
+    WaterDatabase waterDB = null;
     Plan plan;
     int planidPass, waterSum;
     PlanViewModel planViewModel;
@@ -111,6 +114,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         final PlanDisplay planDisplay = (PlanDisplay) intent.getSerializableExtra("planDisplay");
 
         db = PlanDatabase.getInstance(this);
+        waterDB = WaterDatabase.getInstance(this);
         userMedalDb = UserMedalDatabase.getInstance(this);
         plan = new Plan();
         planidPass = planDisplay.getPlanId();
@@ -187,7 +191,17 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         tv_plan_name.setText(planDisplay.getPlanName());
 
-        String startString = "Starting On: " + planDisplay.getStartDate();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dfTemp = new SimpleDateFormat("dd-MM-yyyy");
+        Date dateformate = null;
+        try {
+            dateformate = (Date)formatter.parse(planDisplay.getStartDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String reStr = dfTemp.format(dateformate);
+
+        String startString = "Starting On: " + reStr;
         tv_plan_start_date.setText(startString);
 
 
@@ -419,6 +433,16 @@ public class PlanDetailActivity extends AppCompatActivity {
 
                          */
 
+                        String currentDate = getCurrentDate();
+                        final Water water = new Water(planDisplay.getPlanName(), currentDate);
+                        ThreadUtils.runInThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                waterDB.waterDAO().insert(water);
+                            }
+                        });
+
+
                         if (plan.getWaterCount() == waterSum) {
                             growValue = String.valueOf(Integer.parseInt(growValue) + 100);
                             preferencesGrowValue.edit()
@@ -431,6 +455,8 @@ public class PlanDetailActivity extends AppCompatActivity {
                                     .addView(planCompleteToastImage,0)
                                     .show();
                         }
+
+
                     }
                 } else {
                     ImageView toastImage = new ImageView(getApplicationContext());
@@ -456,6 +482,13 @@ public class PlanDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private static SimpleDateFormat dfWater = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+    public static String getCurrentDate() {
+        long cur_time = System.currentTimeMillis();
+        String datetime = dfWater.format(new java.sql.Date(cur_time));
+        return datetime;
     }
 
     public void onBackPressed() {

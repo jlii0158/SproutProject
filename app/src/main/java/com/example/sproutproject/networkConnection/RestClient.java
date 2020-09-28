@@ -82,9 +82,9 @@ public class RestClient {
 
     public static int postUser(String nickname, String email, String signup_password) {
 
-        UserTable userTable = new UserTable("20", nickname, "6");
+        UserTable userTable = new UserTable("0", nickname, "6");
 
-        String res = "?user_grow=20&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
+        String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
         Gson gson = new Gson();
         String credentialJson = gson.toJson(userTable);
         String strResponse="";

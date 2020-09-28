@@ -193,7 +193,7 @@ public class EditPlanActivity extends AppCompatActivity {
 
                             preferencesGrowValue = getSharedPreferences("login", Context.MODE_PRIVATE);
                             String growValue = preferencesGrowValue.getString("growValue", null);
-                            growValue = String.valueOf(Integer.parseInt(growValue) + 20);
+                            growValue = String.valueOf(Integer.parseInt(growValue) - 10);
                             preferencesGrowValue.edit()
                                     .putString("growValue", growValue)
                                     //.putInt("dailyGrow", dailyGrow)

@@ -40,6 +40,7 @@ public class FavoriteActivity extends AppCompatActivity {
     LinearLayout ll_noFavorite_view;
     Button bt_go_to_addFavorite;
     private TextView tv_favorite_back_button;
+    public static FavoriteActivity instance;
 
 
 
@@ -53,6 +54,7 @@ public class FavoriteActivity extends AppCompatActivity {
         ll_noFavorite_view = findViewById(R.id.ll_noFavorite_view);
         bt_go_to_addFavorite = findViewById(R.id.bt_go_to_addFavorite);
         tv_favorite_back_button = findViewById(R.id.tv_favorite_back_button);
+        instance = this;
 
         bt_go_to_addFavorite.setOnClickListener(new View.OnClickListener() {
             @Override

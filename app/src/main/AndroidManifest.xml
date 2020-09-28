@@ -25,7 +25,11 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".BigMedalActivity"></activity>
+        <activity android:name=".MedalIntroductionActivity"></activity>
+        <activity android:name=".PlanIntroductionActivity" />
+        <activity android:name=".AIIntroductionActivity" />
+        <activity android:name=".WaterRecordActivity" />
+        <activity android:name=".BigMedalActivity" />
         <activity android:name=".AllMedalsActivity" />
         <activity android:name=".AboutUsActivity" />
         <activity android:name=".EditPlanActivity" />

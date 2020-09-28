@@ -218,7 +218,7 @@ public class SigninActivity extends AppCompatActivity {
 
                     String growValueFromNative = preferencesGrowValue.getString("growValue", null);
                     if (growValueFromNative == null) {
-                        growValueFromNative = "20";
+                        growValueFromNative = "0";
                     }
 
                     if (Integer.parseInt(growValueFromNative) != Integer.parseInt(growValue)) {
@@ -285,7 +285,7 @@ public class SigninActivity extends AppCompatActivity {
         protected Integer doInBackground(String... strings) {
             userAccount = email;
             userWelcomeName = nickname;
-            growValue = "20";
+            growValue = "0";
             return RestClient.postUser(nickname, email, MD5.md5(signup_password));
         }
         @Override

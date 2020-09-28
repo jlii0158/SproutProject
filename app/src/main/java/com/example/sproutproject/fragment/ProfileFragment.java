@@ -20,10 +20,12 @@ import com.example.sproutproject.FavoriteActivity;
 import com.example.sproutproject.R;
 import com.example.sproutproject.SigninActivity;
 import com.example.sproutproject.UserInformationActivity;
+import com.example.sproutproject.WaterRecordActivity;
 import com.example.sproutproject.databse.UserMedalDatabase;
 import com.example.sproutproject.entity.GetMedal;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.utils.ThreadUtils;
+import com.kelin.banner.view.BannerView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +36,7 @@ import java.text.SimpleDateFormat;
 
 public class ProfileFragment extends Fragment {
 
-    private CardView login_card, cardView_favorite, cardView_setting, cardView_about_us;
+    private CardView login_card, cardView_favorite, cardView_setting, cardView_about_us, cardView_record;
     //int signState = SigninActivity.stateValue;
     private TextView tv_login_start, tv_account, tv_gift_show, tv_date_show;
     private LinearLayout ll_after_login;
@@ -63,10 +65,22 @@ public class ProfileFragment extends Fragment {
         tv_date_show = view.findViewById(R.id.tv_date_show);
         cardView_setting = view.findViewById(R.id.cardView_setting);
         cardView_about_us = view.findViewById(R.id.cardView_about_us);
+        cardView_record = view.findViewById(R.id.cardView_record);
         userMedalDb = UserMedalDatabase.getInstance(getContext());
+
+
 
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         preferencesGrowValue = getActivity().getSharedPreferences("growValueAfterLogout", Context.MODE_PRIVATE);
+
+
+        cardView_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), WaterRecordActivity.class);
+                startActivity(intent);
+            }
+        });
 
         cardView_about_us.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,9 +128,6 @@ public class ProfileFragment extends Fragment {
                 }
             }
         });
-
-
-
 
 
         if (signState == 1) {
@@ -174,7 +185,7 @@ public class ProfileFragment extends Fragment {
 
     }
 
-    private static SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    private static SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 
     public static String getCurrentDate() {
         long cur_time = System.currentTimeMillis();

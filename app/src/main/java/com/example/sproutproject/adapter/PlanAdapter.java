@@ -116,7 +116,20 @@ public class PlanAdapter extends BaseAdapter {
                 .load(plantImg[position])
                 .into(viewHolder.plantImg);
         viewHolder.planName.setText(planName[position]);
-        viewHolder.startDate.setText(startDate[position]);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dfTemp = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = null;
+        try {
+            date = (Date)formatter.parse(startDate[position]);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String reStr = dfTemp.format(date);
+        String startString = "Starting On: " + reStr;
+
+        viewHolder.startDate.setText(startString);
+
         viewHolder.daysToNow.setText(daysToNow[position]);
 
         return convertView;

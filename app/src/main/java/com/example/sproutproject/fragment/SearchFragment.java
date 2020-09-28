@@ -3,7 +3,9 @@ package com.example.sproutproject.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,23 +14,37 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
+
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.sproutproject.AIIntroductionActivity;
 import com.example.sproutproject.DetailActivity;
+import com.example.sproutproject.OnboardingItem;
 import com.example.sproutproject.adapter.ListAdapter;
 import com.example.sproutproject.R;
+import com.example.sproutproject.adapter.SearchViewPageAdapter;
 import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
@@ -45,7 +61,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import static androidx.core.content.ContextCompat.getSystemService;
 import static androidx.core.content.PermissionChecker.checkSelfPermission;
 
 
@@ -60,6 +79,12 @@ public class SearchFragment extends Fragment {
     ListAdapter lAdapter;
     RestClient restClient = new RestClient();
 
+    private SearchViewPageAdapter searchViewPageAdapter;
+    private LinearLayout searchViewPagerIndicators;
+    private ViewPager2 searchingViewPager;
+    private ImageView iv_pause, iv_play, iv_close;
+    private Button bt_slide;
+
 
 
     private final String TAG = getClass().getSimpleName();
@@ -71,13 +96,20 @@ public class SearchFragment extends Fragment {
     private static final String SECURITY_KEY = "99UXraNwDwpwC1ODtTsZ";
     private Toast toast = null;
 
+    private List<OnboardingItem> onboardingItems;
+    private int currentPosition2 = 1;
+    private Timer timer;
+    private boolean isLoop = true;
+    private String displayState;
+    private SharedPreferences playOrPausePreference;
+    private RelativeLayout rl_viewpager_banner;
 
     public SearchFragment() {
         // Required empty public constructor
     }
 
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint({"WrongConstant", "ClickableViewAccessibility"})
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -100,6 +132,15 @@ public class SearchFragment extends Fragment {
         bt_search_name = view.findViewById(R.id.bt_search_name);
         bt_search_water = view.findViewById(R.id.bt_search_water);
         bt_search_cycle  = view.findViewById(R.id.bt_search_cycle);
+        iv_pause = view.findViewById(R.id.iv_pause);
+        iv_play = view.findViewById(R.id.iv_play);
+        iv_close = view.findViewById(R.id.iv_close);
+        rl_viewpager_banner = view.findViewById(R.id.rl_viewpager_banner);
+        bt_slide = view.findViewById(R.id.bt_slide);
+
+
+        searchingViewPager = view.findViewById(R.id.searchPageViewPager);
+        searchViewPagerIndicators = view.findViewById(R.id.searchViewPagerIndicators);
 
 
         new SearchFromDatabase().execute();
@@ -108,36 +149,108 @@ public class SearchFragment extends Fragment {
         WatchEditText1(ed_search_by_water);
         WatchEditText2(ed_search_by_cycle);
 
+
+        playOrPausePreference = getActivity().getSharedPreferences("playOrPause", Context.MODE_PRIVATE);
+
+        isLoop = playOrPausePreference.getBoolean("isLoop", true);
+        displayState = playOrPausePreference.getString("displayState", null);
+        if (displayState != null) {
+            if (displayState.equals("close")) {
+                rl_viewpager_banner.setVisibility(View.GONE);
+                bt_slide.setVisibility(View.VISIBLE);
+            } else {
+                rl_viewpager_banner.setVisibility(View.VISIBLE);
+                bt_slide.setVisibility(View.GONE);
+            }
+        }
+
+        if (isLoop) {
+            iv_pause.setVisibility(View.VISIBLE);
+            iv_play.setVisibility(View.INVISIBLE);
+        } else {
+            iv_play.setVisibility(View.VISIBLE);
+            iv_pause.setVisibility(View.INVISIBLE);
+        }
+
+        iv_pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_pause.setVisibility(View.INVISIBLE);
+                iv_play.setVisibility(View.VISIBLE);
+                isLoop = false;
+                playOrPausePreference.edit()
+                        .putBoolean("isLoop", false)
+                        .apply();
+            }
+        });
+
+        iv_play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                iv_pause.setVisibility(View.VISIBLE);
+                iv_play.setVisibility(View.INVISIBLE);
+                isLoop = true;
+                playOrPausePreference.edit()
+                        .putBoolean("isLoop", true)
+                        .apply();
+            }
+        });
+
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_viewpager_banner.setVisibility(View.GONE);
+                bt_slide.setVisibility(View.VISIBLE);
+                playOrPausePreference.edit()
+                        .putString("displayState", "close")
+                        .apply();
+            }
+        });
+
+        bt_slide.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rl_viewpager_banner.setVisibility(View.VISIBLE);
+                bt_slide.setVisibility(View.GONE);
+                playOrPausePreference.edit()
+                        .putString("displayState", "open")
+                        .apply();
+            }
+        });
+
         bt_search_name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt_search_name.setVisibility(View.INVISIBLE);
-                et_plant.setVisibility(View.INVISIBLE);
+                bt_search_name.setVisibility(View.GONE);
+                et_plant.setVisibility(View.GONE);
                 et_plant.setText("");
                 bt_search_water.setVisibility(View.VISIBLE);
                 ed_search_by_water.setVisibility(View.VISIBLE);
+                closeKeybord(getActivity());
             }
         });
 
         bt_search_water.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt_search_water.setVisibility(View.INVISIBLE);
-                ed_search_by_water.setVisibility(View.INVISIBLE);
+                bt_search_water.setVisibility(View.GONE);
+                ed_search_by_water.setVisibility(View.GONE);
                 ed_search_by_water.setText("");
                 bt_search_cycle.setVisibility(View.VISIBLE);
                 ed_search_by_cycle.setVisibility(View.VISIBLE);
+                closeKeybord(getActivity());
             }
         });
 
         bt_search_cycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bt_search_cycle.setVisibility(View.INVISIBLE);
-                ed_search_by_cycle.setVisibility(View.INVISIBLE);
+                bt_search_cycle.setVisibility(View.GONE);
+                ed_search_by_cycle.setVisibility(View.GONE);
                 ed_search_by_cycle.setText("");
                 bt_search_name.setVisibility(View.VISIBLE);
                 et_plant.setVisibility(View.VISIBLE);
+                closeKeybord(getActivity());
             }
         });
 
@@ -176,8 +289,168 @@ public class SearchFragment extends Fragment {
             }
         });
 
+
+        setupOnboardingItems();
+
+
+        searchingViewPager.setAdapter(searchViewPageAdapter);
+        //currentPosition2 = 1;
+        searchingViewPager.setCurrentItem(currentPosition2);
+
+        setupOnboardingIndicators();
+        setCurrentOnboardingIndicator(currentPosition2);
+
+
+        searchingViewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                setCurrentOnboardingIndicator(position);
+                currentPosition2 = position;
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //验证当前的滑动是否结束
+                if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    if (currentPosition2 == 0) {
+                        searchingViewPager.setCurrentItem(onboardingItems.size() - 2, false);//切换，不要动画效果
+                    } else if (currentPosition2 == onboardingItems.size() - 1) {
+                        searchingViewPager.setCurrentItem(1, false);//切换，不要动画效果
+                    }
+                }
+            }
+
+        });
+
+        createSlideShow();
+
         return view;
     }
+
+    public static void closeKeybord(Activity activity) {
+        InputMethodManager imm =  (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(imm != null) {
+            imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
+        }
+    }
+
+    private void createSlideShow() {
+        final Handler handler = new Handler();
+        final Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (currentPosition2 < onboardingItems.size()) {
+                    searchingViewPager.setCurrentItem(currentPosition2++, true);
+                }
+                if (currentPosition2 == onboardingItems.size()) {
+                    currentPosition2 = 1;
+                }
+
+            }
+        };
+
+        timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (isLoop) {
+                    handler.post(runnable);
+                }
+
+            }
+        }, 1000, 5000);
+    }
+
+
+    private void setupOnboardingItems() {
+        onboardingItems = new ArrayList<>();
+
+        OnboardingItem itemAISearch = new OnboardingItem();
+        itemAISearch.setTitle("Image recognition technology");
+        //itemAISearch.setDescription("Using intelligent identification can start your green journey!");
+        //itemAISearch.setImage(R.drawable.search_plant);
+        itemAISearch.setSearchImg("https://collectivegen.com/wp-content/uploads/2017/02/Is-my-plant-ok_Header-Image-778x542@2x.jpg");
+        //itemAISearch.setSearchImg("https://image.freepik.com/free-photo/smart-digital-agriculture-technology-by-futuristic-sensor-data-collection_31965-4343.jpg");
+
+        OnboardingItem itemMakePlan = new OnboardingItem();
+        itemMakePlan.setTitle("An automatically generated plan");
+        //itemMakePlan.setDescription("Open your personal mobile garden steward, start your customized planting plan!");
+        //itemMakePlan.setImage(R.drawable.make_plan);
+        itemMakePlan.setSearchImg("https://images.unsplash.com/photo-1526635563471-a02b6aa977ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60");
+
+        OnboardingItem itemMetalGet = new OnboardingItem();
+        itemMetalGet.setTitle("Earn medals, make yourself proud");
+        //itemMetalGet.setDescription("Get medals to be a little garden knight, be proud of yourself!");
+        //itemMetalGet.setImage(R.drawable.metal_get);
+        itemMetalGet.setSearchImg("https://images.unsplash.com/photo-1513780194864-9ac1138f93ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60");
+
+
+        onboardingItems.add(itemMetalGet);
+
+        onboardingItems.add(itemAISearch);
+        onboardingItems.add(itemMakePlan);
+        onboardingItems.add(itemMetalGet);
+
+        onboardingItems.add(itemAISearch);
+
+        searchViewPageAdapter = new SearchViewPageAdapter(getContext(), onboardingItems);
+    }
+
+    private void setupOnboardingIndicators() {
+        ImageView[] indicators = new ImageView[searchViewPageAdapter.getItemCount()];
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.setMargins(8,0,8,0);
+        for (int i = 0; i < indicators.length; i++) {
+            indicators[i] = new ImageView(getContext());
+
+
+            indicators[i].setImageDrawable(ContextCompat.getDrawable(
+                    getContext(), R.drawable.searching_indicator_inactive
+            ));
+
+            if (i == 0 || i == 4) {
+                indicators[i].setImageDrawable(ContextCompat.getDrawable(
+                        getContext(), R.drawable.searching_indicator_invisiable
+                ));
+            }
+
+            indicators[i].setLayoutParams(layoutParams);
+            searchViewPagerIndicators.addView(indicators[i]);
+        }
+    }
+
+    private void setCurrentOnboardingIndicator(int index) {
+        int childCount = searchViewPagerIndicators.getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            ImageView imageView = (ImageView) searchViewPagerIndicators.getChildAt(i);
+            if (getContext() != null) {
+                if (i == 0 || i == 4) {
+                    imageView.setImageDrawable(
+                            ContextCompat.getDrawable(getContext(), R.drawable.searching_indicator_invisiable)
+                    );
+                } else {
+                    if (i == index) {
+                        imageView.setImageDrawable(
+                                ContextCompat.getDrawable(getContext(), R.drawable.searching_indicator_active)
+                        );
+                    } else {
+                        imageView.setImageDrawable(
+                                ContextCompat.getDrawable(getContext(), R.drawable.searching_indicator_inactive)
+                        );
+                    }
+                }
+            }
+
+
+        }
+    }
+
+
 
     private void WatchEditText(final EditText et_plant) {
         et_plant.addTextChangedListener(new TextWatcher() {
@@ -589,7 +862,6 @@ public class SearchFragment extends Fragment {
                         Log.e("TAG", imageUri.toString());
 
                         ThreadUtils.runInThread(new Runnable() {
-                            @Override
                             public void run() {
                                 ThreadUtils.runInUIThread(new Runnable() {
                                     @Override
@@ -613,7 +885,6 @@ public class SearchFragment extends Fragment {
                                     final String result = jsonArray1.getJSONObject(0).getString("dst");
                                     if (result.equals("Non fruit and vegetable ingredients")) {
                                         ThreadUtils.runInUIThread(new Runnable() {
-                                            @Override
                                             public void run() {
                                                 String back= "Sorry, the picture you choose is not a fruit or a vegetable";
                                                 Toast.makeText(getActivity(), back, Toast.LENGTH_SHORT).show();

@@ -126,9 +126,8 @@ public class PlanFragment extends Fragment {
                         e.printStackTrace();
                     }
                     daysToNow[i] = String.valueOf(days);
-                    String startString = "Starting On: " + plans.get(i).getStartDate();
                     startDate1[i] = plans.get(i).getStartDate();
-                    startDate[i] = startString;
+                    startDate[i] = plans.get(i).getStartDate();
 
                 }
                 planAdapter = new PlanAdapter(getActivity(), plantImg, planName, startDate, daysToNow, waterState, waterDays, endDate);
@@ -177,7 +176,13 @@ public class PlanFragment extends Fragment {
 
                                 preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
                                 String growValue = preferences.getString("growValue", null);
-                                growValue = String.valueOf(Integer.parseInt(growValue) + 20);
+
+                                if (Integer.parseInt(growValue) >= 10) {
+                                    growValue = String.valueOf(Integer.parseInt(growValue) - 10);
+                                } else {
+                                    growValue = "0";
+                                }
+
                                 preferences.edit()
                                         .putString("growValue", growValue)
                                         //.putInt("dailyGrow", dailyGrow)
