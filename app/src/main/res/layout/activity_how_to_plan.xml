@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".HowToPlanActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
+
+        <TextView
+            android:id="@+id/tv_how_to_plan_back_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Plan Creation"
+            android:textSize="18sp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="8dp"
+            android:drawableLeft="@drawable/ic_left"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Choose a plant you like from the search list."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="110dp"
+                android:background="@drawable/chooseaplant"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Click the VIEW PLAN button to view the plan."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/viewplan"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Click the START JOURNEY button to create the plan."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="50dp"
+                android:background="@drawable/startjourney"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. View the plan created in the plan list."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:background="@drawable/viewplancreated"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
