@@ -33,6 +33,7 @@ public class PlanIntroductionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PlanIntroductionActivity.this, HowToPlanActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -41,6 +42,7 @@ public class PlanIntroductionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PlanIntroductionActivity.this, HowToDeviceActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
