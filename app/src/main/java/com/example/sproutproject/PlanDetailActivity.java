@@ -81,7 +81,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     public static int info = 0;
     public static String startDatePass;
     static PlanDetailActivity instance;
-    private TextView tv_choose_background, tv_plan_back_button;
+    private TextView tv_choose_background, tv_plan_back_button, tv_take_care;
     private LinearLayout ll_plan_background, toastView;
     private static final int CHOOSE_PHOTO = 385;
     private static final int TAKE_PHOTO = 189;
@@ -99,7 +99,6 @@ public class PlanDetailActivity extends AppCompatActivity {
     final boolean falg = false;
     int days = 0;
     UserMedalDatabase userMedalDb = null;
-    RestClient restClient = new RestClient();
 
 
 
@@ -134,6 +133,7 @@ public class PlanDetailActivity extends AppCompatActivity {
         ll_plan_background = findViewById(R.id.ll_plan_background);
         bt_water_main = findViewById(R.id.bt_water_main);
         preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        tv_take_care = findViewById(R.id.tv_take_care);
 
         //Set the height for plan cardView
         Point point = new Point();
@@ -164,6 +164,13 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         }
 
+        tv_take_care.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlanDetailActivity.this, TakeCareActivity.class);
+                startActivity(intent);
+            }
+        });
 
         tv_choose_background.setOnClickListener(new OnClickListenerImpl());
 

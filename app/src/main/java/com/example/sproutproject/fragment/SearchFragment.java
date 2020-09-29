@@ -103,6 +103,7 @@ public class SearchFragment extends Fragment {
     private String displayState;
     private SharedPreferences playOrPausePreference;
     private RelativeLayout rl_viewpager_banner;
+    //private boolean actionDown = SearchViewPageAdapter.isLoop;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -167,6 +168,7 @@ public class SearchFragment extends Fragment {
         if (isLoop) {
             iv_pause.setVisibility(View.VISIBLE);
             iv_play.setVisibility(View.INVISIBLE);
+            //isLoop = actionDown;
         } else {
             iv_play.setVisibility(View.VISIBLE);
             iv_pause.setVisibility(View.INVISIBLE);
@@ -189,7 +191,8 @@ public class SearchFragment extends Fragment {
             public void onClick(View v) {
                 iv_pause.setVisibility(View.VISIBLE);
                 iv_play.setVisibility(View.INVISIBLE);
-                isLoop = true;
+                //isLoop = actionDown;
+
                 playOrPausePreference.edit()
                         .putBoolean("isLoop", true)
                         .apply();

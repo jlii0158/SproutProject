@@ -221,7 +221,7 @@ public class SigninActivity extends AppCompatActivity {
                         growValueFromNative = "0";
                     }
 
-                    if (Integer.parseInt(growValueFromNative) != Integer.parseInt(growValue)) {
+                    if (Integer.parseInt(growValueFromNative) > Integer.parseInt(growValue)) {
                         preferences.edit()
                                 .putString("userAccount", userAccount)
                                 .putString("userWelcomeName", userWelcomeName)
