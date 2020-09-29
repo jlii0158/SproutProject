@@ -18,11 +18,88 @@
             android:id="@+id/tv_how_to_device_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Plan Creation"
+            android:text=" Device Setting"
             android:textSize="18sp"
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"
             android:drawableLeft="@drawable/ic_left"/>
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="1. Choose Settings from device system."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="80dp"
+                android:background="@drawable/choosesetting"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="2. Choose Apps."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="60dp"
+                android:background="@drawable/appchoose"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="3. Choose App launch."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="45dp"
+                android:background="@drawable/applaunch"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="4. Find Sprout from the list, turn off automatic managment, and allow the application to run in the background."
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:textSize="15dp"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="480dp"
+                android:background="@drawable/mannully"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+    </ScrollView>
 
 </LinearLayout>
