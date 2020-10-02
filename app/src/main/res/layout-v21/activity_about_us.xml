@@ -57,27 +57,21 @@
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:orientation="horizontal"
-                        android:layout_weight="1"
-                        android:paddingBottom="16dp">
+                        android:gravity="center">
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/logo"
-                            android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-                            android:layout_weight="1"/>
+                            android:layout_width="150dp"
+                            android:layout_height="150dp"
+                            android:background="@drawable/logo"/>
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/team_logo"
-                            android:layout_margin="20dp"
-                            android:layout_weight="1"/>
+                            android:layout_width="150dp"
+                            android:layout_height="135dp"
+                            android:layout_marginLeft="16dp"
+                            android:background="@drawable/team_logo"/>
                     </LinearLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:gravity="center"
                     android:text="Copyright © 2019-2020 Monash University SPROUT"
                     android:layout_marginBottom="16dp"

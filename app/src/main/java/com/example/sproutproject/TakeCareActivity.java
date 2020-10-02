@@ -5,6 +5,7 @@ import androidx.cardview.widget.CardView;
 
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,12 +105,15 @@ public class TakeCareActivity extends AppCompatActivity {
                     infection_upButton.setVisibility(View.VISIBLE);
                     ll_infection_title.setBackgroundColor(Color.parseColor("#A2D89F"));
                     tv_infection_title.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv_infection_title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+
                 } else {
                     ll_infection.setVisibility(View.GONE);
                     infection_downButton.setVisibility(View.VISIBLE);
                     infection_upButton.setVisibility(View.GONE);
                     ll_infection_title.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     tv_infection_title.setTextColor(Color.parseColor("#808080"));
+                    tv_infection_title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
             }
         });
@@ -124,12 +128,14 @@ public class TakeCareActivity extends AppCompatActivity {
                     too_much_water_upButton.setVisibility(View.VISIBLE);
                     ll_water_title.setBackgroundColor(Color.parseColor("#A2D89F"));
                     tv_water_much_title.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv_water_much_title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 } else {
                     ll_much_water.setVisibility(View.GONE);
                     too_much_water_downButton.setVisibility(View.VISIBLE);
                     too_much_water_upButton.setVisibility(View.GONE);
                     ll_water_title.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     tv_water_much_title.setTextColor(Color.parseColor("#808080"));
+                    tv_water_much_title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
             }
         });
@@ -143,12 +149,14 @@ public class TakeCareActivity extends AppCompatActivity {
                     too_less_water_upButton.setVisibility(View.VISIBLE);
                     ll_dehy_title.setBackgroundColor(Color.parseColor("#A2D89F"));
                     tv_dehy_title.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv_dehy_title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 } else {
                     ll_less_water.setVisibility(View.GONE);
                     too_less_water_downButton.setVisibility(View.VISIBLE);
                     too_less_water_upButton.setVisibility(View.GONE);
                     ll_dehy_title.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     tv_dehy_title.setTextColor(Color.parseColor("#808080"));
+                    tv_dehy_title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
             }
         });
@@ -162,12 +170,14 @@ public class TakeCareActivity extends AppCompatActivity {
                     no_nutrition_upButton.setVisibility(View.VISIBLE);
                     ll_nutrition_title.setBackgroundColor(Color.parseColor("#A2D89F"));
                     tv_nutrition_title.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv_nutrition_title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 } else {
                     ll_no_nutrition.setVisibility(View.GONE);
                     no_nutrition_downButton.setVisibility(View.VISIBLE);
                     no_nutrition_upButton.setVisibility(View.GONE);
                     ll_nutrition_title.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     tv_nutrition_title.setTextColor(Color.parseColor("#808080"));
+                    tv_nutrition_title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
             }
         });
@@ -181,12 +191,14 @@ public class TakeCareActivity extends AppCompatActivity {
                     sunlight_upButton.setVisibility(View.VISIBLE);
                     ll_sunlight_title.setBackgroundColor(Color.parseColor("#A2D89F"));
                     tv_sunlight_title.setTextColor(Color.parseColor("#FFFFFF"));
+                    tv_sunlight_title.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
                 } else {
                     ll_sunlight.setVisibility(View.GONE);
                     sunlight_downButton.setVisibility(View.VISIBLE);
                     sunlight_upButton.setVisibility(View.GONE);
                     ll_sunlight_title.setBackgroundColor(Color.parseColor("#FFFFFF"));
                     tv_sunlight_title.setTextColor(Color.parseColor("#808080"));
+                    tv_sunlight_title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
                 }
             }
         });

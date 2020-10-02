@@ -47,9 +47,12 @@ public class AlarmReceiver extends BroadcastReceiver {
             @Override
             public void run() {
 
+
                 RestClient.updateGrowValue(
                         preferences.getString("growValue", null),
                         preferences.getString("userAccount", null));
+
+
 
                 List<Plan> plans = db.planDao().findAllPlan();
                 for (int i = 0; i < plans.size(); i++) {

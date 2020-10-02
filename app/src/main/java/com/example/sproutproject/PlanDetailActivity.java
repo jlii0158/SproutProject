@@ -463,6 +463,14 @@ public class PlanDetailActivity extends AppCompatActivity {
                                     .show();
                         }
 
+                        ThreadUtils.runInThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                RestClient.updateGrowValue(
+                                        preferencesGrowValue.getString("growValue", null),
+                                        preferencesGrowValue.getString("userAccount", null));
+                            }
+                        });
 
                     }
                 } else {
