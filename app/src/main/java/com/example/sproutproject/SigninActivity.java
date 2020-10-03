@@ -25,14 +25,14 @@ import org.json.JSONException;
 
 public class SigninActivity extends AppCompatActivity {
 
-    private EditText ed_username, ed_password, ed_nickname, ed_email, ed_signup_password;
+    private EditText ed_username, ed_password, ed_nickname, ed_email, ed_signup_password, ed_signup_password_confirm;
     private Button bt_signin,bt_signup;
     private TextView tv_signup,tv_signin;
     private ScrollView signin_top,signup_bottom;
     String username, password, nickname, email, signup_password;
     //This value is used to indicate the sign in state, 0 means no state, 1 means login.
     public static int stateValue = 0;
-    public static String userAccount, userWelcomeName, growValue, userID;
+    public static String userAccount, userWelcomeName, growValue, userID, prePassword;
     //private ImageView iv_signin_back_bar;
     private Toast toast = null;
     SharedPreferences preferences, preferencesGrowValue;
@@ -57,6 +57,7 @@ public class SigninActivity extends AppCompatActivity {
         ed_nickname = findViewById(R.id.ed_nickname);
         ed_email = findViewById(R.id.ed_email);
         ed_signup_password = findViewById(R.id.ed_signup_password);
+        ed_signup_password_confirm = findViewById(R.id.ed_signup_password_confirm);
         bt_signup = findViewById(R.id.bt_signup);
 
         //iv_signin_back_bar = findViewById(R.id.iv_signin_back_bar);
@@ -91,7 +92,10 @@ public class SigninActivity extends AppCompatActivity {
                     showToast("Please set the password.");
                     return;
                 }
-
+                if (!ed_signup_password_confirm.getText().toString().equals(ed_signup_password.getText().toString())) {
+                    showToast("Both passwords must be the same.");
+                    return;
+                }
                 new getAllAsyncTask().execute();
             }
         });
@@ -198,6 +202,7 @@ public class SigninActivity extends AppCompatActivity {
                         userWelcomeName = jsonArray.getJSONObject(i).getString("user_nick");
                         growValue = jsonArray.getJSONObject(i).getString("user_grow");
                         userID = jsonArray.getJSONObject(i).getString("user_id");
+                        prePassword = jsonArray.getJSONObject(i).getString("password_hash");
                         test = 1;
                         if (MD5.md5(password).equals(jsonArray.getJSONObject(i).getString("password_hash"))) {
                             test1 = 1;
@@ -226,6 +231,7 @@ public class SigninActivity extends AppCompatActivity {
                                 .putString("userAccount", userAccount)
                                 .putString("userWelcomeName", userWelcomeName)
                                 .putString("growValue", growValueFromNative)
+                                .putString("prePassword", prePassword)
                                 .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
                                 //.putInt("dailyGrow", 0)
                                 .apply();
@@ -234,6 +240,7 @@ public class SigninActivity extends AppCompatActivity {
                                 .putString("userAccount", userAccount)
                                 .putString("userWelcomeName", userWelcomeName)
                                 .putString("growValue", growValue)
+                                .putString("prePassword", prePassword)
                                 .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
                                 //.putInt("dailyGrow", 0)
                                 .apply();
@@ -309,6 +316,7 @@ public class SigninActivity extends AppCompatActivity {
                         .putString("userAccount", userAccount)
                         .putString("userWelcomeName", userWelcomeName)
                         .putString("growValue", growValue)
+                        .putString("prePassword", MD5.md5(signup_password))
                         .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
                         //.putInt("dailyGrow", 0)
                         .apply();

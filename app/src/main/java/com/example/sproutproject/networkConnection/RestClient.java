@@ -30,6 +30,8 @@ public class RestClient {
     private static final String getPlantByName_URL = "https://obrykx3jfb.execute-api.ap-southeast-2.amazonaws.com/findPlantByName/findplantbyname?plantName=";
     private static final String updateGrowValue_URL = "https://h68g7av5mg.execute-api.ap-southeast-2.amazonaws.com/updateGrowValue/updategrowvalue?user_grow=";
     private static final String getAllMedals_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/getallmedalresource";
+    private static final String updatePassword_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/updatepassword?user_name=";
+
 
 
     private static OkHttpClient client=null;
@@ -112,6 +114,24 @@ public class RestClient {
         RequestBody body = RequestBody.create(credentialJson, JSON);
         Request request = new Request.Builder()
                 .url(updateGrowValue_URL + Integer.parseInt(growValue) + "&user_name=" + userAccount)
+                .post(body)
+                .build();
+        try {
+            Response response= client.newCall(request).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int updatePassword(String email,String new_password_hash) {
+
+        UserTable userTable = new UserTable("0", "kkk", "6");
+        Gson gson = new Gson();
+        String credentialJson = gson.toJson(userTable);
+        RequestBody body = RequestBody.create(credentialJson, JSON);
+        Request request = new Request.Builder()
+                .url(updatePassword_URL + email + "&password_hash=" + new_password_hash)
                 .post(body)
                 .build();
         try {

@@ -152,12 +152,26 @@
                     android:background="@drawable/input_rectangle_shape"
                     android:layout_below="@id/ed_email" />
 
+                <EditText
+                    android:id="@+id/ed_signup_password_confirm"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="8dp"
+                    android:inputType="textPassword"
+                    android:drawableLeft="@drawable/ic_password"
+                    android:hint="Confirm password"
+                    android:maxLength="40"
+                    android:background="@drawable/input_rectangle_shape"
+                    android:layout_below="@id/ed_signup_password" />
+
                 <Button
                     android:id="@+id/bt_signup"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/edit_rectangle_shape"
-                    android:layout_below="@id/ed_signup_password"
+                    android:layout_below="@id/ed_signup_password_confirm"
                     android:layout_marginTop="16dp"
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
