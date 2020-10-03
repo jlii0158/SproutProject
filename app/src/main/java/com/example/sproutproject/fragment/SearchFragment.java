@@ -98,7 +98,7 @@ public class SearchFragment extends Fragment {
 
     private List<OnboardingItem> onboardingItems;
     private int currentPosition2 = 1;
-    private Timer timer;
+    private Timer timer = null;
     private boolean isLoop = true;
     private String displayState;
     private SharedPreferences playOrPausePreference;
@@ -192,7 +192,7 @@ public class SearchFragment extends Fragment {
                 iv_pause.setVisibility(View.VISIBLE);
                 iv_play.setVisibility(View.INVISIBLE);
                 //isLoop = actionDown;
-
+                isLoop = true;
                 playOrPausePreference.edit()
                         .putBoolean("isLoop", true)
                         .apply();
@@ -327,7 +327,10 @@ public class SearchFragment extends Fragment {
 
         });
 
-        createSlideShow();
+        if (timer == null) {
+            createSlideShow();
+        }
+
 
         return view;
     }
@@ -364,7 +367,7 @@ public class SearchFragment extends Fragment {
                 }
 
             }
-        }, 1000, 5000);
+        }, 2500, 2500);
     }
 
 
