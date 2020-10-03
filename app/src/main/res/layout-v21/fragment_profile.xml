@@ -191,8 +191,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        app:cardElevation="3dp"
-        android:visibility="gone">
+        app:cardElevation="3dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

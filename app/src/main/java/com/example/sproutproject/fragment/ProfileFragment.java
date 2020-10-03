@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.sproutproject.AboutUsActivity;
 import com.example.sproutproject.FavoriteActivity;
 import com.example.sproutproject.R;
+import com.example.sproutproject.SettingActivity;
 import com.example.sproutproject.SigninActivity;
 import com.example.sproutproject.UserInformationActivity;
 import com.example.sproutproject.WaterRecordActivity;
@@ -177,7 +178,8 @@ public class ProfileFragment extends Fragment {
         cardView_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showToast("The settings feature is available in the future version.");
+                Intent intent = new Intent(getActivity(), SettingActivity.class);
+                startActivity(intent);
             }
         });
 
