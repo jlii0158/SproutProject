@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.sproutproject.networkConnection.MD5;
 import com.example.sproutproject.networkConnection.RestClient;
+import com.example.sproutproject.utils.ThreadUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,10 +30,10 @@ public class SigninActivity extends AppCompatActivity {
     private Button bt_signin,bt_signup;
     private TextView tv_signup,tv_signin;
     private ScrollView signin_top,signup_bottom;
-    String username, password, nickname, email, signup_password;
+    String username, password, nickname, email, signup_password, res;
     //This value is used to indicate the sign in state, 0 means no state, 1 means login.
     public static int stateValue = 0;
-    public static String userAccount, userWelcomeName, growValue, userID, prePassword;
+    public static String userAccount, userWelcomeName, growValue, userID, prePassword, profilePhoto;
     //private ImageView iv_signin_back_bar;
     private Toast toast = null;
     SharedPreferences preferences, preferencesGrowValue;
@@ -203,12 +204,15 @@ public class SigninActivity extends AppCompatActivity {
                         growValue = jsonArray.getJSONObject(i).getString("user_grow");
                         userID = jsonArray.getJSONObject(i).getString("user_id");
                         prePassword = jsonArray.getJSONObject(i).getString("password_hash");
+                        profilePhoto = jsonArray.getJSONObject(i).getString("head_id");
                         test = 1;
                         if (MD5.md5(password).equals(jsonArray.getJSONObject(i).getString("password_hash"))) {
                             test1 = 1;
                         }
                     }
                 }
+
+
                 if (test != 1) {
                     showToast("Account does not exist.");
                 }
@@ -246,6 +250,25 @@ public class SigninActivity extends AppCompatActivity {
                                 .apply();
                     }
 
+                    ThreadUtils.runInThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            res = RestClient.findAllProfilePhoto();
+                            try {
+                                JSONArray jsonArray = new JSONArray(res);
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    if (profilePhoto.equals(jsonArray.getJSONObject(i).getString("headId"))) {
+                                        preferences.edit()
+                                                .putString("profilePhoto", jsonArray.getJSONObject(i).getString("headImg"))
+                                                .apply();
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
 
                     startActivity(intent);
                     finish();
@@ -317,6 +340,7 @@ public class SigninActivity extends AppCompatActivity {
                         .putString("userWelcomeName", userWelcomeName)
                         .putString("growValue", growValue)
                         .putString("prePassword", MD5.md5(signup_password))
+                        .putString("profilePhoto", "https://iconfont.alicdn.com/t/73350a49-9f0c-4387-b396-7ba6e26f60bc.png")
                         .putInt("loginState", 1) //1 意思是登陆状态，0是没登陆
                         //.putInt("dailyGrow", 0)
                         .apply();

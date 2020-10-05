@@ -1,6 +1,7 @@
 package com.example.sproutproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.utils.ThreadUtils;
+import com.squareup.picasso.Picasso;
 
 public class UserInformationActivity extends AppCompatActivity {
 
@@ -22,6 +24,7 @@ public class UserInformationActivity extends AppCompatActivity {
 
     private TextView tv_profile_back_bar;
     SharedPreferences preferences, preferencesGrowValue;
+    private ImageView iv_profile_photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class UserInformationActivity extends AppCompatActivity {
         tv_nickname_profile = findViewById(R.id.tv_nickname_profile);
         bt_logout = findViewById(R.id.bt_logout);
         tv_profile_back_bar = findViewById(R.id.tv_profile_back_bar);
+        iv_profile_photo = findViewById(R.id.iv_profile_photo);
 
         String nickname = preferences.getString("userWelcomeName", null);
         final String userAccount = preferences.getString("userAccount", null);
@@ -44,6 +48,10 @@ public class UserInformationActivity extends AppCompatActivity {
         tv_account.setText(userAccount);
         tv_nickname_profile.setText(nickname);
 
+
+        Picasso.get()
+                .load(preferences.getString("profilePhoto",null))
+                .into(iv_profile_photo);
 
 
         tv_profile_back_bar.setOnClickListener(new View.OnClickListener() {

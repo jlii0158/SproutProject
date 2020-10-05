@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import com.example.sproutproject.entity.GetMedal;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.utils.ThreadUtils;
 import com.kelin.banner.view.BannerView;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,6 +47,7 @@ public class ProfileFragment extends Fragment {
     SharedPreferences preferences, preferencesGrowValue;
     RestClient restClient = new RestClient();
     UserMedalDatabase userMedalDb = null;
+    private ImageView iv_head;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -68,12 +71,16 @@ public class ProfileFragment extends Fragment {
         cardView_about_us = view.findViewById(R.id.cardView_about_us);
         cardView_record = view.findViewById(R.id.cardView_record);
         userMedalDb = UserMedalDatabase.getInstance(getContext());
+        iv_head = view.findViewById(R.id.iv_head);
 
 
 
         preferences = getActivity().getSharedPreferences("login", Context.MODE_PRIVATE);
         preferencesGrowValue = getActivity().getSharedPreferences("growValueAfterLogout", Context.MODE_PRIVATE);
 
+        Picasso.get()
+                .load(preferences.getString("profilePhoto",null))
+                .into(iv_head);
 
         cardView_record.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +187,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SettingActivity.class);
                 startActivity(intent);
+                getActivity().finish();
             }
         });
 

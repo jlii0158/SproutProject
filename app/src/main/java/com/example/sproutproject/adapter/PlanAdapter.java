@@ -103,7 +103,11 @@ public class PlanAdapter extends BaseAdapter {
         try {
             Date date = df.parse(getCurrentDate());
             Date date1 = df.parse(endDate[position]);
-            if (date == date1) {
+            Date date2 = df.parse(startDate[position]);
+
+            int days = (int) ((date.getTime() - date2.getTime()) / (1000*3600*24));
+            int days2 = (int) ((date1.getTime() - date2.getTime()) / (1000*3600*24));
+            if (days > days2) {
                 viewHolder.daysToNow.setBackgroundColor(Color.parseColor("#C1C1C1"));
                 viewHolder.daysBackground.setBackgroundColor(Color.parseColor("#989898"));
             }

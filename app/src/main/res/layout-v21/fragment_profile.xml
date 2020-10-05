@@ -30,8 +30,7 @@
                     android:id="@+id/iv_head"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
-                    android:layout_margin="8dp"
-                    android:background="@drawable/friend_boy"/>
+                    android:layout_margin="8dp"/>
                 <TextView
                     android:id="@+id/tv_login_start"
                     android:layout_width="match_parent"

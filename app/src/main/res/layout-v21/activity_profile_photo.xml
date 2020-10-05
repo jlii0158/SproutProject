@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ProfilePhotoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        android:background="#FFFFFF">
+        <TextView
+            android:id="@+id/tv_profile_photo_back_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Profile"
+            android:textSize="18sp"
+            android:layout_marginTop="9dp"
+            android:layout_marginLeft="8dp"
+            android:drawableLeft="@drawable/ic_left"/>
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="15dp"
+        android:layout_margin="8dp"
+        app:cardElevation="3dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/iv_profile_photo_display"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_margin="8dp"/>
+                <TextView
+                    android:id="@+id/tv_nick_name_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/iv_profile_photo_display"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="Hello....."
+                    android:textSize="15dp"
+                    android:textStyle="bold"
+                    android:layout_alignTop="@+id/iv_profile_photo_display"/>
+                <TextView
+                    android:id="@+id/tv_account_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="dfsdf@ewew.dfsd"
+                    android:layout_below="@id/tv_nick_name_profile"
+                    android:layout_alignLeft="@id/tv_nick_name_profile"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_profile_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/bt_change_profile_photo"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/edit_rectangle_shape"
+        android:text="Confirm"
+        android:textColor="#FFFFFF"
+        android:visibility="gone"/>
+
+
+
+</LinearLayout>

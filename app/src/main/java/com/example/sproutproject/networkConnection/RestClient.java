@@ -31,6 +31,8 @@ public class RestClient {
     private static final String updateGrowValue_URL = "https://h68g7av5mg.execute-api.ap-southeast-2.amazonaws.com/updateGrowValue/updategrowvalue?user_grow=";
     private static final String getAllMedals_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/getallmedalresource";
     private static final String updatePassword_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/updatepassword?user_name=";
+    private static final String getAllProfilePhoto = "https://b1gcqxmxx3.execute-api.ap-southeast-2.amazonaws.com/findAllProfilePhoto/findallprofilephoto";
+    private static final String updateHeadId = "https://owefe0tm62.execute-api.ap-southeast-2.amazonaws.com/updateHeadId/updateheadid?head_id=";
 
 
 
@@ -84,7 +86,7 @@ public class RestClient {
 
     public static int postUser(String nickname, String email, String signup_password) {
 
-        UserTable userTable = new UserTable("0", nickname, "6");
+        UserTable userTable = new UserTable("0", nickname, "43");
 
         String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
         Gson gson = new Gson();
@@ -108,7 +110,7 @@ public class RestClient {
 
     public static int updateGrowValue(String growValue, String userAccount) {
 
-        UserTable userTable = new UserTable("0", "kkk", "6");
+        UserTable userTable = new UserTable("0", "kkk", "43");
         Gson gson = new Gson();
         String credentialJson = gson.toJson(userTable);
         RequestBody body = RequestBody.create(credentialJson, JSON);
@@ -126,7 +128,7 @@ public class RestClient {
 
     public static int updatePassword(String email,String new_password_hash) {
 
-        UserTable userTable = new UserTable("0", "kkk", "6");
+        UserTable userTable = new UserTable("0", "kkk", "43");
         Gson gson = new Gson();
         String credentialJson = gson.toJson(userTable);
         RequestBody body = RequestBody.create(credentialJson, JSON);
@@ -142,9 +144,40 @@ public class RestClient {
         return 0;
     }
 
+    public static int updateHeadId(String email,String headId) {
+
+        UserTable userTable = new UserTable("0", "kkk", "43");
+        Gson gson = new Gson();
+        String credentialJson = gson.toJson(userTable);
+        RequestBody body = RequestBody.create(credentialJson, JSON);
+        Request request = new Request.Builder()
+                .url(updateHeadId + headId + "&user_name=" + email)
+                .post(body)
+                .build();
+        try {
+            Response response= client.newCall(request).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public String findAllMedals(){
         Request.Builder builder = new Request.Builder();
         builder.url(getAllMedals_URL);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results=response.body().string();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    public static String  findAllProfilePhoto(){
+        Request.Builder builder = new Request.Builder();
+        builder.url(getAllProfilePhoto);
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
