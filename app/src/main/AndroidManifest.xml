@@ -25,7 +25,9 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ProfilePhotoActivity"></activity>
+        <activity android:name=".HowToMedalActivity"></activity>
+        <activity android:name=".HowToAiActivity" />
+        <activity android:name=".ProfilePhotoActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".HowToDeviceActivity" />

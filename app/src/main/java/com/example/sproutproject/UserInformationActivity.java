@@ -1,12 +1,16 @@
 package com.example.sproutproject;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -16,6 +20,8 @@ import android.widget.Toast;
 import com.example.sproutproject.networkConnection.RestClient;
 import com.example.sproutproject.utils.ThreadUtils;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class UserInformationActivity extends AppCompatActivity {
 
@@ -53,6 +59,21 @@ public class UserInformationActivity extends AppCompatActivity {
                 .load(preferences.getString("profilePhoto",null))
                 .into(iv_profile_photo);
 
+        iv_profile_photo.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onClick(View v) {
+                //dialog.show();
+                LayoutInflater inflater = LayoutInflater.from(UserInformationActivity.this);
+                View imgEntryView = inflater.inflate(R.layout.dialog_photo, null); // 加载自定义的布局文件
+                final AlertDialog dialog = new AlertDialog.Builder(UserInformationActivity.this).create();
+                ImageView img = (ImageView)imgEntryView.findViewById(R.id.large_image_show);
+                Picasso.get().load(preferences.getString("profilePhoto",null)).into(img);
+                dialog.setView(imgEntryView); // custom dialog
+                Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
+                dialog.show();
+            }
+        });
 
         tv_profile_back_bar.setOnClickListener(new View.OnClickListener() {
             @Override

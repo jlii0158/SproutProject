@@ -376,20 +376,17 @@ public class SearchFragment extends Fragment {
 
         OnboardingItem itemAISearch = new OnboardingItem();
         itemAISearch.setTitle("Image recognition technology");
-        //itemAISearch.setDescription("Using intelligent identification can start your green journey!");
-        //itemAISearch.setImage(R.drawable.search_plant);
-        itemAISearch.setSearchImg("https://collectivegen.com/wp-content/uploads/2017/02/Is-my-plant-ok_Header-Image-778x542@2x.jpg");
-        //itemAISearch.setSearchImg("https://image.freepik.com/free-photo/smart-digital-agriculture-technology-by-futuristic-sensor-data-collection_31965-4343.jpg");
+        //itemAISearch.setSearchImg("https://collectivegen.com/wp-content/uploads/2017/02/Is-my-plant-ok_Header-Image-778x542@2x.jpg");
+        itemAISearch.setSearchImg("https://images.unsplash.com/photo-1544633909-3de7702b9602?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60");
+
+
 
         OnboardingItem itemMakePlan = new OnboardingItem();
         itemMakePlan.setTitle("An automatically generated plan");
-        //itemMakePlan.setDescription("Open your personal mobile garden steward, start your customized planting plan!");
-        //itemMakePlan.setImage(R.drawable.make_plan);
         itemMakePlan.setSearchImg("https://images.unsplash.com/photo-1526635563471-a02b6aa977ad?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60");
 
         OnboardingItem itemMetalGet = new OnboardingItem();
         itemMetalGet.setTitle("Earn medals, make yourself proud");
-        //itemMetalGet.setDescription("Get medals to be a little garden knight, be proud of yourself!");
         //itemMetalGet.setImage(R.drawable.metal_get);
         itemMetalGet.setSearchImg("https://images.unsplash.com/photo-1513780194864-9ac1138f93ac?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60");
 

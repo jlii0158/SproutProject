@@ -397,7 +397,10 @@ public class PlanDetailActivity extends AppCompatActivity {
                         toastImage.setImageResource(R.drawable.ic_rain);
                         centralToast("   It's been watered today   ", toastImage);
                     } else {
-                        int currentWaterCount = plan.getWaterCount() + 1;
+                        int currentWaterCount = plan.getWaterCount();
+                        if (plan.getWaterCount() < plan.getRealWaterCount()) {
+                            currentWaterCount = plan.getWaterCount() + 1;
+                        }
                         plan.setWaterCount(currentWaterCount);
                         plan.setWaterState(1);
                         planViewModel.update(plan);
