@@ -13,7 +13,7 @@
         android:layout_height="48dp"
         android:orientation="horizontal"
         android:background="#FFFFFF"
-        android:layout_marginBottom="4dp">
+        android:layout_marginBottom="8dp">
 
         <TextView
             android:id="@+id/tv_medal_intro_back_button"

@@ -1,6 +1,9 @@
 package com.example.sproutproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,9 +12,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sproutproject.adapter.ListAdapter;
 import com.example.sproutproject.adapter.MedalListAdapter;
+import com.example.sproutproject.adapter.MedalRecyclerAdapter;
 import com.example.sproutproject.networkConnection.RestClient;
 
 import org.json.JSONArray;
@@ -28,6 +33,10 @@ public class AllMedalsActivity extends AppCompatActivity {
     private List<Integer> medalGrowValue, metalID;
     private MedalListAdapter lAdapter;
     private ListView lv_all_medals;
+    private MedalRecyclerAdapter mRecycleViewAdapter;
+    private RecyclerView rv_all_medals;
+    private LinearLayoutManager mManagerColor;
+    private Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +45,10 @@ public class AllMedalsActivity extends AppCompatActivity {
 
         tv_all_medal_title = findViewById(R.id.tv_all_medal_title);
         lv_all_medals = findViewById(R.id.lv_all_medals);
+        rv_all_medals = findViewById(R.id.rv_all_medals);
+
+        mManagerColor = new GridLayoutManager(this, 3);
+        rv_all_medals.setLayoutManager(mManagerColor);
 
         tv_all_medal_title.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +59,7 @@ public class AllMedalsActivity extends AppCompatActivity {
 
         new SearchMedalFromDatabase().execute();
 
+        /*
         lv_all_medals.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -59,6 +73,19 @@ public class AllMedalsActivity extends AppCompatActivity {
             }
         });
 
+         */
+
+    }
+
+    private void showToast(String msg){
+        if (toast != null) {
+            toast.setText(msg);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            toast = Toast.makeText(AllMedalsActivity.this,msg,Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
 
@@ -87,7 +114,9 @@ public class AllMedalsActivity extends AppCompatActivity {
                     medalImage.add(jsonArray.getJSONObject(i).getString("medal_image"));
                     medalImageGrey.add(jsonArray.getJSONObject(i).getString("medal_image_grey"));
                 }
-                lAdapter = new MedalListAdapter(AllMedalsActivity.this, metalID, medalName, medalDesc, medalGrowValue, medalImage, medalImageGrey);
+                //lAdapter = new MedalListAdapter(AllMedalsActivity.this, metalID, medalName, medalDesc, medalGrowValue, medalImage, medalImageGrey);
+                mRecycleViewAdapter = new MedalRecyclerAdapter(getApplicationContext(), R.layout.single_medal_photo_item, metalID, medalName, medalDesc, medalGrowValue, medalImage, medalImageGrey);
+
             } catch (JSONException e) {
                 e.printStackTrace();
                 return null;
@@ -97,7 +126,21 @@ public class AllMedalsActivity extends AppCompatActivity {
         }
         @Override
         protected void onPostExecute(String result) {
-            lv_all_medals.setAdapter(lAdapter);
+            //lv_all_medals.setAdapter(lAdapter);
+            rv_all_medals.setAdapter(mRecycleViewAdapter);
+            mRecycleViewAdapter.setOnItemClickListener(new MedalRecyclerAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(RecyclerView parent, View view, int position, String data) {
+                    Intent intent = new Intent(AllMedalsActivity.this, BigMedalActivity.class);
+                    intent.putExtra("medalImage", medalImage.get(position))
+                            .putExtra("medalImageGrey", medalImageGrey.get(position))
+                            .putExtra("medalName", medalName.get(position))
+                            .putExtra("medalDesc", medalDesc.get(position))
+                            .putExtra("medalID", metalID.get(position));
+                    showToast(medalName.get(position));
+                    startActivity(intent);
+                }
+            });
 
         }
     }
