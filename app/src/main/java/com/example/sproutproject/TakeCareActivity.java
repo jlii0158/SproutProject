@@ -3,6 +3,7 @@ package com.example.sproutproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.Typeface;
@@ -42,6 +43,8 @@ public class TakeCareActivity extends AppCompatActivity {
     private ImageView sunlight_downButton, sunlight_upButton;
     private LinearLayout ll_sunlight, ll_sunlight_title;
     private TextView tv_sunlight_title;
+
+    private CardView cv_plant_guard;
 
 
     @Override
@@ -87,7 +90,17 @@ public class TakeCareActivity extends AppCompatActivity {
         ll_sunlight_title = findViewById(R.id.ll_sunlight_title);
         tv_sunlight_title = findViewById(R.id.tv_sunlight_title);
 
+        cv_plant_guard = findViewById(R.id.cv_plant_guard);
 
+
+
+        cv_plant_guard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TakeCareActivity.this, PlantGuardActivity.class);
+                startActivity(intent);
+            }
+        });
 
         tv_take_care_back_title.setOnClickListener(new View.OnClickListener() {
             @Override

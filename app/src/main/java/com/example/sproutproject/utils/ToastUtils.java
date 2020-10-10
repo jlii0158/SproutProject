@@ -82,6 +82,7 @@ public class ToastUtils {
     public  ToastUtils Short(Context context, CharSequence message){
         if(toast==null||(toastView!=null&&toastView.getChildCount()>1)){
             toast= Toast.makeText(context, message, Toast.LENGTH_SHORT);
+            toast.setGravity(Gravity.CENTER, 0, 0);
             toastView=null;
         }else{
             toast.setText(message);

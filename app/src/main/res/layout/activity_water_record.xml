@@ -19,7 +19,7 @@
             android:id="@+id/tv_record_back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Recording"
+            android:text=" Water Recording"
             android:textSize="18sp"
             android:layout_marginTop="9dp"
             android:layout_marginLeft="8dp"

@@ -28,7 +28,7 @@
     <string name="nutrition_solution">Adding organic materials to the soil (such as compost or coffee grounds) also reduces pH slowly over time, extending microbial life and improving soil structure. In particular, plants with low iron content require soils with a pH below 7, which can be promoted by adding acidic mulch (such as pine needles).</string>
     <string name="sunlight_sign">Plants that are lanky, floppy, pale, are shedding leaves or have new growth that is pale and flimsy are probably not getting enough sunlight. With succulents, the plant often gets leggy where the stem grows long and the leaves become widely spread.</string>
     <string name="sunlight_solution">Some plants need direct sunlight, while others only need indirect sunlight. Figuring out the type of plant that works best for you will help you determine if you\'re getting enough. Move the plants to the windowsill, keeping the blinds open and moving the plants as little as possible, as they usually have to reorient themselves to the sun by growing new leaves.</string>
-    <string name="sick_title">You should love your plants. If you do not take good care of them, they can go wrong. Maybe they are still smiling at you now, but he might be pale the next day. So what happened to your plants?</string>
+    <string name="sick_title">What happened to your plants?</string>
     <string-array name="virtual_plan_days">
         <item>3</item>
         <item>5</item>
