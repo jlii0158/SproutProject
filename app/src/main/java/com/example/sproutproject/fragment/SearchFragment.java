@@ -3,6 +3,7 @@ package com.example.sproutproject.fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -258,6 +260,7 @@ public class SearchFragment extends Fragment {
         });
 
         lv_plantList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @SuppressLint("SetTextI18n")
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
@@ -275,6 +278,7 @@ public class SearchFragment extends Fragment {
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 intent.putExtra("plant",plant);
                 startActivity(intent);
+                //startActivity(intent,  ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             }
         });
 

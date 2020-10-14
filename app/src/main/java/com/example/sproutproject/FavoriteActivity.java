@@ -5,10 +5,13 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,6 +52,10 @@ public class FavoriteActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorite);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            setStatusBarColor(FavoriteActivity.this,R.color.colorBackground); }
 
         my_listView = findViewById(R.id.my_listView);
         ll_noFavorite_view = findViewById(R.id.ll_noFavorite_view);
@@ -157,4 +164,19 @@ public class FavoriteActivity extends AppCompatActivity {
 
     }
 
+    public static void setStatusBarColor(Activity activity, int colorId) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(activity.getResources().getColor(colorId));
+        }
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
+//            transparencyBar(activity);
+//            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+//            tintManager.setStatusBarTintEnabled(true);
+//            tintManager.setStatusBarTintResource(colorId);
+//        }
+    }
 }

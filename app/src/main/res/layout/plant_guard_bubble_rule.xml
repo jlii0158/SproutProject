@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="According to the given status of the plant choose the right conditions from the 5 for the plant to heal it."
+        android:text="According to the given status of the plant choose the right conditions (one or more) from the 5 for the plant to heal it."
         android:textSize="12sp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"/>

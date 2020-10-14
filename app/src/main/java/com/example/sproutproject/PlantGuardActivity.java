@@ -2,14 +2,18 @@ package com.example.sproutproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Layout;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +50,10 @@ public class PlantGuardActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plant_guard);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            setStatusBarColor(PlantGuardActivity.this,R.color.colorBackground); }
 
         tv_plant_guard_back_title = findViewById(R.id.tv_plant_guard_back_title);
 
@@ -165,18 +173,23 @@ public class PlantGuardActivity extends AppCompatActivity {
                             .addView(toastImage,0)
                             .show();
 
-                    ThreadUtils.runInThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            RestClient.updateGrowValue(
-                                    preferencesGrowValue.getString("growValue", null),
-                                    preferencesGrowValue.getString("userAccount", null));
-                        }
-                    });
-
                 } else {
-                    showToast("The guards failed! Try again.");
+                    String growValue = preferencesGrowValue.getString("growValue", null);
+                    growValue = String.valueOf(Integer.parseInt(growValue) - 1);
+                    preferencesGrowValue.edit()
+                            .putString("growValue", growValue)
+                            .apply();
+                    showToast("The guards failed! Lose 1 growth value! Try again.");
                 }
+
+                ThreadUtils.runInThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        RestClient.updateGrowValue(
+                                preferencesGrowValue.getString("growValue", null),
+                                preferencesGrowValue.getString("userAccount", null));
+                    }
+                });
             }
         });
 
@@ -280,14 +293,14 @@ public class PlantGuardActivity extends AppCompatActivity {
         switch (random) {
             case 1:
                 iv_cloud.setBackground(getResources().getDrawable(R.drawable.ic_much_cloud));
-                iv_plant_normal.setBackground(getResources().getDrawable(R.drawable.ic_no_sunlight));
+                iv_plant_normal.setBackground(getResources().getDrawable(R.drawable.ic_no_sunlight_new));
                 iv_bug_real.setBackground(getResources().getDrawable(R.drawable.ic_bugs_real));
                 generateList.add(1);
                 generateList.add(4);
                 break;
             case 2:
                 iv_cloud.setBackground(getResources().getDrawable(R.drawable.ic_much_cloud));
-                iv_plant_normal.setBackground(getResources().getDrawable(R.drawable.ic_no_sunlight));
+                iv_plant_normal.setBackground(getResources().getDrawable(R.drawable.ic_no_sunlight_new));
                 generateList.add(1);
                 break;
             case 3:
@@ -378,5 +391,21 @@ public class PlantGuardActivity extends AppCompatActivity {
             toast = Toast.makeText(PlantGuardActivity.this,msg,Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    public static void setStatusBarColor(Activity activity, int colorId) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(activity.getResources().getColor(colorId));
+        }
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
+//            transparencyBar(activity);
+//            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+//            tintManager.setStatusBarTintEnabled(true);
+//            tintManager.setStatusBarTintResource(colorId);
+//        }
     }
 }

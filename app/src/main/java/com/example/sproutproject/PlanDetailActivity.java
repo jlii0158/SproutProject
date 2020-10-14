@@ -33,6 +33,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -108,6 +109,10 @@ public class PlanDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_detail);
         instance = this;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+            setStatusBarColor(PlanDetailActivity.this,R.color.colorBackground); }
 
         Intent intent = getIntent();
         final PlanDisplay planDisplay = (PlanDisplay) intent.getSerializableExtra("planDisplay");
@@ -665,5 +670,21 @@ public class PlanDetailActivity extends AppCompatActivity {
         ByteArrayInputStream isBm = new ByteArrayInputStream(baos.toByteArray());//把压缩后的数据baos存放到ByteArrayInputStream中
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
         return bitmap;
+    }
+
+    public static void setStatusBarColor(Activity activity,int colorId) {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Window window = activity.getWindow();
+            //window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(activity.getResources().getColor(colorId));
+        }
+//        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
+//            transparencyBar(activity);
+//            SystemBarTintManager tintManager = new SystemBarTintManager(activity);
+//            tintManager.setStatusBarTintEnabled(true);
+//            tintManager.setStatusBarTintResource(colorId);
+//        }
     }
 }

@@ -88,7 +88,7 @@ public class RestClient {
 
         UserTable userTable = new UserTable("0", nickname, "43");
 
-        String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=6";
+        String res = "?user_grow=0&user_nick=" + nickname + "&user_name=" + email + "&password_hash=" + signup_password + "&head_id=43";
         Gson gson = new Gson();
         String credentialJson = gson.toJson(userTable);
         String strResponse="";
