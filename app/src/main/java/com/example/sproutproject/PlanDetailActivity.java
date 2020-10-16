@@ -388,8 +388,6 @@ public class PlanDetailActivity extends AppCompatActivity {
         }
 
 
-
-
         bt_water_main.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @SuppressLint("Range")
@@ -434,7 +432,7 @@ public class PlanDetailActivity extends AppCompatActivity {
 
                         ImageView toastImage = new ImageView(getApplicationContext());
                         toastImage.setImageResource(R.drawable.ic_90crown);
-                        toastUtils.Long(PlanDetailActivity.this,"Well done! Get 5 growth value!")
+                        toastUtils.Short(PlanDetailActivity.this,"Well done! Get 5 growth value!")
                                 .addView(toastImage,0)
                                 .show();
                         /*

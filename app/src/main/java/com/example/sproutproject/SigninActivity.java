@@ -85,15 +85,15 @@ public class SigninActivity extends AppCompatActivity {
                     return;
                 }
                 if (email.equals("")) {
-                    showToast("Please set the email.");
+                    showToast("Please set an account.");
                     return;
                 }
-                if (!email.contains("@")||!email.contains(".")) {
-                    showToast("The email address is invalid, please try again.");
+                if (!isNumeric(email)) {
+                    showToast("The account number should be 6-8 digits");
                     return;
                 }
-                if (email.lastIndexOf(".") < email.lastIndexOf("@")) {
-                    showToast("The email address is invalid, please try again.");
+                if (email.length() > 8 || email.length() < 6) {
+                    showToast("The account number should be 6-8 digits");
                     return;
                 }
                 if (signup_password.equals("")) {
@@ -114,15 +114,15 @@ public class SigninActivity extends AppCompatActivity {
                 username = ed_username.getText().toString().trim();
                 password = ed_password.getText().toString().trim();
                 if (username.equals("")) {
-                    showToast("Please input the email.");
+                    showToast("Please input the account.");
                     return;
                 }
-                if (!username.contains("@")||!username.contains(".")) {
-                    showToast("The email address is invalid, please try again.");
+                if (!isNumeric(username)) {
+                    showToast("The account number should be 6-8 digits");
                     return;
                 }
-                if (username.lastIndexOf(".") < username.lastIndexOf("@")) {
-                    showToast("The email address is invalid, please try again.");
+                if (username.length() > 8 || username.length() < 6) {
+                    showToast("The account number should be 6-8 digits");
                     return;
                 }
                 if (password.equals("")) {
@@ -306,7 +306,7 @@ public class SigninActivity extends AppCompatActivity {
                     }
                 }
                 if (test == 1) {
-                    showToast("The email has been used, please choose another one.");
+                    showToast("The account has been used, please choose another one.");
                 }else {
                     new PostUserAsyncTask().execute();
                 }
@@ -393,5 +393,15 @@ public class SigninActivity extends AppCompatActivity {
 //            tintManager.setStatusBarTintEnabled(true);
 //            tintManager.setStatusBarTintResource(colorId);
 //        }
+    }
+
+    public static boolean isNumeric(String str) {
+        for (int i = 0; i < str.length(); i++) {
+            System.out.println(str.charAt(i));
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 }

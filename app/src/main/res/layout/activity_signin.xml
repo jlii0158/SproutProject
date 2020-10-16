@@ -55,8 +55,8 @@
                     android:layout_marginRight="30dp"
                     android:maxLength="40"
                     android:inputType="textEmailAddress"
-                    android:drawableLeft="@drawable/ic_nickname"
-                    android:hint="Email"
+                    android:drawableLeft="@drawable/ic_profile_replace_slite"
+                    android:hint="Account"
                     android:background="@drawable/input_rectangle_shape"/>
 
                 <EditText
@@ -122,7 +122,7 @@
                     android:inputType="text"
                     android:maxLength="40"
                     android:drawableLeft="@drawable/ic_nickname"
-                    android:hint="Name"
+                    android:hint="Nickname"
                     android:background="@drawable/input_rectangle_shape"/>
 
                 <EditText
@@ -132,8 +132,8 @@
                     android:layout_marginLeft="30dp"
                     android:layout_marginRight="30dp"
                     android:layout_marginTop="8dp"
-                    android:drawableLeft="@drawable/ic_email"
-                    android:hint="Email"
+                    android:drawableLeft="@drawable/ic_profile_replace_slite"
+                    android:hint="Account"
                     android:maxLength="40"
                     android:inputType="textEmailAddress"
                     android:background="@drawable/input_rectangle_shape"
