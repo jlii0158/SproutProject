@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -59,6 +60,9 @@ public class DetailActivity extends AppCompatActivity {
 
         //getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_detail);
+
+        Log.d("DetailActivity", this.toString());
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);

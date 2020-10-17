@@ -31,9 +31,9 @@ public class SettingActivity extends AppCompatActivity {
         tv_setting_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-                intent.putExtra("id",1);
-                startActivity(intent);
+                //Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                //intent.putExtra("id",1);
+                //startActivity(intent);
                 finish();
             }
         });
@@ -56,9 +56,9 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     public void onBackPressed() {
-        Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-        intent.putExtra("id",1);
-        startActivity(intent);
+        //Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+        //intent.putExtra("id",1);
+        //startActivity(intent);
         finish();
     }
 

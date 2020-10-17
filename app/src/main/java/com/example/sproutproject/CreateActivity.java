@@ -14,6 +14,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -61,6 +62,7 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create);
+        Log.d("CreateActivity", this.toString());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -364,16 +366,17 @@ public class CreateActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String details) {
             if (FavoriteActivity.instance != null) {
-                FavoriteActivity.instance.finish();
+                //FavoriteActivity.instance.finish();
             }
-            DetailActivity.instance.finish();
+            //DetailActivity.instance.finish();
             showToast("Plan created successfully! Get 5 growth value");
-            MainActivity.instance.finish();
+            //MainActivity.instance.finish();
 
             Intent intent = new Intent(CreateActivity.this, MainActivity.class);
-            intent.putExtra("pid",1);
+            //intent.putExtra("pid",1);
+            MainActivity.vp_mainPage.setCurrentItem(1);
             startActivity(intent);
-            finish();
+            //finish();
         }
     }
 

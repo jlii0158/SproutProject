@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -33,7 +34,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView tv_title;
-    private ViewPager vp_mainPage;
+    public static ViewPager vp_mainPage;
     private LinearLayout ll_botton;
     private List<Fragment> mFragments = new ArrayList<Fragment>();
     private ToolbarUtils toolbarUtils;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         //getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_main);
+        Log.d("MainActivity", this.toString());
         instance = this;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -60,12 +62,12 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         mFragments.add(new SearchFragment());
         mFragments.add(new PlanFragment());
         mFragments.add(new MetalFragment());
         mFragments.add(new ProfileFragment());
         vp_mainPage.setAdapter(new MyPageAdapter(getSupportFragmentManager()));
-
 
 
         toolbarUtils = new ToolbarUtils();

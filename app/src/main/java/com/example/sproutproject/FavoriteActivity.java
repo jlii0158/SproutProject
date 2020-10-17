@@ -67,9 +67,10 @@ public class FavoriteActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
-                intent.putExtra("favorite", 1);
+                MainActivity.vp_mainPage.setCurrentItem(0);
+                //intent.putExtra("favorite", 1);
                 startActivity(intent);
-                finish();
+                //finish();
             }
         });
 
@@ -110,18 +111,18 @@ public class FavoriteActivity extends AppCompatActivity {
         tv_favorite_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
-                intent.putExtra("id", 1);
-                startActivity(intent);
+                //Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
+                //intent.putExtra("id", 1);
+                //startActivity(intent);
                 finish();
             }
         });
     }
 
     public void onBackPressed() {
-        Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
-        intent.putExtra("id", 1);
-        startActivity(intent);
+        //Intent intent = new Intent(FavoriteActivity.this, MainActivity.class);
+        //intent.putExtra("id", 1);
+        //startActivity(intent);
         finish();
     }
 
