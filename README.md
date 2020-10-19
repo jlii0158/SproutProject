@@ -34,9 +34,26 @@ providing information of watering frequency and recording mechanism as well as i
 ### 3.Madals
 The app provides a reward mechanism to encourage users to keep long-term work on hands-on activity.
 
+![image](https://user-images.githubusercontent.com/54625104/96402822-6d23cb00-1209-11eb-9c13-ce18d89b5ef8.png)
+
 The users gain growth value by completing different daily tasks or the whole plant plan.
 
+![image](https://user-images.githubusercontent.com/54625104/96402962-c55acd00-1209-11eb-8066-e4db1a4d5d68.png)
+
 When the amount of the growth value satisfies the requirement of the medal, users can gain the relevant medal, and to be proud of themselves!
+
+### 4.Maintenance
+The feature of plant diagnosis has been provided for users to identify the needed knowledge and potential problems that they may face in the process of growing a plant.
+
+![image](https://user-images.githubusercontent.com/54625104/96403043-f20ee480-1209-11eb-84dc-de12ad51aa21.png)
+
+The several health issues of the plants are defined, provides text description and solution for the diagnosis of the issues, and a set of characteristics’ pictures.
+
+![image](https://user-images.githubusercontent.com/54625104/96403170-37cbad00-120a-11eb-91b1-28c67c47265c.png)
+
+An interesting game is provided to help users test their consciousness of identifying potential problems via some randomly generated pictures.
+
+![image](https://user-images.githubusercontent.com/54625104/96403219-55007b80-120a-11eb-80b6-be2728ab5b2c.png)
 
 ### Tech
 JAVA
