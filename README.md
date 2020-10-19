@@ -3,7 +3,7 @@
 ### Sprout v1.0
 Sprout is an Android app contributes to adolescent education and hands-on activity within family as an auxiliary tool, produced by The Pink Rapper.
 
-<img width="151" alt="logo" src="https://user-images.githubusercontent.com/54625104/93086137-3f5adc00-f6c9-11ea-81a9-fee20dbfc526.png">
+![image](https://user-images.githubusercontent.com/54625104/96403448-fee00800-120a-11eb-837f-143f3b9ea23d.png)
 
 ### Goal
 Sprout is an Android-based platform application tailor-made for families with children. The primary objective of the Sprout app is to provide basic knowledge of plants and some necessary auxiliary functions for activities based on this knowledge to help users improve their practical skills while acquiring knowledge of plants.
