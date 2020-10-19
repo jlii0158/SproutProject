@@ -32,6 +32,12 @@ providing information of watering frequency and recording mechanism as well as i
 
 
 ### 3.Madals
+The app provides a reward mechanism to encourage users to keep long-term work on hands-on activity.
+
+The users gain growth value by completing different daily tasks or the whole plant plan.
+
+When the amount of the growth value satisfies the requirement of the medal, users can gain the relevant medal, and to be proud of themselves!
+
 ### Tech
 JAVA
 AWS server
