@@ -25,7 +25,10 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ChangeNicknameActivity"></activity>
+        <activity android:name=".ChangeNicknameActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity"/>
         <activity
             android:name=".PlantGuardActivity"
             android:launchMode="singleTop"

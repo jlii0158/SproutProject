@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:text="Copyright © 2019-2020 Monash University SPROUT"
-                    android:layout_marginBottom="16dp"
+                    android:layout_marginBottom="8dp"
                     android:textSize="12sp"/>
                 </LinearLayout>
 
@@ -226,6 +226,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 app:cardElevation="3dp">
 
                 <LinearLayout
