@@ -102,7 +102,11 @@ public class EditPlanActivity extends AppCompatActivity {
                 plan.setPlanName(newPlanName);
                 planDisplay.setPlanName(newPlanName);
                 planViewModel.update(plan);
-                showToast("Plan name change success");
+
+
+
+
+                showToast("Change success");
                 PlanDetailActivity.instance.finish();
                 Intent intent = new Intent(EditPlanActivity.this, PlanDetailActivity.class);
                 intent.putExtra("planDisplay", planDisplay);

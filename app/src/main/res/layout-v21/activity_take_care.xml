@@ -25,6 +25,7 @@
             android:layout_marginLeft="8dp"
             android:drawableLeft="@drawable/ic_left"/>
 
+
     </LinearLayout>
 
     <ScrollView
@@ -136,6 +137,12 @@
                             android:layout_marginRight="8dp"
                             android:text="@string/insectionSign"/>
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. insects anywhere on the plant"/>
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Solution"
@@ -148,8 +155,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
+                            android:text="1. Isolate the plant"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Remove all infected leaves"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
                             android:layout_marginBottom="8dp"
-                            android:text="@string/infectionSolution"/>
+                            android:text="3. Wipe off the insects with a damp cloth or soapy water"/>
 
                     </LinearLayout>
 
@@ -256,6 +275,13 @@
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
                             android:text="@string/overWaterSign"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Die leaves remain soft and pliable"/>
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -376,6 +402,18 @@
                             android:layout_marginRight="8dp"
                             android:text="@string/dehy"/>
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Leaves with brown leaf tips or edges"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="3. Water passes through the soil without soaking in"/>
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Solution"
@@ -388,8 +426,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
-                            android:layout_marginBottom="8dp"
                             android:text="@string/deh_solution"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Reassemble the plant in a larger container"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="3. Dip water into the sink thoroughly"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -495,6 +545,12 @@
                             android:layout_marginRight="8dp"
                             android:text="@string/nutrition_sign"/>
                         <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Yellowing leaf"/>
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Solution"
@@ -507,8 +563,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
-                            android:layout_marginBottom="8dp"
                             android:text="@string/nutrition_solution"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="2. Add coffee grounds to the soil"/>
 
                     </LinearLayout>
                 </LinearLayout>
@@ -627,8 +689,20 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
-                            android:layout_marginBottom="8dp"
                             android:text="@string/sunlight_solution"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:text="2. Keeping the blinds open"/>
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="8dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_marginBottom="8dp"
+                            android:text="3. Moving the plants as little as possible"/>
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -641,10 +715,10 @@
                 android:foreground="?android:attr/selectableItemBackgroundBorderless"
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="15dp"
-                android:layout_marginTop="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="4dp"
+                android:layout_marginTop="16dp"
                 app:cardElevation="2dp">
 
                 <LinearLayout
@@ -662,7 +736,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Plant guard"
+                        android:text="Plant Guard"
                         android:textStyle="bold"
                         android:drawableRight="@drawable/ic_right"
                         android:layout_marginTop="10dp"
@@ -671,6 +745,13 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="* Play Plant Guard for more growth value"
+                android:layout_marginBottom="4dp"
+                android:layout_marginLeft="16dp"/>
 
 
         </LinearLayout>

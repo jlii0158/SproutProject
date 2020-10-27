@@ -13,10 +13,12 @@ import com.example.sproutproject.R;
 public class WaterRecordRecyclerAdapter extends RecyclerView.Adapter<WaterRecordRecyclerAdapter.ViewHolder>{
 
     private String[] mData, mWaterDate;
+    private int a;
 
-    public WaterRecordRecyclerAdapter(String[] data, String[] mWaterDate) {
+    public WaterRecordRecyclerAdapter(String[] data, String[] mWaterDate, int a) {
         this.mData = data;
         this.mWaterDate = mWaterDate;
+        this.a = a;
     }
 
     public void updateData(String[] data, String[] dateData) {
@@ -43,7 +45,7 @@ public class WaterRecordRecyclerAdapter extends RecyclerView.Adapter<WaterRecord
 
     @Override
     public int getItemCount() {
-        return mData == null ? 0 : mData.length;
+        return mData == null ? 0 : a;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

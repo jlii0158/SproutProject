@@ -11,6 +11,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,16 +26,12 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Messenger;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,25 +44,21 @@ import com.example.sproutproject.database_entity.Plant;
 import com.example.sproutproject.databse.PlanDatabase;
 import com.example.sproutproject.databse.UserMedalDatabase;
 import com.example.sproutproject.databse.WaterDatabase;
-import com.example.sproutproject.entity.GetMedal;
 import com.example.sproutproject.entity.Plan;
 import com.example.sproutproject.entity.Water;
-import com.example.sproutproject.networkConnection.Ingredient;
 import com.example.sproutproject.networkConnection.RestClient;
-import com.example.sproutproject.networkConnection.TransApi;
 import com.example.sproutproject.utils.ThreadUtils;
 import com.example.sproutproject.utils.ToastUtils;
 import com.example.sproutproject.viewmodel.PlanViewModel;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -81,7 +74,7 @@ public class PlanDetailActivity extends AppCompatActivity {
     String plant_img, waterNeed, harvest_time;
     public static int info = 0;
     public static String startDatePass;
-    static PlanDetailActivity instance;
+    public static PlanDetailActivity instance;
     private TextView tv_choose_background, tv_plan_back_button, tv_take_care;
     private LinearLayout ll_plan_background, toastView;
     private static final int CHOOSE_PHOTO = 385;
@@ -155,19 +148,25 @@ public class PlanDetailActivity extends AppCompatActivity {
 
         final String aaa = planDisplay.getPlanBackground();
 
+
+        /*
         if (aaa != null) {
             final Uri uri = Uri.parse((String) aaa);
-            Bitmap bitmap = null;
-            try {
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
-                //bitmap = compressImage(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            cv_generate_plan.setAlpha((float) 0.8);
-            ll_plan_background.setBackground(new BitmapDrawable(getResources(),bitmap));
-
+            //File file = new File(uri.getPath());
+            //if (file.equals("not null")) {
+                Bitmap bitmap = null;
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(uri));
+                    //bitmap = compressImage(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                cv_generate_plan.setAlpha((float) 0.8);
+                ll_plan_background.setBackground(new BitmapDrawable(getResources(),bitmap));
+            //}
         }
+
+         */
 
         tv_take_care.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,7 +176,15 @@ public class PlanDetailActivity extends AppCompatActivity {
             }
         });
 
-        tv_choose_background.setOnClickListener(new OnClickListenerImpl());
+        //tv_choose_background.setOnClickListener(new OnClickListenerImpl());
+        tv_choose_background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlanDetailActivity.this, WaterRecordActivity.class);
+                intent.putExtra("pName",planDisplay.getPlanName());
+                startActivity(intent);
+            }
+        });
 
         tv_plan_back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -276,7 +283,7 @@ public class PlanDetailActivity extends AppCompatActivity {
                             }
 
                             if (Integer.parseInt(planDisplay.getDaysToCurrentDate()) < finalDays) {
-                                if (plan.waterState == 0) {
+                                if (plan.waterState == 0 && Integer.parseInt(planDisplay.getDaysToCurrentDate()) % waterDays == 0) {
                                     tv_plan_name.setBackgroundColor(Color.parseColor("#FED46E"));
                                     bt_water_main.setBackground(getResources().getDrawable(R.drawable.edit_rectangle_shape_red));
                                 }

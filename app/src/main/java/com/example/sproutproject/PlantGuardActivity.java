@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -38,13 +39,14 @@ public class PlantGuardActivity extends AppCompatActivity {
     private TextView tv_plant_guard_back_title;
     private ImageView iv_bugs, iv_water, iv_nutrition, iv_sun, iv_rain;
     private ImageView iv_bugs_grey, iv_water_grey, iv_nutrition_grey, iv_sun_grey, iv_rain_grey, iv_plant_normal;
-    private ImageView iv_bug_real, iv_cloud, iv_rain_water, iv_refresh;
+    private ImageView iv_bug_real, iv_cloud, iv_rain_water, iv_refresh, iv_home;
     private Button bt_check, bt_next;
     private LinearLayout ll_rule;
     private Toast toast = null;
     private List<Integer> generateList, userList;
     private SharedPreferences preferencesGrowValue;
     private ToastUtils toastUtils = new ToastUtils();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +81,25 @@ public class PlantGuardActivity extends AppCompatActivity {
         iv_refresh = findViewById(R.id.iv_refresh);
         ll_rule = findViewById(R.id.ll_rule);
 
+        iv_home = findViewById(R.id.iv_home);
+
         userList = new ArrayList<>();
         preferencesGrowValue = getSharedPreferences("login", Context.MODE_PRIVATE);
 
         setRandomPlant();
 
+
+        iv_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PlantGuardActivity.this, MainActivity.class);
+                intent.putExtra("pid",1);
+                startActivity(intent);
+                PlanDetailActivity.instance.finish();
+                TakeCareActivity.instance.finish();
+                finish();
+            }
+        });
 
         ll_rule.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,7 +185,7 @@ public class PlantGuardActivity extends AppCompatActivity {
 
                     ImageView toastImage = new ImageView(getApplicationContext());
                     toastImage.setImageResource(R.drawable.ic_90crown);
-                    toastUtils.Short(PlantGuardActivity.this,"The guards success! Get 1 growth value!")
+                    toastUtils.Short(PlantGuardActivity.this,"Guard success! Get 1 growth value!")
                             .addView(toastImage,0)
                             .show();
 

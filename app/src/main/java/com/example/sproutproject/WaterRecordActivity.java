@@ -50,21 +50,35 @@ public class WaterRecordActivity extends AppCompatActivity {
             }
         });
 
-
+        String pName = getIntent().getStringExtra("pName");
 
         waterViewModel = new ViewModelProvider(this).get(WaterViewModel.class);
         waterViewModel.initalizeVars(getApplication());
+        final String finalPName = pName;
         waterViewModel.getAllWaters().observe(this, new Observer<List<Water>>() {
                     @Override
                     public void onChanged(@Nullable final List<Water> waters) {
                         planName = new String[waters.size()];
                         waterDate = new String[waters.size()];
-                        for (int i = 0; i < waters.size(); i++) {
-                            planName[i] = waters.get(i).getPlanName();
-                            waterDate[i] = waters.get(i).getWaterDate();
+                        int a = 0;
+                        if (finalPName != null) {
+                            for (int i = 0; i < waters.size(); i++) {
+                                if (finalPName.equals(waters.get(i).getPlanName())) {
+                                    planName[a] = waters.get(i).getPlanName();
+                                    waterDate[a] = waters.get(i).getWaterDate();
+                                     a += 1;
+                                }
+                            }
+                        } else {
+                            for (int i = 0; i < waters.size(); i++) {
+                                planName[i] = waters.get(i).getPlanName();
+                                waterDate[i] = waters.get(i).getWaterDate();
+                                a += 1;
+                            }
                         }
+
                         mLayoutManager = new LinearLayoutManager(getBaseContext(), LinearLayoutManager.VERTICAL, false);
-                        mAdapter = new WaterRecordRecyclerAdapter(planName, waterDate);
+                        mAdapter = new WaterRecordRecyclerAdapter(planName, waterDate, a);
                         my_recycler_view.setLayoutManager(mLayoutManager);
                         my_recycler_view.setAdapter(mAdapter);
                     }

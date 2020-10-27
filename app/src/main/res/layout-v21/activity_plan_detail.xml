@@ -182,7 +182,7 @@
                     android:layout_gravity="bottom"
                     android:drawableTop="@drawable/ic_rectangular"
                     android:clickable="true"
-                    android:text="Background"
+                    android:text="Watering log"
                     android:gravity="center"
                     android:layout_weight="1"/>
 

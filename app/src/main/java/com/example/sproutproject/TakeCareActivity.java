@@ -49,11 +49,14 @@ public class TakeCareActivity extends AppCompatActivity {
 
     private CardView cv_plant_guard;
 
+    public static TakeCareActivity instance;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_take_care);
+        instance = this;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -98,7 +101,6 @@ public class TakeCareActivity extends AppCompatActivity {
         tv_sunlight_title = findViewById(R.id.tv_sunlight_title);
 
         cv_plant_guard = findViewById(R.id.cv_plant_guard);
-
 
 
         cv_plant_guard.setOnClickListener(new View.OnClickListener() {
