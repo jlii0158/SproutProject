@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 public class SettingActivity extends AppCompatActivity {
     private TextView tv_setting_back_button;
-    private CardView cardView_change_password, cardView_change_profile_photo;
+    private CardView cardView_change_password, cardView_change_profile_photo, cardView_change_nick_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,15 @@ public class SettingActivity extends AppCompatActivity {
         tv_setting_back_button = findViewById(R.id.tv_setting_back_button);
         cardView_change_password = findViewById(R.id.cardView_change_password);
         cardView_change_profile_photo = findViewById(R.id.cardView_change_profile_photo);
+        cardView_change_nick_name = findViewById(R.id.cardView_change_nick_name);
+
+        cardView_change_nick_name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SettingActivity.this, ChangeNicknameActivity.class);
+                startActivity(intent);
+            }
+        });
 
         tv_setting_back_button.setOnClickListener(new View.OnClickListener() {
             @Override

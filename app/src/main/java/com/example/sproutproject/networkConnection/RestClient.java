@@ -33,6 +33,7 @@ public class RestClient {
     private static final String updatePassword_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/updatepassword?user_name=";
     private static final String getAllProfilePhoto = "https://b1gcqxmxx3.execute-api.ap-southeast-2.amazonaws.com/findAllProfilePhoto/findallprofilephoto";
     private static final String updateHeadId = "https://owefe0tm62.execute-api.ap-southeast-2.amazonaws.com/updateHeadId/updateheadid?head_id=";
+    private static final String updateNickname_URL = "https://fok9mlpzah.execute-api.us-east-2.amazonaws.com/test/updatenickname?user_name=";
 
 
 
@@ -134,6 +135,24 @@ public class RestClient {
         RequestBody body = RequestBody.create(credentialJson, JSON);
         Request request = new Request.Builder()
                 .url(updatePassword_URL + email + "&password_hash=" + new_password_hash)
+                .post(body)
+                .build();
+        try {
+            Response response= client.newCall(request).execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static int updateUserNickname(String email,String new_nickname) {
+
+        UserTable userTable = new UserTable("0", "kkk", "43");
+        Gson gson = new Gson();
+        String credentialJson = gson.toJson(userTable);
+        RequestBody body = RequestBody.create(credentialJson, JSON);
+        Request request = new Request.Builder()
+                .url(updateNickname_URL + email + "&user_nick=" + new_nickname)
                 .post(body)
                 .build();
         try {
