@@ -191,11 +191,19 @@ public class PlantGuardActivity extends AppCompatActivity {
 
                 } else {
                     String growValue = preferencesGrowValue.getString("growValue", null);
-                    growValue = String.valueOf(Integer.parseInt(growValue) - 1);
-                    preferencesGrowValue.edit()
-                            .putString("growValue", growValue)
-                            .apply();
-                    showToast("The guards failed! Lose 1 growth value! Try again.");
+                    if (growValue != null){
+                        if (Integer.parseInt(growValue) > 0) {
+                            growValue = String.valueOf(Integer.parseInt(growValue) - 1);
+                            preferencesGrowValue.edit()
+                                    .putString("growValue", growValue)
+                                    .apply();
+                            showToast("The guards failed! Lose 1 growth value! Try again.");
+                        } else {
+                            showToast("The guards failed! Your growth value is 0.");
+                        }
+                    }
+
+
                 }
 
                 ThreadUtils.runInThread(new Runnable() {
